@@ -17,7 +17,7 @@ P.S. Any flags you find should be **entirely lowercase**.
 2. Some parts of this comment stick out. They seem a little out of place...
 
 ## Solution
-The name of the file is encoded in Base64, and decrypts to "b3st_cryp70gr4pHeR!", which is the password to access the file. Once they're in, they'll see a comment above an encrypted string. The string is the flag encrypted using the Myszkowski Transposition cipher. The key is the capitalized word in the comment, "SORTING", and using that key, the string will decrypt to the flag.
+The name of the file is encoded in Base64, and decrypts to `b3st_cryp70gr4pHeR!`, which is the password to access the file. Once they're in, they'll see a comment above an encrypted string. The string is the flag encrypted using the Myszkowski Transposition cipher. The key is the capitalized word in the comment, "ATTACK", and using that key, the string will decrypt to the flag.
 
 1. Base64 decode the file name
 2. Use the decoded file name to access the contents of the file
