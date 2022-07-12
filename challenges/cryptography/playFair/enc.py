@@ -1,16 +1,21 @@
 #!usr/bin/python3
 import string
 import re
-print("Time is the key!\n")
 
+#message
+m="ucflag{FLAG}"
+
+print("Time is the key!\n")
 ext=string.ascii_letters+string.digits+"{}"
+
+# Can be other key based on the storyline
 key="TIME"
 
 # Taking out the characters in key
 for chr in key:
     ext=ext.replace(chr,"")
 
-# key table is compost of key, alphabets, digits from 0 to 9 and {}
+# key table is compost of key, lowercase and uppercase alphabets, digits from 0 to 9 and {}
 key+=ext
 
 print("key table")
@@ -25,9 +30,9 @@ for c in key:
         print("\n"+"-"*17)
     count+=1
 
-# break the key down into groups of 6    
+# break the key down into groups of 8    
 key=re.findall('.'*8,key)
-m="ucflag{FLAG}"
+
 
 def encrypt(key,m):
     #Adding X if two adjacent letters are the same
