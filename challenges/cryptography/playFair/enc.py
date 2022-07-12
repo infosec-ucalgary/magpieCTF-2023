@@ -2,7 +2,7 @@
 import string
 import re
 
-#message
+#message depending on the storyline
 m="ucflag{FLAG}"
 
 print("Time is the key!\n")
