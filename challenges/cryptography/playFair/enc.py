@@ -4,13 +4,10 @@ import re
 
 #message depending on the storyline
 m="ucflag{FLAG}"
-
-print("Time is the key!\n")
-ext=string.ascii_letters+string.digits+"{}"
-
 # Can be other key based on the storyline
 key="TIME"
 
+ext=string.ascii_letters+string.digits+"{}"
 # Taking out the characters in key
 for chr in key:
     ext=ext.replace(chr,"")
