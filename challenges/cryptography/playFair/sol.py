@@ -2,11 +2,12 @@
 import string
 import re
 
+# Can be other cipher depending on the flag
 c="ATgeMi6KKBL7"
-
-print("Time is the key!\n")
-ext=string.ascii_letters+string.digits+"{}"
+# Can be other key based on the storyline
 key="TIME"
+
+ext=string.ascii_letters+string.digits+"{}"
 
 # Taking out the characters in key
 for chr in key:
