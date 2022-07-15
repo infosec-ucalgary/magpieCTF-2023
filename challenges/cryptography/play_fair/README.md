@@ -9,6 +9,7 @@ Here is the cipher: nEctTfwcH8P08nv4w{K0jT3Zn2K2A88k{Y
 
 Good luck!
 
+Key Table
 ![This is an image](./key_table.png)
 
 
