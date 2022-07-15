@@ -4,7 +4,9 @@
 
 ## Description
 Welcome to your first challenge in cryptography, yay! During CTF, people usually copy and paste the cipher into decoder to get the flag, but they barely get anything out of it. To make it fair, I created this easy challenge for you to actually learn the cipher in depth. If you don't understand the code, that's alright! My comments have included how this cipher is encrypted. (Comment start with #). Programming knowledge is not really needed to solve this challenge. Internet has loads of resources on this cipher as well! Don't give up, you can do it!
+
 Here is the cipher: nEctTfwcH8P08nv4w{K0jT3Zn2K2A88k{Y
+
 Good luck!
 
 ![This is an image]()
