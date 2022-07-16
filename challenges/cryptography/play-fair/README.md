@@ -38,4 +38,4 @@ To decrypt the message, we only need to reverse of the process:
 Check out sol.py for solution
 
 ## Flag
-magpieCTF{L34rn_H0w_T0_Pl4y_F41r}
+magpie{L34rn_H0w_T0_Pl4y_F41r}
