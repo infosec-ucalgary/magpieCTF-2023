@@ -21,18 +21,18 @@ def post_spammer(target_url, num_of_requests, position_of_flag, delay_in_ms, min
     for i in range(num_of_requests):
         # if the specified real flag position has been reached, send the real flag
         if i == position_of_flag - 1:
-            json_data = {'flag': REAL_FLAG}
+            data= REAL_FLAG
         
         # otherwise, generate a fake flag
         else:
             random_flag = ''.join(random.choice(VALID_CHARACTERS) for i in range(round(random.random() * (max_length - min_length) + min_length)))
-            json_data = {"flag": PREFIX + random_flag}
+            data= PREFIX + random_flag
 
         # print data being sent
-        print(json_data)
+        print(data)
 
         # send data
-        requests.post(target_url, json=json_data)
+        requests.post(target_url, data=data)
         
         # wait <delay_in_ms> amount of milliseconds before the next request
         sleep(delay_in_ms / 1000)
