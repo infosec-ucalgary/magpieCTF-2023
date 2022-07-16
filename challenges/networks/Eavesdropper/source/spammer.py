@@ -12,7 +12,7 @@ PREFIX = "magpie{"
 VALID_CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456790_!@#"
 
 # actual flag (ONE THAT CAN BE SUBMITTED)
-REAL_FLAG = "magpie{this_is_a_real_flag!}"
+REAL_FLAG = "magpie{c3rT1f13d_l1sT3n3r}"
 
 # spams post requests <num_of_requests> number of times, and delays each request by <delay_in_ms> milliseconds
 def post_spammer(target_url, num_of_requests, position_of_flag, delay_in_ms, min_length, max_length):
