@@ -14,7 +14,7 @@ I got a zip file and not sure what to do with it. Hmmm...
 
 ## Solution
 There are three steps in this challenge.
-1. Unzip files using a script of your choice. See sol.sh for example
+1. Unzip files using a script of your choice. See https://www.codegrepper.com/code-examples/shell/unzip+recursively+linux for example
 2. Install stegsolve from https://github.com/zardus/ctf-tools/blob/master/stegsolve/install
 3. According to the instruction, open stegsolve and combine two images given with xor to get the flag
 
