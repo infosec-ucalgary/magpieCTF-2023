@@ -15,3 +15,9 @@
  * which will then send this server binary what to do. thus, the server's inputs
  * are obfuscated for "simplified" transmission (or something)
  */
+struct Satellite{
+  float theta_x, theta_y, theta_z;
+  int pos_x, pos_y, pos_z;
+  char * name;
+  char symbol;
+}typedef Satellite;
