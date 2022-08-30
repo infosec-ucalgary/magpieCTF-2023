@@ -177,6 +177,17 @@ Satellite ** fetch_satellite_info(){
     satellites[i] -> name = malloc(strlen(base_name) * sizeof(char));
     strcpy(satellites[i] -> name, base_name);
     satellites[i] -> name[REPLACE_INDEX] = satellites[i] -> symbol;
+
+    /*/ debugging
+    fprintf(stderr, "Satellite %c: pos:(%d, %d, %d), angle:(%lf, %lf, %lf)\n",
+        satellites[i] -> symbol,
+        satellites[i] -> pos_x,
+        satellites[i] -> pos_y,
+        satellites[i] -> pos_z,
+        satellites[i] -> theta_x,
+        satellites[i] -> theta_y,
+        satellites[i] -> theta_z
+    ); // */
   }
 
   return satellites;
