@@ -9,7 +9,10 @@ client-side commands will be provided, however this user manual will explain
 that data transmission will only occur when there is a link between each
 satellite.
 
-note: for story purposes,
+note: the binary will have an alarm of some reasonable amount. this is to
+      enforce the fact that this needs to be programmatically solved. a story
+      reason for this could be that if too much time is taken, the satellites
+      have shifted by some amount.
 
 given commands will include:
 a.  a 3d representation (3 2d panes to represent (x,y), (y,z) and (x,z)
@@ -19,7 +22,7 @@ b.  a command to receive the current angle orientation of satellite dishes (usin
 c.  commands to adjust the angle of a given satellite (again, using x,y,z
     components)
   - likely using individual components to emulate constant signals from a user's
-    joystick
+    joystick (maybe not :/ idrk)
 d.  a command to "send to the command server" requesting a shell.
   - this will pop a limited shell for the attacker to read the flag.
 
