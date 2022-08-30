@@ -9,6 +9,8 @@ client-side commands will be provided, however this user manual will explain
 that data transmission will only occur when there is a link between each
 satellite.
 
+note: for story purposes,
+
 given commands will include:
 a.  a 3d representation (3 2d panes to represent (x,y), (y,z) and (x,z)
     coordinates) of satellite spacial positions

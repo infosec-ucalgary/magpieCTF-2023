@@ -110,6 +110,30 @@ Satellite ** fetch_satellite_info(){
   return satellites;
 }
 
+/**
+ * Maps the character axis label and fetches the associated positional component
+ * from the provided satellite struct.
+ *
+ * parameters
+ * ----------
+ * satellite (const Satellite *): the satellite struct to fetch the coordinate from
+ * axis_label (const char): the name of the axis that needs to be fetched.
+ *
+ * note: x corresponds to pos_x and likewise for other axis
+ * if an invalid value is provided, return something out of bounds
+ */
+int axis_index_map(const Satellite * satellite, const char axis_label){
+  switch(axis_label){
+    case('x'):
+      return satellite -> pos_x;
+    case('y'):
+      return satellite -> pos_y;
+    case('z'):
+      return satellite -> pos_z;
+  }
+
+  return -1; // invalid axis given
+}
 int main(int argc, char ** argv){
   Satellite ** satellites = fetch_satellite_info();
 }
