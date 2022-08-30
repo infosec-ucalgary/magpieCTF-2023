@@ -32,6 +32,7 @@ struct Satellite{
   char symbol;
 }typedef Satellite;
 
+
 /**
  * Generate the satellites that will be placed throughout space at varying
  * locations and orientations.
@@ -59,6 +60,77 @@ struct Satellite{
  * be in the same section (for the y/z slice at least) as long as the satellites
  * do not overlap.
  */
+Satellite ** fetch_satellite_info();
+
+/**
+ * Maps the character axis label and fetches the associated positional component
+ * from the provided satellite struct.
+ *
+ * parameters
+ * ----------
+ * satellite (const Satellite *): the satellite struct to fetch the coordinate from
+ * axis_label (const char): the name of the axis that needs to be fetched.
+ *
+ * note: x corresponds to pos_x and likewise for other axis
+ * if an invalid value is provided, return something out of bounds
+ */
+int axis_index_map(const Satellite * satellite, const char axis_label);
+
+/**
+ * Prints a 2-axis grid of some side view and places the satellites accordingly
+ * within that grid.
+ *
+ * the grid will look like this, but scaled according to GRID_EDGE_SIZE
+ * | row [src]     |
+ * |  [ ] [ ] [ ]  |
+ * |  [ ] [ ] [ ]  |
+ * |  [ ] [ ] [ ]  |
+ * | 0   [you] col |
+ *
+ * parameters
+ * ----------
+ * satellites (Satellite **): the array of satellites to populate the grid
+ *                                  with
+ * row_axis (const char): the character representing the axis name along the rows
+ * column_axis (const char): the character respresenting the axis name along the columns
+ */
+void print_grid(Satellite ** satellites, const char row_axis, const char column_axis);
+
+/**
+ * Print the current positions of the satellites in a 3-perspective view.
+ *
+ * views will be printed out as such:
+ *
+ * x >, y ^
+ * z >, y ^
+ * z >, y ^
+ *
+ * the grid will look like this, but scaled according to GRID_EDGE_SIZE
+ * | y   [src]     |
+ * |  [ ] [ ] [ ]  |
+ * |  [ ] [ ] [ ]  |
+ * |  [ ] [ ] [ ]  |
+ * | 0   [you]   x |
+ * +---------------+
+ * | y   [src]     |
+ * |  [ ] [ ] [ ]  |
+ * |  [ ] [ ] [ ]  |
+ * |  [ ] [ ] [ ]  |
+ * | 0   [you]   z |
+ * +---------------+
+ * | x             |
+ * |  [ ] [ ] [ ]  |
+ * |  [ ] [ ] [ ]  |
+ * |  [ ] [ ] [ ]  |
+ * | 0           z |
+ */
+void print_satellite_positions(Satellite ** satellites);
+
+int main(int argc, char ** argv){
+  Satellite ** satellites = fetch_satellite_info();
+  print_satellite_positions(satellites);
+}
+
 Satellite ** fetch_satellite_info(){
   // seed the random value
   srand(time(NULL));
@@ -110,18 +182,6 @@ Satellite ** fetch_satellite_info(){
   return satellites;
 }
 
-/**
- * Maps the character axis label and fetches the associated positional component
- * from the provided satellite struct.
- *
- * parameters
- * ----------
- * satellite (const Satellite *): the satellite struct to fetch the coordinate from
- * axis_label (const char): the name of the axis that needs to be fetched.
- *
- * note: x corresponds to pos_x and likewise for other axis
- * if an invalid value is provided, return something out of bounds
- */
 int axis_index_map(const Satellite * satellite, const char axis_label){
   switch(axis_label){
     case('x'):
@@ -135,24 +195,6 @@ int axis_index_map(const Satellite * satellite, const char axis_label){
   return -1; // invalid axis given
 }
 
-/**
- * Prints a 2-axis grid of some side view and places the satellites accordingly
- * within that grid.
- *
- * the grid will look like this, but scaled according to GRID_EDGE_SIZE
- * | row [src]     |
- * |  [ ] [ ] [ ]  |
- * |  [ ] [ ] [ ]  |
- * |  [ ] [ ] [ ]  |
- * | 0   [you] col |
- *
- * parameters
- * ----------
- * satellites (Satellite **): the array of satellites to populate the grid
- *                                  with
- * row_axis (const char): the character representing the axis name along the rows
- * column_axis (const char): the character respresenting the axis name along the columns
- */
 void print_grid(Satellite ** satellites, const char row_axis, const char column_axis){
   char * spacing = malloc(4 * GRID_EDGE_SIZE * sizeof(char));
   memset(spacing, '\x00', 4*GRID_EDGE_SIZE);
@@ -215,34 +257,6 @@ void print_grid(Satellite ** satellites, const char row_axis, const char column_
   free(cell);
 }
 
-/**
- * Print the current positions of the satellites in a 3-perspective view.
- *
- * views will be printed out as such:
- *
- * x >, y ^
- * z >, y ^
- * z >, y ^
- *
- * the grid will look like this, but scaled according to GRID_EDGE_SIZE
- * | y   [src]     |
- * |  [ ] [ ] [ ]  |
- * |  [ ] [ ] [ ]  |
- * |  [ ] [ ] [ ]  |
- * | 0   [you]   x |
- * +---------------+
- * | y   [src]     |
- * |  [ ] [ ] [ ]  |
- * |  [ ] [ ] [ ]  |
- * |  [ ] [ ] [ ]  |
- * | 0   [you]   z |
- * +---------------+
- * | x             |
- * |  [ ] [ ] [ ]  |
- * |  [ ] [ ] [ ]  |
- * |  [ ] [ ] [ ]  |
- * | 0           z |
- */
 void print_satellite_positions(Satellite ** satellites){
   char * border = malloc((5 + 4 * GRID_EDGE_SIZE) * sizeof(char)); // add 5 bc "+--" and "-+"
   strcpy(border, "+--");
@@ -258,9 +272,4 @@ void print_satellite_positions(Satellite ** satellites){
   print_grid(satellites, 'z', 'x');
 
   free(border);
-}
-
-int main(int argc, char ** argv){
-  Satellite ** satellites = fetch_satellite_info();
-  print_satellite_positions(satellites);
 }
