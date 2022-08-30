@@ -215,6 +215,51 @@ void print_grid(Satellite ** satellites, const char row_axis, const char column_
   free(cell);
 }
 
+/**
+ * Print the current positions of the satellites in a 3-perspective view.
+ *
+ * views will be printed out as such:
+ *
+ * x >, y ^
+ * z >, y ^
+ * z >, y ^
+ *
+ * the grid will look like this, but scaled according to GRID_EDGE_SIZE
+ * | y   [src]     |
+ * |  [ ] [ ] [ ]  |
+ * |  [ ] [ ] [ ]  |
+ * |  [ ] [ ] [ ]  |
+ * | 0   [you]   x |
+ * +---------------+
+ * | y   [src]     |
+ * |  [ ] [ ] [ ]  |
+ * |  [ ] [ ] [ ]  |
+ * |  [ ] [ ] [ ]  |
+ * | 0   [you]   z |
+ * +---------------+
+ * | x             |
+ * |  [ ] [ ] [ ]  |
+ * |  [ ] [ ] [ ]  |
+ * |  [ ] [ ] [ ]  |
+ * | 0           z |
+ */
+void print_satellite_positions(Satellite ** satellites){
+  char * border = malloc((5 + 4 * GRID_EDGE_SIZE) * sizeof(char)); // add 5 bc "+--" and "-+"
+  strcpy(border, "+--");
+  for(int i = 0; i < GRID_EDGE_SIZE; i++){
+    strcat(border, "----");
+  }
+  strcat(border, "-+");
+
+  print_grid(satellites, 'x', 'y');
+  printf("%s\n", border);
+  print_grid(satellites, 'z', 'y');
+  printf("%s\n", border);
+  print_grid(satellites, 'z', 'x');
+
+  free(border);
+}
+
 int main(int argc, char ** argv){
   Satellite ** satellites = fetch_satellite_info();
   print_satellite_positions(satellites);
