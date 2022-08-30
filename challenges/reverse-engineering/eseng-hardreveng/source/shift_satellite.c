@@ -134,6 +134,88 @@ int axis_index_map(const Satellite * satellite, const char axis_label){
 
   return -1; // invalid axis given
 }
+
+/**
+ * Prints a 2-axis grid of some side view and places the satellites accordingly
+ * within that grid.
+ *
+ * the grid will look like this, but scaled according to GRID_EDGE_SIZE
+ * | row [src]     |
+ * |  [ ] [ ] [ ]  |
+ * |  [ ] [ ] [ ]  |
+ * |  [ ] [ ] [ ]  |
+ * | 0   [you] col |
+ *
+ * parameters
+ * ----------
+ * satellites (Satellite **): the array of satellites to populate the grid
+ *                                  with
+ * row_axis (const char): the character representing the axis name along the rows
+ * column_axis (const char): the character respresenting the axis name along the columns
+ */
+void print_grid(Satellite ** satellites, const char row_axis, const char column_axis){
+  char * spacing = malloc(4 * GRID_EDGE_SIZE * sizeof(char));
+  memset(spacing, '\x00', 4*GRID_EDGE_SIZE);
+  for(int i = 0; i < GRID_EDGE_SIZE; i++){
+    strcat(spacing, "    ");
+  }
+
+  char top_label_base_start[4] = "| d";
+  const char * edge_border_start = "|  ";
+  const char * bottom_label_base_start = "| 0";
+  const char * top_label_base_end = "  |";
+  const char * edge_border_end = "  |";
+  char bottom_label_base_end[4] = "d |";
+  const char * cell_base = "[ ] ";
+
+  top_label_base_start[2] = column_axis;
+  bottom_label_base_end[0] = row_axis;
+
+  char * top_label = malloc((5 + 4 * GRID_EDGE_SIZE + 1)* sizeof(char)); // +5 for edge stull and +1 for null byte :)
+  char * bottom_label = malloc((5 + 4 * GRID_EDGE_SIZE + 1)* sizeof(char));
+  strcpy(top_label, top_label_base_start);
+  strcat(top_label, spacing);
+  strcat(top_label, top_label_base_end);
+  printf("%s\n", top_label);
+
+  strcpy(bottom_label, bottom_label_base_start);
+  strcat(bottom_label, spacing);
+  strcat(bottom_label, bottom_label_base_end);
+
+  const int replace_char = 1;
+
+  char * print_row = malloc((5 + 4 * GRID_EDGE_SIZE + 1) * sizeof(char));
+  char * cell = malloc(5 * sizeof(char));
+
+  for(int row = 0; row < GRID_EDGE_SIZE; row++){
+    memset(print_row, '\x00', 6+4*GRID_EDGE_SIZE);
+    strcat(print_row, edge_border_start);
+    for(int column = 0; column < GRID_EDGE_SIZE; column++){
+      memset(cell, '\x00', 5);
+      strcpy(cell, cell_base);
+
+      for(int i = 0; i < NO_SATELLITES; i++){
+        Satellite * s = satellites[i];
+        if(axis_index_map(s, row_axis) != column) continue;
+        if(axis_index_map(s, column_axis) != GRID_EDGE_SIZE-row-1) continue;
+        cell[replace_char] = s -> symbol;
+      }
+
+      strcat(print_row, cell);
+    }
+    strcat(print_row, edge_border_end);
+    printf("%s\n", print_row);
+  }
+  printf("%s\n", bottom_label);
+
+  free(print_row);
+  free(spacing);
+  free(top_label);
+  free(bottom_label);
+  free(cell);
+}
+
 int main(int argc, char ** argv){
   Satellite ** satellites = fetch_satellite_info();
+  print_satellite_positions(satellites);
 }
