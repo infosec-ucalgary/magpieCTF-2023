@@ -139,8 +139,8 @@ Satellite ** fetch_satellite_info(){
   const int REPLACE_INDEX = 10;
 
   const int PART_SIZE = GRID_EDGE_SIZE / NO_SATELLITES;
-  int y_history[NO_SATELLITES-1]; // keep track of previous satellite y positions
-  int z_history[NO_SATELLITES-1]; // keep track of previous satellite z positions
+  int x_history[NO_SATELLITES]; // keep track of previous satellite x positions
+  int z_history[NO_SATELLITES]; // keep track of previous satellite z positions
 
   Satellite ** satellites = malloc(sizeof(Satellite *) * NO_SATELLITES);
   for(int i = 0; i < NO_SATELLITES; i++){
@@ -156,17 +156,23 @@ Satellite ** fetch_satellite_info(){
       unique = 1;
       suggested_x =  rand() % GRID_EDGE_SIZE;
 
-      for(int j = i; j > 0; j--) unique &= suggested_x != y_history[j];
+      for(int j = i; j > 0; j--){
+        unique &= suggested_x != x_history[j-1];
+      }
     }while(!unique);
     satellites[i] -> pos_x = suggested_x;
+    x_history[i] = suggested_x;
 
     do{
       unique = 1;
       suggested_z =  rand() % GRID_EDGE_SIZE;
 
-      for(int j = i; j > 0; j--) unique &= suggested_z != z_history[j];
+      for(int j = i; j > 0; j--){
+        unique &= suggested_z != z_history[j-1];
+      }
     }while(!unique);
     satellites[i] -> pos_z = suggested_z;
+    z_history[i] = suggested_z;
 
     satellites[i] -> theta_x = rand() / (float) RAND_MAX * MAX_ANGLE;
     satellites[i] -> theta_y = rand() / (float) RAND_MAX * MAX_ANGLE;
