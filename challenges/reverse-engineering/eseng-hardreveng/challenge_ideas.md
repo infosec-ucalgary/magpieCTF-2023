@@ -25,6 +25,12 @@ yes, the plan is to combine reverse engineering with some fun trig. it's not
 vector calc.
 
 ### if there's time
-adjust the challenge to not move the dishes, but move the satellites themselves
-until the dishes line up. for extra pain, define the force vector the satellite
-will need to propel by. this would be hell to attack, but also hell to program.
+- adjust the challenge to not move the dishes, but move the satellites themselves
+  until the dishes line up. for extra pain, define the force vector the satellite
+  will need to propel by. this would be hell to attack, but also hell to program.
+
+- enforce a rule that requires satellites to effectively discover the location
+  of other satellites. (ie. control center will need to search for a satellite,
+  connect to said satellite and request that satellite to search for others
+  manually). then evenually the entire network could be established
+  - add a function that will search the area around the currently focused item
