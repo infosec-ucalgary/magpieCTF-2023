@@ -109,3 +109,7 @@ Satellite ** fetch_satellite_info(){
 
   return satellites;
 }
+
+int main(int argc, char ** argv){
+  Satellite ** satellites = fetch_satellite_info();
+}
