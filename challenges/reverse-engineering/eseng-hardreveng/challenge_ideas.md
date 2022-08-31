@@ -29,6 +29,10 @@ d.  a command to "send to the command server" requesting a shell.
 yes, the plan is to combine reverse engineering with some fun trig. it's not
 vector calc.
 
+to make this spicy, create the user manual as a pdf, but have it slightly
+corrupted. they need to make reference to this manual, but not all the
+information is provided.
+
 ### if there's time
 - adjust the challenge to not move the dishes, but move the satellites themselves
   until the dishes line up. for extra pain, define the force vector the satellite
