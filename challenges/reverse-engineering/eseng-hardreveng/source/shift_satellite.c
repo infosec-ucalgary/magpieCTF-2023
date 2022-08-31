@@ -235,13 +235,25 @@ void print_grid(Satellite ** satellites, const char row_axis, const char column_
   strcpy(top_label, top_label_base_start);
   strcat(top_label, spacing);
   strcat(top_label, top_label_base_end);
-  printf("%s\n", top_label);
 
   strcpy(bottom_label, bottom_label_base_start);
   strcat(bottom_label, spacing);
   strcat(bottom_label, bottom_label_base_end);
 
-  const int replace_char = 1;
+  // show the source and receiver along the y-axis
+  if(column_axis == 'y'){
+    const char * src_label = "[src]";
+    const char * you_label = "[you]";
+    // find halfway point and write 2 bytes before it. this works for even-length and
+    // odd length strings
+    const int axis_start_write = strlen(top_label) / 2 - 2;
+    strncpy(top_label+axis_start_write, src_label, 5); // do not copy nullbyte
+    strncpy(bottom_label+axis_start_write, you_label, 5); // do not copy nullbyte
+  }
+
+  printf("%s\n", top_label);
+
+  const int replace_char = 1; // the index to write the symbol within the cell
 
   char * print_row = malloc((5 + 4 * GRID_EDGE_SIZE + 1) * sizeof(char));
   char * cell = malloc(5 * sizeof(char));
