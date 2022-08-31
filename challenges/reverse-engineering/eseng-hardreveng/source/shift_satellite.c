@@ -126,9 +126,28 @@ void print_grid(Satellite ** satellites, const char row_axis, const char column_
  */
 void print_satellite_positions(Satellite ** satellites);
 
+/**
+ * Print the current orienation of each satellite using the x,y,z components of
+ * the angle with respect to the overall positional grid.
+ *
+ * output should be formatted as such:
+ * Symbol | Orientation (x,y,z)
+ * L      | (theta_x, theta_y, theta_z)
+ * M      | (theta_x, theta_y, theta_z)
+ * N      | (theta_x, theta_y, theta_z)
+ *
+ * angles are provided in degrees.
+ *
+ * parameters
+ * ----------
+ * satellites (Satellite **): the array of satellite data to print from
+ */
+void print_satellite_orientations(Satellite ** satellites);
+
 int main(int argc, char ** argv){
   Satellite ** satellites = fetch_satellite_info();
   print_satellite_positions(satellites);
+  print_satellite_orientations(satellites);
 }
 
 Satellite ** fetch_satellite_info(){
@@ -301,4 +320,16 @@ void print_satellite_positions(Satellite ** satellites){
   print_grid(satellites, 'z', 'x');
 
   free(border);
+}
+
+void print_satellite_orientations(Satellite ** satellites){
+  printf("Symbol | Orientation\n");
+  for(int i = 0; i < NO_SATELLITES; i++){
+    printf("   %c   | (%f, %f, %f)\n",
+        satellites[i] -> symbol,
+        satellites[i] -> theta_x,
+        satellites[i] -> theta_y,
+        satellites[i] -> theta_z
+    );
+  }
 }
