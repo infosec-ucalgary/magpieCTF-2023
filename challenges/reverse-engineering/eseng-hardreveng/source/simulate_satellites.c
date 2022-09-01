@@ -21,18 +21,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include "./connection_helper.h"
 
 #define NO_SATELLITES 4
 #define GRID_EDGE_SIZE 12
 #define MAX_ANGLE 360.0
-
-// this Satellite struct will represent on-board data of a satellite
-struct Satellite{
-  float theta_x, theta_y, theta_z;
-  int pos_x, pos_y, pos_z;
-  char * name;
-  char symbol;
-}typedef Satellite;
 
 /**
  * Generate the satellites that will be placed throughout space at varying
@@ -62,6 +55,11 @@ struct Satellite{
  * do not overlap.
  */
 Satellite ** generate_satellite_info();
+
+int main(int argc, char ** argv){
+  fprintf(stderr, "I'm an active process!\n");
+  fprintf(stdout, "This is my message!\n");
+}
 
 Satellite ** generate_satellite_info(){
   // seed the random value

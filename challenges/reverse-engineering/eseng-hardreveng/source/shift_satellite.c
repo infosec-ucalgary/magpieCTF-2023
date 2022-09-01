@@ -20,17 +20,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include "./connection_helper.h"
 
 #define NO_SATELLITES 4
 #define GRID_EDGE_SIZE 12
 #define MAX_ANGLE 360.0
-
-struct Satellite{
-  float theta_x, theta_y, theta_z;
-  int pos_x, pos_y, pos_z;
-  char * name;
-  char symbol;
-}typedef Satellite;
 
 
 /// TODO: update this function to make requests to the satellite sim
@@ -119,9 +113,9 @@ void print_satellite_positions(Satellite ** satellites);
 void print_satellite_orientations(Satellite ** satellites);
 
 int main(int argc, char ** argv){
-  Satellite ** satellites = fetch_satellite_info();
-  print_satellite_positions(satellites);
-  print_satellite_orientations(satellites);
+  // Satellite ** satellites = fetch_satellite_info();
+  // print_satellite_positions(satellites);
+  // print_satellite_orientations(satellites);
 }
 
 Satellite ** fetch_satellite_info(){
