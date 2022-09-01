@@ -16,13 +16,14 @@
 #define DEVICE_NAME "0MN1-F746S-43V3R" // fun device name to print :)
 #define SIG_MSG_FAIL 0
 
+#include <sys/types.h>
+
 // this Satellite struct will represent on-board data of a satellite
 struct Satellite{
   float theta_x, theta_y, theta_z;
   int pos_x, pos_y, pos_z;
   char * name;
   char symbol;
-  pid_t connection_id;
 }typedef Satellite;
 
 
@@ -32,16 +33,22 @@ struct Satellite{
  * in reality, this function will spawn a simulate_satellites process that
  * the server will communicate with along with any tools required to ensure
  * bidirectional communication.
+ *
+ * returns the pid of the simulation process
  */
-void init_connection();
+pid_t init_connection();
 
 /**
  * Closes the "connection" between the server and the satellites.
  *
  * in reality, this function will clean up any generated files or used memory
  * and close the simulate_satellites function.
+ *
+ * parameters
+ * ----------
+ * the processid of the simulation process
  */
-void close_connection();
+void close_connection(pid_t sim_proc);
 
 /**
  * Sends a message between a satellite and the server.
