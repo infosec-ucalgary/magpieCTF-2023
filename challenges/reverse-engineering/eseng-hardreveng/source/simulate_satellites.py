@@ -12,3 +12,16 @@ output as specified below.
 - stdin: a little trickier, this will act as an input for the user and for
          returning the results of different commands
 """
+
+import random
+import subprocessing as subp
+
+NO_SATELLITES = 4
+MAX_ANGLE = 360.0
+
+class Satellite:
+    def __init__(self):
+        self.theta = (-1,-1,-1)
+        self.pos = (-1,-1,-1)
+        self.name = ""
+        self.symbol = ''
