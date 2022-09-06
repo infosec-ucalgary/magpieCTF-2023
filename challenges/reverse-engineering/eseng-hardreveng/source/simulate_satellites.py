@@ -97,3 +97,18 @@ class Simulation:
             s.set_satellite(tuple(new_pos), new_theta, new_symbol)
 
             self.satellites[new_symbol] = s
+
+    def get_satellite(self, symbol):
+        s = self.satellites[symbol]
+        sys.stderr.write(
+        f"""
+{s.name} ({s.symbol})
+pos: {s.pos}
+theta: {s.theta}\n""")
+
+if __name__ == "__main__":
+    sim = Simulation()
+    sim.get_satellite('A')
+    sim.get_satellite('B')
+    sim.get_satellite('C')
+    sim.get_satellite('D')
