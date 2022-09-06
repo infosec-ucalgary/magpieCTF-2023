@@ -14,7 +14,8 @@ output as specified below.
 """
 
 import random
-import subprocessing as subp
+import subprocess as subp
+import sys
 
 # simulation details
 NO_SATELLITES = 4
