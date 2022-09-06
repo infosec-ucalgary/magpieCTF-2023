@@ -59,3 +59,40 @@ class Satellite:
         self.pos = tuple([p%GRID_SIZE for p in pos])
         self.name = self._name_base += symbol
         self.symbol = symbol
+
+class Simulation:
+    def __init__(self):
+        self.satellites = {}
+
+        x_history = []
+        y_history = []
+        z_history = []
+
+        # gen satellites
+        for i in range(NO_SATELLITES):
+            s = Satellite()
+
+            new_pos = (-1,-1,-1)
+
+            unique = False
+            while(not unique):
+                new_pos[0] = random.randint(0,GRID_SIZE)
+                unique = new_pos[0] not in x_history
+
+            unique = False
+            while(not unique):
+                new_pos[1] = random.randint(0,GRID_SIZE)
+                unique = new_pos[1] not in y_history
+
+            unique = False
+            while(not unique):
+                new_pos[2] = random.randint(0,GRID_SIZE)
+                unique = new_pos[2] not in z_history
+
+            new_theta = tuple([random.random() * MAX_ANGLE for _ in range(3)])
+
+            new_symbol = chr(ord('A') + i)
+
+            s.set_satellite(new_pos, new_theta, new_symbol)
+
+            self.satellites[new_symbol] = s
