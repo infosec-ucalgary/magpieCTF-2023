@@ -26,7 +26,7 @@ class Satellite:
     _name_base = "Satellite "
 
     def __init__(self):
-        self.theta = (-1,-1,-1) # -1 indicates un-initialized
+        self.theta = [-1,-1,-1] # -1 indicates un-initialized
         self.pos = (-1,-1,-1)
         self.name = ""
         self.symbol = ''
@@ -50,15 +50,15 @@ class Satellite:
         """
         self._orient_angle(self.theta[0]+dtx, self.theta[1]+dty, self.theta[2]+dtz)
 
-    def set_satellite(self, theta, pos, symbol):
+    def set_satellite(self, pos, theta, symbol):
         """
         sets the details of the satellite
 
         this should be used when generating satellite information
         """
-        self.theta = tuple([t%MAX_ANGLE for t in theta])
+        self.theta = [t%MAX_ANGLE for t in theta]
         self.pos = tuple([p%GRID_SIZE for p in pos])
-        self.name = self._name_base += symbol
+        self.name = self._name_base + symbol
         self.symbol = symbol
 
 class Simulation:
@@ -73,7 +73,7 @@ class Simulation:
         for i in range(NO_SATELLITES):
             s = Satellite()
 
-            new_pos = (-1,-1,-1)
+            new_pos = [-1,-1,-1]
 
             unique = False
             while(not unique):
@@ -90,10 +90,10 @@ class Simulation:
                 new_pos[2] = random.randint(0,GRID_SIZE)
                 unique = new_pos[2] not in z_history
 
-            new_theta = tuple([random.random() * MAX_ANGLE for _ in range(3)])
+            new_theta = [random.random() * MAX_ANGLE for _ in range(3)]
 
             new_symbol = chr(ord('A') + i)
 
-            s.set_satellite(new_pos, new_theta, new_symbol)
+            s.set_satellite(tuple(new_pos), new_theta, new_symbol)
 
             self.satellites[new_symbol] = s
