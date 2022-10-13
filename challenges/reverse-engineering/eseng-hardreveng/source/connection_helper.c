@@ -7,27 +7,24 @@
  * see that file for additional details
  */
 
-#include <sys/mman.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h> // need the ability to fork a process
 #include "connection_helper.h"
 #define SIG_MSG_MAX 1024 // bytes, no message should be this long.
 
-extern int * comm_mem;
-
 pid_t init_connection(){
-  comm_mem = (int *) mmap(NULL,
-      SIG_MSG_MAX * sizeof(char),
-      PROT_READ | PROT_WRITE,
-      MAP_SHARED,
-      0, 0);
+  // create file descriptors to read/write to connect to simulate_satellites.c
+  // fd[0] -> write
+  // fd[1] -> read
+  int fd[2];
+  int pipe_check = pipe(fd);
 
-  if(comm_mem == MAP_FAILED){
+  if(pipe_check < 0){
     printf("[err] Could not initialize communication to satellite.\n");
     printf("[err] Please try again\n");
     printf("[err] Contact administrator if this issue persists\n");
-    printf("[err] Error: SIG_MAP_FAILED");
+    printf("[err] Error: PIPE_CREATE_FAIL");
     exit(1);
   }
 
@@ -43,6 +40,9 @@ pid_t init_connection(){
 
   if(sim_pid == 0){
     // child process, start simulation process
+    dup2(fd[0], 0); // set stdin of child
+    dup2(fd[1], 1); // set stdout of child
+
     execve("./build/simulate_satellites", NULL, NULL);
     exit(0);
   }
