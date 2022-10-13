@@ -36,7 +36,7 @@ struct Satellite{
  *
  * returns the pid of the simulation process
  */
-pid_t init_connection();
+extern pid_t init_connection();
 
 /**
  * Closes the "connection" between the server and the satellites.
@@ -48,7 +48,7 @@ pid_t init_connection();
  * ----------
  * the processid of the simulation process
  */
-void close_connection(pid_t sim_proc);
+extern void close_connection(pid_t sim_proc);
 
 /**
  * Sends a message between a satellite and the server.
@@ -65,7 +65,7 @@ void close_connection(pid_t sim_proc);
  * msg (const char *): the message to send
  * msg_len (int): the length of the message
  */
-int sig_send_msg(const char * msg, int msg_len);
+extern int sig_send_msg(const char * msg, int msg_len);
 
 /**
  * Waits for and reads messages between a satellite the server.
@@ -83,6 +83,6 @@ int sig_send_msg(const char * msg, int msg_len);
  * ----------
  * buff (char *): the buffer to receive the message within
  */
-int sig_lstn_msg(char *);
+extern int sig_lstn_msg(char *);
 
 #endif
