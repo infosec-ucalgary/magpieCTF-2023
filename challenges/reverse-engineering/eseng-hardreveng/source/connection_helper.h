@@ -43,7 +43,7 @@ struct Conn_Info{
  *
  * returns the pid of the simulation process
  */
-extern Conn_Info *init_connection();
+extern Conn_Info * init_connection();
 
 /**
  * Closes the "connection" between the server and the satellites.
@@ -53,9 +53,9 @@ extern Conn_Info *init_connection();
  *
  * parameters
  * ----------
- * the processid of the simulation process
+ * conn (Conn_Info *) - a struct containing the process info of the connection
  */
-extern void close_connection(Conn_Info *conn);
+extern void close_connection(Conn_Info * conn);
 
 /**
  * Sends a message between a satellite and the server.
@@ -69,10 +69,11 @@ extern void close_connection(Conn_Info *conn);
  *
  * parameters
  * ----------
+ * conn (Conn_Info *) - a struct containing the process info of the connection
  * msg (const char *): the message to send
  * msg_len (int): the length of the message
  */
-extern int sig_send_msg(Conn_Info *conn, const char * msg, int msg_len);
+extern int sig_send_msg(Conn_Info * conn, const char * msg, int msg_len);
 
 /**
  * Waits for and reads messages between a satellite the server.
@@ -88,8 +89,9 @@ extern int sig_send_msg(Conn_Info *conn, const char * msg, int msg_len);
  *
  * parameters
  * ----------
+ * conn (Conn_Info *) - a struct containing the process info of the connection
  * buff (char *): the buffer to receive the message within
  */
-extern int sig_lstn_msg(Conn_Info *conn, char * buff);
+extern int sig_lstn_msg(Conn_Info * conn, char * buff);
 
 #endif

@@ -14,7 +14,7 @@
 #include "connection_helper.h"
 #define SIG_MSG_MAX 1024 // bytes, no message should be this long.
 
-Conn_Info *init_connection(){
+Conn_Info * init_connection(){
   // create file descriptors to read/write to connect to simulate_satellites.c
   // fd[0] -> write
   // fd[1] -> read
