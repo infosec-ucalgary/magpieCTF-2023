@@ -13,14 +13,15 @@
 #include "connection_helper.h"
 #define SIG_MSG_MAX 1024 // bytes, no message should be this long.
 
-pid_t init_connection(){
+Conn_Info *init_connection(){
   // create file descriptors to read/write to connect to simulate_satellites.c
   // fd[0] -> write
   // fd[1] -> read
-  int fd[2];
-  int pipe_check = pipe(fd);
+  int pipe_stdin[2], pipe_stdout[2];
+  int pipe_check_in = pipe(pipe_stdin);
+  int pipe_check_out = pipe(pipe_stdout);
 
-  if(pipe_check < 0){
+  if(pipe_check_in != 0 || pipe_check_out != 0){
     printf("[err] Could not initialize communication to satellite.\n");
     printf("[err] Please try again\n");
     printf("[err] Contact administrator if this issue persists\n");
@@ -40,24 +41,35 @@ pid_t init_connection(){
 
   if(sim_pid == 0){
     // child process, start simulation process
-    dup2(fd[0], 0); // set stdin of child
-    dup2(fd[1], 1); // set stdout of child
+    close(pipe_stdin[1]); // no need to write to this process's stdin
+    close(pipe_stdout[0]); // no need to read from this process's stdout
 
-    execve("./build/simulate_satellites", NULL, NULL);
-    exit(0);
+    dup2(pipe_stdin[0], 0); // read from stdin pipe
+    dup2(pipe_stdout[1], 1); // write to stdout pipe
+
+    execl("./build/simulate_satellites", NULL, NULL);
+    // exit(0);
   }
 
   // parent process
-  return sim_pid;
+  close(pipe_stdout[1]);
+  close(pipe_stdin[0]);
+
+  Conn_Info *conn = malloc(sizeof(Conn_Info));
+  conn -> id = sim_pid;
+  conn -> conn_stdout_fd = pipe_stdout[0]; // read from here
+  conn -> conn_stdin_fd = pipe_stdin[1]; // write to here
+
+  return conn;
 }
 
-void close_connection(pid_t sim_proc){
+void close_connection(Conn_Info *conn){
 }
 
-int sig_send_msg(const char * msg, int msg_len){
+int sig_send_msg(Conn_Info *conn, const char * msg, int msg_len){
   return 0;
 }
 
-int sig_lstn_msg(char * buff){
+int sig_lstn_msg(Conn_Info *conn, char * buff){
   return 0;
 }

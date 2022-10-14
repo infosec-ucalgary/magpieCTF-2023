@@ -26,6 +26,13 @@ struct Satellite{
   char symbol;
 }typedef Satellite;
 
+// this Conn_Info struct will represent information to connect to the satellite
+struct Conn_Info{
+  int conn_stdout_fd;
+  int conn_stdin_fd;
+  pid_t id;
+}typedef Conn_Info;
+
 
 /**
  * Initializes the "connection" between the server and the satellites.
@@ -36,7 +43,7 @@ struct Satellite{
  *
  * returns the pid of the simulation process
  */
-extern pid_t init_connection();
+extern Conn_Info *init_connection();
 
 /**
  * Closes the "connection" between the server and the satellites.
@@ -48,7 +55,7 @@ extern pid_t init_connection();
  * ----------
  * the processid of the simulation process
  */
-extern void close_connection(pid_t sim_proc);
+extern void close_connection(Conn_Info *conn);
 
 /**
  * Sends a message between a satellite and the server.
@@ -65,7 +72,7 @@ extern void close_connection(pid_t sim_proc);
  * msg (const char *): the message to send
  * msg_len (int): the length of the message
  */
-extern int sig_send_msg(const char * msg, int msg_len);
+extern int sig_send_msg(Conn_Info *conn, const char * msg, int msg_len);
 
 /**
  * Waits for and reads messages between a satellite the server.
@@ -83,6 +90,6 @@ extern int sig_send_msg(const char * msg, int msg_len);
  * ----------
  * buff (char *): the buffer to receive the message within
  */
-extern int sig_lstn_msg(char *);
+extern int sig_lstn_msg(Conn_Info *conn, char * buff);
 
 #endif
