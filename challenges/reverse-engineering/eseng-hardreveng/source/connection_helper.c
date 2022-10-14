@@ -7,6 +7,7 @@
  * see that file for additional details
  */
 
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h> // need the ability to fork a process
@@ -60,10 +61,13 @@ Conn_Info *init_connection(){
   conn -> conn_stdout_fd = pipe_stdout[0]; // read from here
   conn -> conn_stdin_fd = pipe_stdin[1]; // write to here
 
+  sleep(1); // block the parent, to ensure child is initialized
   return conn;
 }
 
 void close_connection(Conn_Info *conn){
+  kill(conn -> id, SIGKILL);
+  free(conn);
 }
 
 int sig_send_msg(Conn_Info *conn, const char * msg, int msg_len){

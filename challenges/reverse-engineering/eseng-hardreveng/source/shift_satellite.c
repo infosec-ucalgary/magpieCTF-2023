@@ -116,7 +116,9 @@ int main(int argc, char ** argv){
   // Satellite ** satellites = fetch_satellite_info();
   // print_satellite_positions(satellites);
   // print_satellite_orientations(satellites);
-  init_connection();
+  Conn_Info *conn = init_connection();
+
+  close_connection(conn);
 }
 
 Satellite ** fetch_satellite_info(){
