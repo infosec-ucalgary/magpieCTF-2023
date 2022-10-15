@@ -57,8 +57,15 @@
 Satellite ** generate_satellite_info();
 
 int main(int argc, char ** argv){
-  fprintf(stderr, "I'm an active process!\n");
-  fprintf(stdout, "This is my message!\n");
+  char command[5]; // max command length is 4
+  fprintf(stderr, "connected\n");
+
+  while(1){
+    memset(command, 0, 5);
+    scanf("%4s", command);
+    fprintf(stderr, "%s\n", command);
+    // if(strncmp(command, "init", 4) == 0) fprintf(stderr, "initialize satellites\n");
+  }
 }
 
 Satellite ** generate_satellite_info(){

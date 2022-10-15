@@ -118,6 +118,11 @@ int main(int argc, char ** argv){
   // print_satellite_orientations(satellites);
   Conn_Info *conn = init_connection();
 
+  char testbuf[5];
+  fprintf(stdout, "ready > ");
+  scanf("%4s", testbuf);
+  sig_send_msg(conn, testbuf, 4);
+
   close_connection(conn);
 }
 

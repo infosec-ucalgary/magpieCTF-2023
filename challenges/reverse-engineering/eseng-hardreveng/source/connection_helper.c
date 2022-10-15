@@ -71,7 +71,12 @@ void close_connection(Conn_Info *conn){
 }
 
 int sig_send_msg(Conn_Info *conn, const char * msg, int msg_len){
-  return 0;
+  int offset = 0;
+  while(offset < msg_len){
+    offset += write(conn -> conn_stdin_fd, msg+offset, msg_len);
+  }
+  sleep(1);
+  return offset;
 }
 
 int sig_lstn_msg(Conn_Info *conn, char * buff){
