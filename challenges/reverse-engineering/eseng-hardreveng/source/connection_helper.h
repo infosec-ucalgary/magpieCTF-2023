@@ -92,6 +92,6 @@ extern int sig_send_msg(Conn_Info * conn, const char * msg, int msg_len);
  * conn (Conn_Info *) - a struct containing the process info of the connection
  * buff (char *): the buffer to receive the message within
  */
-extern int sig_lstn_msg(Conn_Info * conn, char * buff);
+extern char * sig_lstn_msg(Conn_Info *conn, int * msg_len);
 
 #endif

@@ -79,6 +79,40 @@ int sig_send_msg(Conn_Info *conn, const char * msg, int msg_len){
   return offset;
 }
 
-int sig_lstn_msg(Conn_Info *conn, char * buff){
-  return 0;
+char * sig_lstn_msg(Conn_Info *conn, int * msg_len){
+  const int BLOCK_SIZE = 64;
+  char * msg = malloc(BLOCK_SIZE * sizeof(char));
+  int offset = 0, max_len = BLOCK_SIZE;
+
+  fprintf(stdout, "[info] recieving data... 000");
+
+  while(msg[offset-1] != '\n' && offset > -1){
+    sleep(1);
+    offset += read(conn -> conn_stdout_fd, msg+offset, 4);
+
+    fprintf(stdout, "\r[info] recieving data... %03d bytes", offset);
+    fflush(stdout);
+    if(msg[offset-1] == '\n'){
+      msg[offset-1] = '\0';
+      break;
+    }
+
+    if(offset == max_len){ // when the offset is the max_len, we need more memory
+      max_len += BLOCK_SIZE;
+      msg = realloc(msg, max_len);
+    }
+  }
+
+  fprintf(stdout, "\n");
+
+  if(offset < 0){
+    printf("[err] Could not recieve data from satellite.\n");
+    printf("[err] Please try again\n");
+    printf("[err] Contact administrator if this issue persists\n");
+    printf("[err] Error: SAT_READ_FAIL");
+    exit(1);
+  }
+
+  *msg_len = offset;
+  return msg;
 }

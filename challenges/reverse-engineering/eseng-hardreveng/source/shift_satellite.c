@@ -123,6 +123,10 @@ int main(int argc, char ** argv){
   scanf("%4s", testbuf);
   sig_send_msg(conn, testbuf, 4);
 
+  int msg_len = 0;
+  char *secondtest = sig_lstn_msg(conn, &msg_len);
+  printf("%s\n", secondtest);
+
   close_connection(conn);
 }
 

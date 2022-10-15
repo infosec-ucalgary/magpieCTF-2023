@@ -63,7 +63,9 @@ int main(int argc, char ** argv){
   while(1){
     memset(command, 0, 5);
     scanf("%4s", command);
-    fprintf(stderr, "%s\n", command);
+    fprintf(stderr, "request: %s\n", command);
+    fprintf(stdout, "response!!\n");
+    fflush(stdout);
     // if(strncmp(command, "init", 4) == 0) fprintf(stderr, "initialize satellites\n");
   }
 }
