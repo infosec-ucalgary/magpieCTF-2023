@@ -17,3 +17,7 @@ $(shared): %:%.c
 
 clean:
 	rm -rf $(build_path)/*
+
+shared: $(shared)
+
+binaries: $(binaries)
