@@ -72,9 +72,16 @@ void close_connection(Conn_Info *conn){
 
 int sig_send_msg(Conn_Info *conn, const char * msg, int msg_len){
   int offset = 0;
+  fprintf(stdout, "[info] sending data... 000 bytes");
+
   while(offset < msg_len){
     offset += write(conn -> conn_stdin_fd, msg+offset, msg_len);
+
+    fprintf(stdout, "\r[info] sending data... %03d bytes", offset);
+    fflush(stdout);
   }
+  fprintf(stdout, "\n");
+
   sleep(1);
   return offset;
 }
@@ -84,7 +91,7 @@ char * sig_lstn_msg(Conn_Info *conn, int * msg_len){
   char * msg = malloc(BLOCK_SIZE * sizeof(char));
   int offset = 0, max_len = BLOCK_SIZE;
 
-  fprintf(stdout, "[info] recieving data... 000");
+  fprintf(stdout, "[info] recieving data... 000 bytes");
 
   while(msg[offset-1] != '\n' && offset > -1){
     sleep(1);
