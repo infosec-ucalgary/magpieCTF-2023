@@ -28,6 +28,13 @@
 #define MAX_ANGLE 360.0
 
 /**
+ * Prints either all satellites or the satellite with the specified symbol
+ *
+ * symbol1|x|y|z|theta_x|theta_y|theta_z[;symbol2|x|y|z (...)]
+ */
+void print_satellite_info(Satellite ** satellites, char symbol);
+
+/**
  * Generate the satellites that will be placed throughout space at varying
  * locations and orientations.
  *
@@ -56,18 +63,54 @@
  */
 Satellite ** generate_satellite_info();
 
+
 int main(int argc, char ** argv){
-  char command[5]; // max command length is 4
+  char command[7]; // max command length is 4 + an optional symbol
   fprintf(stderr, "[info] connection recieved\n");
 
+  Satellite ** satellites = generate_satellite_info();
+
   while(1){
-    memset(command, 0, 5);
-    scanf("%4s", command);
-    fprintf(stderr, "request: %s\n", command);
-    fprintf(stdout, "response!!\n");
-    fflush(stdout);
-    // if(strncmp(command, "init", 4) == 0) fprintf(stderr, "initialize satellites\n");
+    memset(command, 0, 7);
+    scanf("%6s", command);
+    // fprintf(stderr, "request: %s\n", command);
+    // fprintf(stdout, "response!!\n");
+    // fflush(stdout);
+    if(strncmp(command, "ping", 4) == 0)
+      print_satellite_info(satellites,
+        command[5]);
+    else{
+        fprintf(stdout, "UNAVAIL_CMD\n");
+        fflush(stdout);
+    }
   }
+}
+
+void print_satellite_info(Satellite ** satellites, char symbol){
+  char * satellite_info_buf = malloc(NO_SATELLITES * 40 * sizeof(char));
+  memset(satellite_info_buf, '\0', 40 * NO_SATELLITES * sizeof(char));
+
+  for(int index = 0; index < NO_SATELLITES; index++){
+    if(satellites[index] -> symbol != symbol && symbol != '*') continue;
+
+    char satellite_str_tmp[40];
+    memset(satellite_str_tmp, '\0', 40);
+    sprintf(satellite_str_tmp,
+        "%c|%00d|%00d|%00d|%3.3lf|%3.3lf|%3.3lf;",
+        satellites[index] -> symbol,
+        satellites[index] -> pos_x,
+        satellites[index] -> pos_y,
+        satellites[index] -> pos_z,
+        satellites[index] -> theta_x,
+        satellites[index] -> theta_y,
+        satellites[index] -> theta_z
+    );
+    strcat(satellite_info_buf, satellite_str_tmp);
+  }
+
+  fprintf(stdout, "%s\n", satellite_info_buf);
+  fflush(stdout);
+  free(satellite_info_buf);
 }
 
 Satellite ** generate_satellite_info(){
