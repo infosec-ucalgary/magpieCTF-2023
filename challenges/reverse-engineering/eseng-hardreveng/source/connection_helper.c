@@ -88,6 +88,7 @@ int sig_send_msg(Conn_Info *conn, const char * msg, int msg_len){
 
 char * sig_lstn_msg(Conn_Info *conn, int * msg_len){
   const int BLOCK_SIZE = 64;
+  const int READ_SPEED = 32;
   char * msg = malloc(BLOCK_SIZE * sizeof(char));
   int offset = 0, max_len = BLOCK_SIZE;
 
@@ -95,7 +96,7 @@ char * sig_lstn_msg(Conn_Info *conn, int * msg_len){
 
   while(msg[offset-1] != '\n' && offset > -1){
     sleep(1);
-    offset += read(conn -> conn_stdout_fd, msg+offset, 4);
+    offset += read(conn -> conn_stdout_fd, msg+offset, READ_SPEED);
 
     fprintf(stdout, "\r[info] recieving data... %03d bytes", offset);
     fflush(stdout);
