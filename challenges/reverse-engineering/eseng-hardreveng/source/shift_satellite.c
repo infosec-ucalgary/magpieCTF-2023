@@ -142,7 +142,7 @@ int main(int argc, char ** argv){
   while(1){
     fprintf(stdout, "awaiting input...\n");
     memset(command, '\0', 7);
-    scanf("%6[^\n]", command);
+    scanf("%6s", command);
     if(strlen(command) == 0) break; // close if EOF
 
     if(strncmp(command, "POSN", 4) == 0){
@@ -156,7 +156,6 @@ int main(int argc, char ** argv){
     char *secondtest = sig_lstn_msg(conn, &msg_len);
     printf("%s\n", secondtest);
     // */
-    fflush(stdin);
   }
 
   close_connection(conn);
