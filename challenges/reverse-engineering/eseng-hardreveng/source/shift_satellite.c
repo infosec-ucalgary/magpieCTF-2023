@@ -315,7 +315,7 @@ void print_satellite_positions(Satellite ** satellites){
   for(int i = 0; i < GRID_EDGE_SIZE; i++){
     strcat(border, "----");
   }
-  strcat(border, "-+");
+  strcat(border, "--+");
 
   print_grid(satellites, 'x', 'y');
   printf("%s\n", border);
