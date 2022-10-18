@@ -237,8 +237,8 @@ int axis_index_map(const Satellite * satellite, const char axis_label){
 }
 
 void print_grid(Satellite ** satellites, const char row_axis, const char column_axis){
-  char * spacing = malloc(4 * GRID_EDGE_SIZE * sizeof(char));
-  memset(spacing, '\x00', 4*GRID_EDGE_SIZE);
+  char * spacing = malloc(4 * GRID_EDGE_SIZE * sizeof(char)+1); // account for nullbyte
+  memset(spacing, '\x00', 4*GRID_EDGE_SIZE+1);
   for(int i = 0; i < GRID_EDGE_SIZE; i++){
     strcat(spacing, "    ");
   }
