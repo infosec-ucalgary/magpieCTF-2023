@@ -183,7 +183,7 @@ int main(int argc, char ** argv){
       continue;
     }
 
-    if(strncmp(command, "ORNT", 4) == 0){
+    if(strncmp(command, "ORNT:", 5) == 0){
       get_satellite_orientation(conn, command[5]);
     }
     /*
