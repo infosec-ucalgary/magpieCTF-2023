@@ -132,6 +132,11 @@ void print_satellite_positions(Satellite ** satellites);
  */
 void print_satellite_orientations(Satellite ** satellites);
 
+/**
+ * Frees the memory containing satellite information
+ */
+void free_satellites(Satellite ** satellites);
+
 int main(int argc, char ** argv){
   // Satellite ** satellites = fetch_satellite_info();
   // print_satellite_positions(satellites);
@@ -165,7 +170,7 @@ int main(int argc, char ** argv){
 void get_satellite_positions(Conn_Info * conn){
   Satellite ** satellites = fetch_satellite_info(conn, '*');
   print_satellite_positions(satellites);
-  free(satellites);
+  free_satellites(satellites);
 }
 
 Satellite ** fetch_satellite_info(Conn_Info * conn, char symbol){
@@ -176,6 +181,7 @@ Satellite ** fetch_satellite_info(Conn_Info * conn, char symbol){
   int response_len;
   char * response = sig_lstn_msg(conn, &response_len);
   Satellite ** satellites = malloc(sizeof(void*) * NO_SATELLITES);
+  memset(satellites, '\0', sizeof(void*) * NO_SATELLITES);
 
   // symbol1|x|y|z|theta_x|theta_y|theta_z[;symbol2|x|y|z (...)]
   char * resp_head = response;
@@ -336,4 +342,15 @@ void print_satellite_orientations(Satellite ** satellites){
         satellites[i] -> theta_z
     );
   }
+}
+
+void free_satellites(Satellite ** satellites){
+  int index = 0;
+  while(index < NO_SATELLITES){
+    if(satellites[index] == NULL) break;
+    free(satellites[index]);
+    index++;
+  }
+
+  free(satellites);
 }
