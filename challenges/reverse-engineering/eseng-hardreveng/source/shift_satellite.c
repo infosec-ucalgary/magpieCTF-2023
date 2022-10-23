@@ -138,6 +138,18 @@ void print_satellite_orientations(Satellite ** satellites);
 void free_satellites(Satellite ** satellites);
 
 int main(int argc, char ** argv){
+    fprintf(stdout,
+"   ///\n"\
+"  ///                      Welcome to the\n"\
+" /// /\\  .                ______                    ______   ___            ___  ___\n"\
+"///\\/  \\/     \\\\\\        /     /           ___     /     /  /  /            \\  \\ \\  \\ +----+\n"\
+"// /    \\  /   \\\\\\      /  ___/  ____   __/  /__  /  ___/  /  /     ______  /  / /  / |    |\n"\
+"   \\    / //    \\\\\\     \\  \\    |___ \\ /_   ___/  \\  \\    /  /___  / __  / /  / /  /  |    |\n"\
+"    \\  /\\///    ///   ___\\  \\  / _   /  /  /    ___\\  \\  /  _   / /  ___/ /  / /  /   |    |\n"\
+"     \\/ ///    ///   /      / / /_/ /  /  /__  /      / /  //  / /  /__  /  / /  /    |    |\n"\
+"       ///    ///   /______/ /____\\/   \\____/ /______/ /__//__/  \\____/  \\__\\ \\__\\    +----+\n"\
+"       //           Maintenance Console\n"
+    );
   // Satellite ** satellites = fetch_satellite_info();
   // print_satellite_positions(satellites);
   // print_satellite_orientations(satellites);
