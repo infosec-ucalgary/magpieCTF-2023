@@ -30,8 +30,24 @@
 /**
  * Gets the satellite position information from all satellites and prints thier
  * positions witin three cartesian planes representing 3D space.
+ *
+ * parameters
+ * ----------
+ * conn (Conn_Info *) - The connection info to the satellites
  */
-void get_satellite_positions();
+void get_satellite_positions(Conn_Info * conn);
+
+/**
+ * Gets the satellite orientation information from a satellite with a given
+ * symbol. then print a nice terminal output that shows the satellite and its
+ * orientation in space relative to the predefined coordinate grid.
+ *
+ * parameters
+ * ----------
+ * conn (Conn_Info *) - The connection info to the satellites
+ * symbol (char) - The symbol of the desired satellite
+ */
+void get_satellite_orientation(Conn_Info * conn, char symbol);
 
 /**
  * Fetches all information about a given satellite.
@@ -166,6 +182,10 @@ int main(int argc, char ** argv){
       get_satellite_positions(conn);
       continue;
     }
+
+    if(strncmp(command, "ORNT", 4) == 0){
+      get_satellite_orientation(conn, command[5]);
+    }
     /*
     sig_send_msg(conn, command, 4);
 
@@ -182,6 +202,25 @@ int main(int argc, char ** argv){
 void get_satellite_positions(Conn_Info * conn){
   Satellite ** satellites = fetch_satellite_info(conn, '*');
   print_satellite_positions(satellites);
+  free_satellites(satellites);
+}
+
+void get_satellite_orientation(Conn_Info * conn, char symbol){
+  // an array of satellites, though there should only be one.
+  Satellite ** satellites = fetch_satellite_info(conn, symbol);
+  fprintf(stdout,
+      "      .\n"\
+      "|||  _|_  |||\n"\
+      "||| |   | |||\n"\
+      "|||-| %c |-|||\n"\
+      "||| |___| |||\n"\
+      "|||       |||\n"\
+      "theta_x: %3.3lfdeg, theta_y: %3.3lfdeg, theta_z: %3.3lfdeg\n",
+      satellites[0] -> symbol,
+      satellites[0] -> theta_x,
+      satellites[0] -> theta_y,
+      satellites[0] -> theta_z
+  );
   free_satellites(satellites);
 }
 
@@ -223,9 +262,10 @@ Satellite ** fetch_satellite_info(Conn_Info * conn, char symbol){
     }
   }
 
-  /* debugging
-  fprintf(stderr, "stopped!\n");
+  /*/ debugging
+  fprintf(stderr, "stopped! (%p, NULL -> %p)\n", satellites[0], NULL);
   for(int i = 0; i < NO_SATELLITES; i++){
+    if(satellites[i] == NULL) break;
     fprintf(stderr, "Satellite %c: pos:(%d, %d, %d), angle:(%lf, %lf, %lf)\n",
         satellites[i] -> symbol,
         satellites[i] -> pos_x,
