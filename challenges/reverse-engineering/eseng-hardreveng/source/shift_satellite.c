@@ -209,12 +209,13 @@ void get_satellite_orientation(Conn_Info * conn, char symbol){
   // an array of satellites, though there should only be one.
   Satellite ** satellites = fetch_satellite_info(conn, symbol);
   fprintf(stdout,
-      "      .\n"\
-      "|||  _|_  |||\n"\
-      "||| |   | |||\n"\
-      "|||-| %c |-|||\n"\
-      "||| |___| |||\n"\
-      "|||       |||\n"\
+      "\n _ _ \\__^__/ _ _\n"\
+      "/_/_/  _|_  /_/_/\n"\
+      "/_/_/ |   | /_/_/\n"\
+      "/_/_/-| %c |-/_/_/\n"\
+      "/_/_/-|___|-/_/_/\n"\
+      "/_/_/ |___| /_/_/\n"\
+      "/_/_/       /_/_/\n\n"\
       "theta_x: %3.3lfdeg, theta_y: %3.3lfdeg, theta_z: %3.3lfdeg\n",
       satellites[0] -> symbol,
       satellites[0] -> theta_x,
