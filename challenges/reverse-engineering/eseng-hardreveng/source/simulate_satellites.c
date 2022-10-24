@@ -35,6 +35,22 @@
 void print_satellite_info(Satellite ** satellites, char symbol);
 
 /**
+ * Adds a float value to the angle of where the satellite is pointed, ie. its
+ * orientation. The specified angle should only be added to the specified
+ * component, represented by a 'x', 'y' or 'z' character. the satellite to
+ * update is also passed as an argument
+ *
+ * parameters
+ * ----------
+ * satellite (Satellite) - the satellite that should be updated
+ * delta_angle (float) - the angle to which the satellite orientation should be
+ *                       moved
+ * component (char) - the character representing which component should be
+ *                    updated
+ */
+void add_to_orientation(Satellite * satellite, float delta_angle, char component);
+
+/**
  * Generate the satellites that will be placed throughout space at varying
  * locations and orientations.
  *
@@ -111,6 +127,22 @@ void print_satellite_info(Satellite ** satellites, char symbol){
   fprintf(stdout, "%s\n", satellite_info_buf);
   fflush(stdout);
   free(satellite_info_buf);
+}
+
+void add_to_orientation(Satellite * satellite, float delta_angle, char component){
+  switch(component){
+    case('x'):
+      satellite -> theta_x += delta_angle;
+      break;
+    case('y'):
+      satellite -> theta_y += delta_angle;
+      break;
+    case('z'):
+      satellite -> theta_z += delta_angle;
+      break;
+    default:
+      fprintf(stderr, "[error] Incorrect orientation received at satellite\n");
+  }
 }
 
 Satellite ** generate_satellite_info(){
