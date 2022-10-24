@@ -156,7 +156,7 @@ void free_satellites(Satellite ** satellites);
 int main(int argc, char ** argv){
     fprintf(stdout,
 "   ///\n"\
-"  ///                      Welcome to the\n"\
+"  ///                      Welcome to\n"\
 " /// /\\  .                ______                     ______   ___            ___  ___\n"\
 "///\\/  \\/     \\\\\\        /     /            ___     /     /  /  /            \\  \\ \\  \\ +----+\n"\
 "// /    \\  /   \\\\\\      /  ___/  _____   __/  /__  /  ___/  /  /     ____    /  / /  / |    |\n"\
@@ -164,7 +164,14 @@ int main(int argc, char ** argv){
 "    \\  /\\///    ///   ___\\  \\  / __   /  /  /    ___\\  \\  /  _   / / ____/ /  / /  /   |    |\n"\
 "     \\/ ///    ///   /      / / /_/  /  /  /__  /      / /  //  / / /___  /  / /  /    |    |\n"\
 "       ///    ///   /______/ /_____\\/   \\____/ /______/ /__//__/  \\____/  \\__\\ \\__\\    +----+\n"\
-"       //           By OMNIFLAGS INC. - Maintenance Console\n"
+"       //           By OMNIFLAGS INC.\n"
+    );
+    fprintf(stdout,
+        "[alrt] This is the matienence terminal!\n"\
+        "     | If you are not an OMNIFLAGS INC. employee, please disconnect\n"\
+        "     | immediately and contact OMNIFLAGS INC.\n"\
+        "     | Unauthorized use of this terminal is unlawful. This incident\n"\
+        "     | will be reported.\n"
     );
   // Satellite ** satellites = fetch_satellite_info();
   // print_satellite_positions(satellites);
