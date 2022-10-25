@@ -12,7 +12,7 @@ $(binaries): %:%.c
 
 $(shared): %:%.c
 	$(CC) -o $(build_path)/$@.o $< -fpic -c
-	$(CC) -o $(build_path)/lib$@.so $< --shared
+	$(CC) -o $(build_path)/lib$@.so $< --shared -fpic
 	rm $(build_path)/*.o
 
 clean:
