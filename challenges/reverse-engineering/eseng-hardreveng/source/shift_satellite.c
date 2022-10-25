@@ -27,8 +27,44 @@
 #define MAX_ANGLE 360.0
 
 
-/// TODO: update this function to make requests to the satellite sim
-Satellite ** fetch_satellite_info();
+/**
+ * Gets the satellite position information from all satellites and prints thier
+ * positions witin three cartesian planes representing 3D space.
+ *
+ * parameters
+ * ----------
+ * conn (Conn_Info *) - The connection info to the satellites
+ */
+void get_satellite_positions(Conn_Info * conn);
+
+/**
+ * Gets the satellite orientation information from a satellite with a given
+ * symbol. then print a nice terminal output that shows the satellite and its
+ * orientation in space relative to the predefined coordinate grid.
+ *
+ * parameters
+ * ----------
+ * conn (Conn_Info *) - The connection info to the satellites
+ * symbol (char) - The symbol of the desired satellite
+ */
+void get_satellite_orientation(Conn_Info * conn, char symbol);
+
+/**
+ * Fetches all information about a given satellite.
+ *
+ * Satellite information will be returned in the following format:
+ *
+ * ```
+ * symbol1|x|y|z|theta_x|theta_y|theta_z[;symbol2|x|y|z (...)]
+ * ```
+ *
+ * parameters
+ * ----------
+ * conn (Conn_Info *) - information about the connection
+ * symbol (char) - the symbol to fetch. expects either a `*` for all satellites
+ *                 or the symbol of an actual Satellite (A, B, C...)
+ */
+Satellite ** fetch_satellite_info(Conn_Info * conn, char symbol);
 
 /**
  * Maps the character axis label and fetches the associated positional component
@@ -112,15 +148,144 @@ void print_satellite_positions(Satellite ** satellites);
  */
 void print_satellite_orientations(Satellite ** satellites);
 
+/**
+ * Frees the memory containing satellite information
+ */
+void free_satellites(Satellite ** satellites);
+
 int main(int argc, char ** argv){
+    fprintf(stdout,
+"   ///\n"\
+"  ///                      Welcome to\n"\
+" /// /\\  .                ______                     ______   ___            ___  ___\n"\
+"///\\/  \\/     \\\\\\        /     /            ___     /     /  /  /            \\  \\ \\  \\ +----+\n"\
+"// /    \\  /   \\\\\\      /  ___/  _____   __/  /__  /  ___/  /  /     ____    /  / /  / |    |\n"\
+"   \\    / //    \\\\\\     \\  \\    |___  \\ /_   ___/  \\  \\    /  /___  / __ \\  /  / /  /  |    |\n"\
+"    \\  /\\///    ///   ___\\  \\  / __   /  /  /    ___\\  \\  /  _   / / ____/ /  / /  /   |    |\n"\
+"     \\/ ///    ///   /      / / /_/  /  /  /__  /      / /  //  / / /___  /  / /  /    |    |\n"\
+"       ///    ///   /______/ /_____\\/   \\____/ /______/ /__//__/  \\____/  \\__\\ \\__\\    +----+\n"\
+"       //           By OMNIFLAGS INC.\n"
+    );
+    fprintf(stdout,
+        "[alrt] This is the matienence terminal!\n"\
+        "     | If you are not an OMNIFLAGS INC. employee, please disconnect\n"\
+        "     | immediately and contact OMNIFLAGS INC.\n"\
+        "     | Unauthorized use of this terminal is unlawful. This incident\n"\
+        "     | will be reported.\n"
+    );
   // Satellite ** satellites = fetch_satellite_info();
   // print_satellite_positions(satellites);
   // print_satellite_orientations(satellites);
+  Conn_Info *conn = init_connection();
+
+  char command[7];
+  while(1){
+    fprintf(stdout, "awaiting input...\n");
+    memset(command, '\0', 7);
+    scanf("%6s", command);
+    if(strlen(command) == 0) break; // close if EOF
+
+    if(strncmp(command, "POSN", 4) == 0){
+      get_satellite_positions(conn);
+      continue;
+    }
+
+    if(strncmp(command, "ORNT:", 5) == 0){
+      get_satellite_orientation(conn, command[5]);
+    }
+    /*
+    sig_send_msg(conn, command, 4);
+
+    int msg_len = 0;
+    char *secondtest = sig_lstn_msg(conn, &msg_len);
+    printf("%s\n", secondtest);
+    // */
+  }
+
+  close_connection(conn);
+  return 0;
 }
 
-Satellite ** fetch_satellite_info(){
-  /// TODO: HOLY PLEASE UPDATE THIS
-  return NULL;
+void get_satellite_positions(Conn_Info * conn){
+  Satellite ** satellites = fetch_satellite_info(conn, '*');
+  print_satellite_positions(satellites);
+  free_satellites(satellites);
+}
+
+void get_satellite_orientation(Conn_Info * conn, char symbol){
+  // an array of satellites, though there should only be one.
+  Satellite ** satellites = fetch_satellite_info(conn, symbol);
+  fprintf(stdout,
+      "\n _ _ \\__^__/ _ _\n"\
+      "/_/_/  _|_  /_/_/\n"\
+      "/_/_/ |   | /_/_/\n"\
+      "/_/_/-| %c |-/_/_/\n"\
+      "/_/_/-|___|-/_/_/\n"\
+      "/_/_/ |___| /_/_/\n"\
+      "/_/_/       /_/_/\n\n"\
+      "theta_x: %3.3lfdeg, theta_y: %3.3lfdeg, theta_z: %3.3lfdeg\n",
+      satellites[0] -> symbol,
+      satellites[0] -> theta_x,
+      satellites[0] -> theta_y,
+      satellites[0] -> theta_z
+  );
+  free_satellites(satellites);
+}
+
+Satellite ** fetch_satellite_info(Conn_Info * conn, char symbol){
+  char fetch_command[7];
+  sprintf(fetch_command, "ping:%c", symbol);
+  sig_send_msg(conn, fetch_command, 6);
+
+  int response_len;
+  char * response = sig_lstn_msg(conn, &response_len);
+  Satellite ** satellites = malloc(sizeof(void*) * NO_SATELLITES);
+  memset(satellites, '\0', sizeof(void*) * NO_SATELLITES);
+
+  // symbol1|x|y|z|theta_x|theta_y|theta_z[;symbol2|x|y|z (...)]
+  char * resp_head = response;
+  int sat_index = 0;
+  while(*resp_head != '\0'){
+    Satellite * new_sat = malloc(sizeof(Satellite));
+    sscanf(resp_head,
+      "%c|%d|%d|%d|%f|%f|%f",
+      &(new_sat -> symbol),
+      &(new_sat -> pos_x),
+      &(new_sat -> pos_y),
+      &(new_sat -> pos_z),
+      &(new_sat -> theta_x),
+      &(new_sat -> theta_y),
+      &(new_sat -> theta_z)
+    );
+
+    satellites[sat_index] = new_sat;
+    sat_index++;
+
+    // move one character past ';' and avoid going to the nullbyte.
+    resp_head++;
+    while(*(resp_head-1) != ';') resp_head++;
+    // fprintf(stderr, "%d  - 0x%x, (%p)\n", __LINE__, *resp_head, resp_head);
+    if(*(resp_head) == '\0'){
+      break;
+    }
+  }
+
+  /*/ debugging
+  fprintf(stderr, "stopped! (%p, NULL -> %p)\n", satellites[0], NULL);
+  for(int i = 0; i < NO_SATELLITES; i++){
+    if(satellites[i] == NULL) break;
+    fprintf(stderr, "Satellite %c: pos:(%d, %d, %d), angle:(%lf, %lf, %lf)\n",
+        satellites[i] -> symbol,
+        satellites[i] -> pos_x,
+        satellites[i] -> pos_y,
+        satellites[i] -> pos_z,
+        satellites[i] -> theta_x,
+        satellites[i] -> theta_y,
+        satellites[i] -> theta_z
+    );
+  }// */
+
+  return satellites;
 }
 
 int axis_index_map(const Satellite * satellite, const char axis_label){
@@ -137,8 +302,8 @@ int axis_index_map(const Satellite * satellite, const char axis_label){
 }
 
 void print_grid(Satellite ** satellites, const char row_axis, const char column_axis){
-  char * spacing = malloc(4 * GRID_EDGE_SIZE * sizeof(char));
-  memset(spacing, '\x00', 4*GRID_EDGE_SIZE);
+  char * spacing = malloc(4 * GRID_EDGE_SIZE * sizeof(char)+1); // account for nullbyte
+  memset(spacing, '\x00', 4*GRID_EDGE_SIZE+1);
   for(int i = 0; i < GRID_EDGE_SIZE; i++){
     strcat(spacing, "    ");
   }
@@ -216,7 +381,7 @@ void print_satellite_positions(Satellite ** satellites){
   for(int i = 0; i < GRID_EDGE_SIZE; i++){
     strcat(border, "----");
   }
-  strcat(border, "-+");
+  strcat(border, "--+");
 
   print_grid(satellites, 'x', 'y');
   printf("%s\n", border);
@@ -237,4 +402,15 @@ void print_satellite_orientations(Satellite ** satellites){
         satellites[i] -> theta_z
     );
   }
+}
+
+void free_satellites(Satellite ** satellites){
+  int index = 0;
+  while(index < NO_SATELLITES){
+    if(satellites[index] == NULL) break;
+    free(satellites[index]);
+    index++;
+  }
+
+  free(satellites);
 }
