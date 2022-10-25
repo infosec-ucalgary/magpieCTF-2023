@@ -51,6 +51,22 @@ void print_satellite_info(Satellite ** satellites, char symbol);
 void add_to_orientation(Satellite * satellite, float delta_angle, char component);
 
 /**
+ * Parse the next 16 bits that the void pointer points to as a float. This
+ * converts the 16bits into a 32 bit float, and returns said float value.
+ *
+ * this will follow IEEE 754 floating point defintions
+ * (I like using this website: http://evanw.github.io/float-toy/)
+ *
+ * parameters
+ * ----------
+ * b16_float_ptr (void *) - a pointer to 16 bits representing a floating point
+ *                          value as defined by
+ *
+ * returns the 32 bit float that should be equivalent to the 16 bit float
+ */
+float parse_16b_float(void *);
+
+/**
  * Generate the satellites that will be placed throughout space at varying
  * locations and orientations.
  *
@@ -143,6 +159,23 @@ void add_to_orientation(Satellite * satellite, float delta_angle, char component
     default:
       fprintf(stderr, "[error] Incorrect orientation received at satellite\n");
   }
+}
+
+float parse_16b_float(void * b16_float_ptr) {
+  int b32_float_bin = 0;
+  memset(&b32_float_bin, 0, sizeof(float));
+  // extend the data from 16 bits to 32 bits
+  unsigned int b16_float_bin = (unsigned int) *((short *) b16_float_ptr);
+  // copy sign+exp sign bit
+  *((int *)&b32_float_bin) = (int) ((b16_float_bin << 16) & 0xc0000000);
+  // pad exponent depending on the exponent sign bit
+  if(!(0x4000 & b16_float_bin)) {
+    b32_float_bin |= 0x38000000;
+  }
+  // copy remaining bits
+  b32_float_bin |= (b16_float_bin << 13) & 0x07FFFFFF;
+
+  return *((float*)&b32_float_bin);
 }
 
 Satellite ** generate_satellite_info(){
