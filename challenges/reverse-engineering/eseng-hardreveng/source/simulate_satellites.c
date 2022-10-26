@@ -27,12 +27,35 @@
 #define GRID_EDGE_SIZE 12
 #define MAX_ANGLE 360.0
 
+struct Sat_Registers {
+  short zp;
+  short ip;
+  short rp;
+  short fp;
+  short sp;
+  short dx;
+  short dy;
+  short dz;
+} typedef Sat_Registers;
+
 /**
  * Prints either all satellites or the satellite with the specified symbol
  *
  * symbol1|x|y|z|theta_x|theta_y|theta_z[;symbol2|x|y|z (...)]
  */
 void print_satellite_info(Satellite ** satellites, char symbol);
+
+/**
+ * Connect to a specified satellite with a given symbol and send machine code to
+ * the satellite. machine code will follow the assembly as defined by the
+ * processor schematic.
+ *
+ * parameters
+ * ----------
+ * satellites (Satellite **) - the array of all satellites
+ * symbol (char) - the symbol of the satellite to connect to
+ */
+void send_sat_instructions(Satellite ** satellites, char symbol);
 
 /**
  * Reverses the endianness of the provided array in memory.
@@ -119,13 +142,16 @@ int main(int argc, char ** argv){
     // fprintf(stderr, "request: %s\n", command);
     // fprintf(stdout, "response!!\n");
     // fflush(stdout);
-    if(strncmp(command, "ping", 4) == 0)
-      print_satellite_info(satellites,
-        command[5]);
-    else{
-        fprintf(stdout, "UNAVAIL_CMD\n");
-        fflush(stdout);
+    if(strncmp(command, "ping", 4) == 0){
+      print_satellite_info(satellites, command[5]);
+      continue;
     }
+    if(strncmp(command, "conn", 4) == 0){
+      send_sat_instructions(satellites, command[5]);
+      continue;
+    }
+    fprintf(stdout, "UNAVAIL_CMD\n");
+    fflush(stdout);
   }
 }
 
@@ -154,6 +180,132 @@ void print_satellite_info(Satellite ** satellites, char symbol){
   fprintf(stdout, "%s\n", satellite_info_buf);
   fflush(stdout);
   free(satellite_info_buf);
+}
+
+void send_sat_instructions(Satellite ** satellites, char symbol){
+  Satellite * conn_sat = NULL;
+  for(int i = 0; i < NO_SATELLITES; i++){
+    if(satellites[i] -> symbol != symbol) continue;
+    conn_sat = satellites[i];
+    break;
+  }
+
+  if(conn_sat == NULL){ // no satellite could be connected to
+    fprintf(stdout, "UNAVAIL_SAT\n");
+    fflush(stdout);
+    return;
+  }
+  fprintf(stdout, "CONN_CNFRM\n");
+  fflush(stdout);
+
+  Sat_Registers registers;
+  char instructions[136];
+  memset(&registers, 0, sizeof(Sat_Registers));
+  memset(instructions, 0, 136);
+
+  scanf("%128s", instructions);
+  reverse_endianness(instructions, 128);
+
+  /*/ debugging
+  for(int i = 0; i < (32/sizeof(short)); i++){
+    fprintf(stderr, "%4x\n", ((short*)instructions)[i]);
+  }// */
+
+  // run instructions :p
+  short * instructions_bin = (short*)instructions;
+  do{
+    // load instruction
+    short instruction = instructions_bin[registers.ip];
+
+    // get source and destination registers
+    short * rs, * rd, rs_index, rd_index, arg, immediate;
+    rs_index = (instruction >> 11) & 0x7;
+    rd_index = (instruction >> 8) & 0x7;
+    arg = (instruction >> 13) & 0x3;
+    immediate = instruction & 0xff;
+
+    switch(rs_index){
+      case(0):
+        rs = &(registers.zp);
+        break;
+      case(5):
+        rs = &(registers.dx);
+        break;
+      case(6):
+        rs = &(registers.dy);
+        break;
+      case(7):
+        rs = &(registers.dz);
+        break;
+      default:
+        fprintf(stderr, "bad rs addr: %d\n", rs_index);
+        fprintf(stdout, "ABRT_SEGFAULT\n");
+        fflush(stdout);
+        return;
+    }
+
+    switch(rd_index){
+      case(5):
+        rd = &(registers.dx);
+        break;
+      case(6):
+        rd = &(registers.dy);
+        break;
+      case(7):
+        rd = &(registers.dz);
+        break;
+      default:
+        fprintf(stderr, "bad rd addr: %d\n", rd_index);
+        fprintf(stdout, "ABRT_SEGFAULT\n");
+        fflush(stdout);
+        return;
+    }
+
+    switch(arg){
+      case(0): // addi
+        *rd = *rs + immediate;
+        break;
+      case(1): // ori
+        *rd = *rs | immediate;
+        break;
+      case(2): // sll
+        *rd = *rd << immediate;
+        break;
+      case(3): // lui
+        *rd &= 0x00ff;
+        *rd |= immediate << 8;
+        break;
+      default:
+        fprintf(stderr, "bad arg: %d\n", arg);
+        fprintf(stdout, "ABRT_SEGFAULT\n");
+        fflush(stdout);
+        return;
+    }
+
+    registers.ip++; // move to next instruction
+  }while(instructions_bin[registers.ip]);
+
+  // debug the current register values
+  printf(
+      "registers:\n"\
+      "zp: %d\n"\
+      "ip: %d\n"\
+      "rp: %d\n"\
+      "fp: %d\n"\
+      "sp: %d\n"\
+      "dx: %d\n"\
+      "dy: %d\n"\
+      "dz: %d\n",
+      registers.zp,
+      registers.ip,
+      registers.rp,
+      registers.fp,
+      registers.sp,
+      registers.dx,
+      registers.dy,
+      registers.dz
+  );
+  // */
 }
 
 void reverse_endianness(void * buff, int size){
