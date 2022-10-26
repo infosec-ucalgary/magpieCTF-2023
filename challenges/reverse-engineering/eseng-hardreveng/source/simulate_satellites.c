@@ -269,6 +269,7 @@ void send_sat_instructions(Satellite ** satellites, char symbol){
         arg, arg, immediate, immediate
     );
     // */
+    // execute instruciton
     switch(arg){
       case(0): // addi
         *rd = *rs + immediate;
@@ -291,10 +292,11 @@ void send_sat_instructions(Satellite ** satellites, char symbol){
     }
 
     registers.ip++; // move to next instruction
-  }while(instructions_bin[registers.ip]);
+  }while(instructions_bin[registers.ip]); // halt when no instruction remains
 
-  /*/ debug the current register values
-  printf(
+  // debug the current register values
+  fprintf(
+      stderr,
       "registers:\n"\
       "zp: %d (%x)\n"\
       "ip: %d (%x)\n"\
@@ -330,6 +332,8 @@ void send_sat_instructions(Satellite ** satellites, char symbol){
       parse_16b_float(&registers.dz),
       'z'
   );
+
+  fprintf(stdout, "INSTRUCTIONS_COMPL");
 }
 
 void reverse_endianness(void * buff, int size){
