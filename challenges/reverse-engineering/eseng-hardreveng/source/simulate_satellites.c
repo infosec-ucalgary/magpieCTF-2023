@@ -355,6 +355,7 @@ float parse_16b_float(void * b16_float_ptr) {
   memset(&b32_float_bin, 0, sizeof(float));
   // extend the data from 16 bits to 32 bits
   unsigned int b16_float_bin = (unsigned int) *((short *) b16_float_ptr);
+  if(b16_float_bin == 0) return 0.0; // account for a float of 0
   // copy sign+exp sign bit
   *((int *)&b32_float_bin) = (int) ((b16_float_bin << 16) & 0xc0000000);
   // pad exponent depending on the exponent sign bit
