@@ -142,6 +142,8 @@ int main(int argc, char ** argv){
     // fprintf(stderr, "request: %s\n", command);
     // fprintf(stdout, "response!!\n");
     // fflush(stdout);
+    if(strlen(command) == 0) break;
+
     if(strncmp(command, "ping", 4) == 0){
       print_satellite_info(satellites, command[5]);
       continue;
