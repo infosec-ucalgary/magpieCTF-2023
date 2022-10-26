@@ -309,17 +309,17 @@ void send_sat_instructions(Satellite ** satellites, char symbol){
 }
 
 void reverse_endianness(void * buff, int size){
-  // Swap the order between half-words
+  /*/ Swap the order between half-words
   short * short_buff_ptr = ((short*) buff);
-  for(int i = 1; i < 12; i+=sizeof(short)){
+  for(int i = 1; i < size; i+=sizeof(short)){
     short_buff_ptr[i-1] = short_buff_ptr[i-1] ^ short_buff_ptr[i];
     short_buff_ptr[i] = short_buff_ptr[i-1] ^ short_buff_ptr[i];
     short_buff_ptr[i-1] = short_buff_ptr[i-1] ^ short_buff_ptr[i];
-  } // */
+  } // this part is only useful for 32 bit things */
 
   // Swap the order between bytes
   char * char_buff_ptr = ((char *) buff);
-  for(int i = 1; i < 12; i+=2*sizeof(char)){
+  for(int i = 1; i < size; i+=2*sizeof(char)){
     char_buff_ptr[i-1] = char_buff_ptr[i-1] ^ char_buff_ptr[i];
     char_buff_ptr[i] = char_buff_ptr[i-1] ^ char_buff_ptr[i];
     char_buff_ptr[i-1] = char_buff_ptr[i-1] ^ char_buff_ptr[i];
