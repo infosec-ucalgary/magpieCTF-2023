@@ -261,7 +261,7 @@ void send_sat_instructions(Satellite ** satellites, char symbol){
         return;
     }
 
-    // debug
+    /*/ debug
     fprintf(stderr,
         "--\n"\
         "arg: %d (%x)\n"\
@@ -293,7 +293,7 @@ void send_sat_instructions(Satellite ** satellites, char symbol){
     registers.ip++; // move to next instruction
   }while(instructions_bin[registers.ip]);
 
-  // debug the current register values
+  /*/ debug the current register values
   printf(
       "registers:\n"\
       "zp: %d (%x)\n"\
@@ -314,6 +314,22 @@ void send_sat_instructions(Satellite ** satellites, char symbol){
       registers.dz, registers.dz
   );
   // */
+
+  add_to_orientation(
+      conn_sat,
+      parse_16b_float(&registers.dx),
+      'x'
+  );
+  add_to_orientation(
+      conn_sat,
+      parse_16b_float(&registers.dy),
+      'y'
+  );
+  add_to_orientation(
+      conn_sat,
+      parse_16b_float(&registers.dz),
+      'z'
+  );
 }
 
 void reverse_endianness(void * buff, int size){
@@ -338,12 +354,18 @@ void add_to_orientation(Satellite * satellite, float delta_angle, char component
   switch(component){
     case('x'):
       satellite -> theta_x += delta_angle;
+      satellite -> theta_x = ((int)satellite -> theta_x % 360) + (satellite -> theta_x - (int)satellite -> theta_x);
+      if(satellite -> theta_x < 0) satellite -> theta_x += 360;
       break;
     case('y'):
       satellite -> theta_y += delta_angle;
+      satellite -> theta_y = ((int)satellite -> theta_y % 360) + (satellite -> theta_y - (int)satellite -> theta_y);
+      if(satellite -> theta_y < 0) satellite -> theta_y += 360;
       break;
     case('z'):
       satellite -> theta_z += delta_angle;
+      satellite -> theta_z = ((int)satellite -> theta_z % 360) + (satellite -> theta_z - (int)satellite -> theta_z);
+      if(satellite -> theta_z < 0) satellite -> theta_z += 360;
       break;
     default:
       fprintf(stderr, "[error] Incorrect orientation received at satellite\n");
