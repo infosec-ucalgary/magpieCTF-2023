@@ -35,6 +35,17 @@
 void print_satellite_info(Satellite ** satellites, char symbol);
 
 /**
+ * Reverses the endianness of the provided array in memory.
+ *
+ * parameters
+ * ----------
+ * buff (void *) - some pointer pointing to some data to reverse the endianness
+ *                 of
+ * size (int) - the size of the buffer to reverse the endianness
+ */
+void reverse_endianness(void * buff, int size);
+
+/**
  * Adds a float value to the angle of where the satellite is pointed, ie. its
  * orientation. The specified angle should only be added to the specified
  * component, represented by a 'x', 'y' or 'z' character. the satellite to
@@ -143,6 +154,24 @@ void print_satellite_info(Satellite ** satellites, char symbol){
   fprintf(stdout, "%s\n", satellite_info_buf);
   fflush(stdout);
   free(satellite_info_buf);
+}
+
+void reverse_endianness(void * buff, int size){
+  // Swap the order between half-words
+  short * short_buff_ptr = ((short*) buff);
+  for(int i = 1; i < 12; i+=sizeof(short)){
+    short_buff_ptr[i-1] = short_buff_ptr[i-1] ^ short_buff_ptr[i];
+    short_buff_ptr[i] = short_buff_ptr[i-1] ^ short_buff_ptr[i];
+    short_buff_ptr[i-1] = short_buff_ptr[i-1] ^ short_buff_ptr[i];
+  } // */
+
+  // Swap the order between bytes
+  char * char_buff_ptr = ((char *) buff);
+  for(int i = 1; i < 12; i+=2*sizeof(char)){
+    char_buff_ptr[i-1] = char_buff_ptr[i-1] ^ char_buff_ptr[i];
+    char_buff_ptr[i] = char_buff_ptr[i-1] ^ char_buff_ptr[i];
+    char_buff_ptr[i-1] = char_buff_ptr[i-1] ^ char_buff_ptr[i];
+  }// */
 }
 
 void add_to_orientation(Satellite * satellite, float delta_angle, char component){
