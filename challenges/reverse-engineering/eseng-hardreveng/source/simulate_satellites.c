@@ -221,7 +221,7 @@ void send_sat_instructions(Satellite ** satellites, char symbol){
     short * rs, * rd, rs_index, rd_index, arg, immediate;
     rs_index = (instruction >> 11) & 0x7;
     rd_index = (instruction >> 8) & 0x7;
-    arg = (instruction >> 13) & 0x3;
+    arg = (instruction >> 14) & 0x3;
     immediate = instruction & 0xff;
 
     switch(rs_index){
@@ -261,6 +261,14 @@ void send_sat_instructions(Satellite ** satellites, char symbol){
         return;
     }
 
+    // debug
+    fprintf(stderr,
+        "--\n"\
+        "arg: %d (%x)\n"\
+        "imm: %d (%x)\n",
+        arg, arg, immediate, immediate
+    );
+    // */
     switch(arg){
       case(0): // addi
         *rd = *rs + immediate;
@@ -288,22 +296,22 @@ void send_sat_instructions(Satellite ** satellites, char symbol){
   // debug the current register values
   printf(
       "registers:\n"\
-      "zp: %d\n"\
-      "ip: %d\n"\
-      "rp: %d\n"\
-      "fp: %d\n"\
-      "sp: %d\n"\
-      "dx: %d\n"\
-      "dy: %d\n"\
-      "dz: %d\n",
-      registers.zp,
-      registers.ip,
-      registers.rp,
-      registers.fp,
-      registers.sp,
-      registers.dx,
-      registers.dy,
-      registers.dz
+      "zp: %d (%x)\n"\
+      "ip: %d (%x)\n"\
+      "rp: %d (%x)\n"\
+      "fp: %d (%x)\n"\
+      "sp: %d (%x)\n"\
+      "dx: %d (%x)\n"\
+      "dy: %d (%x)\n"\
+      "dz: %d (%x)\n",
+      registers.zp, registers.zp,
+      registers.ip, registers.ip,
+      registers.rp, registers.rp,
+      registers.fp, registers.fp,
+      registers.sp, registers.sp,
+      registers.dx, registers.dx,
+      registers.dy, registers.dy,
+      registers.dz, registers.dz
   );
   // */
 }
