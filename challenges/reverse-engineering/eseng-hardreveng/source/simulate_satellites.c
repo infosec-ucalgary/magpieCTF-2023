@@ -335,7 +335,7 @@ void send_sat_instructions(Satellite ** satellites, char symbol){
       'z'
   );
 
-  fprintf(stdout, "INSTRUCTIONS_COMPL");
+  fprintf(stdout, "INSTRUCTIONS_COMPL\n");
 }
 
 void reverse_endianness(void * buff, int size){
