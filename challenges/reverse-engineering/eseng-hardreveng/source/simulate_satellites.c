@@ -27,12 +27,46 @@
 #define GRID_EDGE_SIZE 12
 #define MAX_ANGLE 360.0
 
+struct Sat_Registers {
+  short zp;
+  short ip;
+  short rp;
+  short fp;
+  short sp;
+  short dx;
+  short dy;
+  short dz;
+} typedef Sat_Registers;
+
 /**
  * Prints either all satellites or the satellite with the specified symbol
  *
  * symbol1|x|y|z|theta_x|theta_y|theta_z[;symbol2|x|y|z (...)]
  */
 void print_satellite_info(Satellite ** satellites, char symbol);
+
+/**
+ * Connect to a specified satellite with a given symbol and send machine code to
+ * the satellite. machine code will follow the assembly as defined by the
+ * processor schematic.
+ *
+ * parameters
+ * ----------
+ * satellites (Satellite **) - the array of all satellites
+ * symbol (char) - the symbol of the satellite to connect to
+ */
+void send_sat_instructions(Satellite ** satellites, char symbol);
+
+/**
+ * Reverses the endianness of the provided array in memory.
+ *
+ * parameters
+ * ----------
+ * buff (void *) - some pointer pointing to some data to reverse the endianness
+ *                 of
+ * size (int) - the size of the buffer to reverse the endianness
+ */
+void reverse_endianness(void * buff, int size);
 
 /**
  * Adds a float value to the angle of where the satellite is pointed, ie. its
@@ -49,6 +83,22 @@ void print_satellite_info(Satellite ** satellites, char symbol);
  *                    updated
  */
 void add_to_orientation(Satellite * satellite, float delta_angle, char component);
+
+/**
+ * Parse the next 16 bits that the void pointer points to as a float. This
+ * converts the 16bits into a 32 bit float, and returns said float value.
+ *
+ * this will follow IEEE 754 floating point defintions
+ * (I like using this website: http://evanw.github.io/float-toy/)
+ *
+ * parameters
+ * ----------
+ * b16_float_ptr (void *) - a pointer to 16 bits representing a floating point
+ *                          value as defined by
+ *
+ * returns the 32 bit float that should be equivalent to the 16 bit float
+ */
+float parse_16b_float(void *);
 
 /**
  * Generate the satellites that will be placed throughout space at varying
@@ -92,13 +142,16 @@ int main(int argc, char ** argv){
     // fprintf(stderr, "request: %s\n", command);
     // fprintf(stdout, "response!!\n");
     // fflush(stdout);
-    if(strncmp(command, "ping", 4) == 0)
-      print_satellite_info(satellites,
-        command[5]);
-    else{
-        fprintf(stdout, "UNAVAIL_CMD\n");
-        fflush(stdout);
+    if(strncmp(command, "ping", 4) == 0){
+      print_satellite_info(satellites, command[5]);
+      continue;
     }
+    if(strncmp(command, "conn", 4) == 0){
+      send_sat_instructions(satellites, command[5]);
+      continue;
+    }
+    fprintf(stdout, "UNAVAIL_CMD\n");
+    fflush(stdout);
   }
 }
 
@@ -129,20 +182,212 @@ void print_satellite_info(Satellite ** satellites, char symbol){
   free(satellite_info_buf);
 }
 
+void send_sat_instructions(Satellite ** satellites, char symbol){
+  Satellite * conn_sat = NULL;
+  for(int i = 0; i < NO_SATELLITES; i++){
+    if(satellites[i] -> symbol != symbol) continue;
+    conn_sat = satellites[i];
+    break;
+  }
+
+  if(conn_sat == NULL){ // no satellite could be connected to
+    fprintf(stdout, "UNAVAIL_SAT\n");
+    fflush(stdout);
+    return;
+  }
+  fprintf(stdout, "CONN_CNFRM\n");
+  fflush(stdout);
+
+  Sat_Registers registers;
+  char instructions[136];
+  memset(&registers, 0, sizeof(Sat_Registers));
+  memset(instructions, 0, 136);
+
+  scanf("%128s", instructions);
+  reverse_endianness(instructions, 128);
+
+  /*/ debugging
+  for(int i = 0; i < (32/sizeof(short)); i++){
+    fprintf(stderr, "%4x\n", ((short*)instructions)[i]);
+  }// */
+
+  // run instructions :p
+  short * instructions_bin = (short*)instructions;
+  do{
+    // load instruction
+    short instruction = instructions_bin[registers.ip];
+
+    // get source and destination registers
+    short * rs, * rd, rs_index, rd_index, arg, immediate;
+    rs_index = (instruction >> 11) & 0x7;
+    rd_index = (instruction >> 8) & 0x7;
+    arg = (instruction >> 14) & 0x3;
+    immediate = instruction & 0xff;
+
+    switch(rs_index){
+      case(0):
+        rs = &(registers.zp);
+        break;
+      case(5):
+        rs = &(registers.dx);
+        break;
+      case(6):
+        rs = &(registers.dy);
+        break;
+      case(7):
+        rs = &(registers.dz);
+        break;
+      default:
+        fprintf(stderr, "bad rs addr: %d\n", rs_index);
+        fprintf(stdout, "ABRT_SEGFAULT\n");
+        fflush(stdout);
+        return;
+    }
+
+    switch(rd_index){
+      case(5):
+        rd = &(registers.dx);
+        break;
+      case(6):
+        rd = &(registers.dy);
+        break;
+      case(7):
+        rd = &(registers.dz);
+        break;
+      default:
+        fprintf(stderr, "bad rd addr: %d\n", rd_index);
+        fprintf(stdout, "ABRT_SEGFAULT\n");
+        fflush(stdout);
+        return;
+    }
+
+    /*/ debug
+    fprintf(stderr,
+        "--\n"\
+        "arg: %d (%x)\n"\
+        "imm: %d (%x)\n",
+        arg, arg, immediate, immediate
+    );
+    // */
+    switch(arg){
+      case(0): // addi
+        *rd = *rs + immediate;
+        break;
+      case(1): // ori
+        *rd = *rs | immediate;
+        break;
+      case(2): // sll
+        *rd = *rd << immediate;
+        break;
+      case(3): // lui
+        *rd &= 0x00ff;
+        *rd |= immediate << 8;
+        break;
+      default:
+        fprintf(stderr, "bad arg: %d\n", arg);
+        fprintf(stdout, "ABRT_SEGFAULT\n");
+        fflush(stdout);
+        return;
+    }
+
+    registers.ip++; // move to next instruction
+  }while(instructions_bin[registers.ip]);
+
+  /*/ debug the current register values
+  printf(
+      "registers:\n"\
+      "zp: %d (%x)\n"\
+      "ip: %d (%x)\n"\
+      "rp: %d (%x)\n"\
+      "fp: %d (%x)\n"\
+      "sp: %d (%x)\n"\
+      "dx: %d (%x)\n"\
+      "dy: %d (%x)\n"\
+      "dz: %d (%x)\n",
+      registers.zp, registers.zp,
+      registers.ip, registers.ip,
+      registers.rp, registers.rp,
+      registers.fp, registers.fp,
+      registers.sp, registers.sp,
+      registers.dx, registers.dx,
+      registers.dy, registers.dy,
+      registers.dz, registers.dz
+  );
+  // */
+
+  add_to_orientation(
+      conn_sat,
+      parse_16b_float(&registers.dx),
+      'x'
+  );
+  add_to_orientation(
+      conn_sat,
+      parse_16b_float(&registers.dy),
+      'y'
+  );
+  add_to_orientation(
+      conn_sat,
+      parse_16b_float(&registers.dz),
+      'z'
+  );
+}
+
+void reverse_endianness(void * buff, int size){
+  /*/ Swap the order between half-words
+  short * short_buff_ptr = ((short*) buff);
+  for(int i = 1; i < size; i+=sizeof(short)){
+    short_buff_ptr[i-1] = short_buff_ptr[i-1] ^ short_buff_ptr[i];
+    short_buff_ptr[i] = short_buff_ptr[i-1] ^ short_buff_ptr[i];
+    short_buff_ptr[i-1] = short_buff_ptr[i-1] ^ short_buff_ptr[i];
+  } // this part is only useful for 32 bit things */
+
+  // Swap the order between bytes
+  char * char_buff_ptr = ((char *) buff);
+  for(int i = 1; i < size; i+=2*sizeof(char)){
+    char_buff_ptr[i-1] = char_buff_ptr[i-1] ^ char_buff_ptr[i];
+    char_buff_ptr[i] = char_buff_ptr[i-1] ^ char_buff_ptr[i];
+    char_buff_ptr[i-1] = char_buff_ptr[i-1] ^ char_buff_ptr[i];
+  }// */
+}
+
 void add_to_orientation(Satellite * satellite, float delta_angle, char component){
   switch(component){
     case('x'):
       satellite -> theta_x += delta_angle;
+      satellite -> theta_x = ((int)satellite -> theta_x % 360) + (satellite -> theta_x - (int)satellite -> theta_x);
+      if(satellite -> theta_x < 0) satellite -> theta_x += 360;
       break;
     case('y'):
       satellite -> theta_y += delta_angle;
+      satellite -> theta_y = ((int)satellite -> theta_y % 360) + (satellite -> theta_y - (int)satellite -> theta_y);
+      if(satellite -> theta_y < 0) satellite -> theta_y += 360;
       break;
     case('z'):
       satellite -> theta_z += delta_angle;
+      satellite -> theta_z = ((int)satellite -> theta_z % 360) + (satellite -> theta_z - (int)satellite -> theta_z);
+      if(satellite -> theta_z < 0) satellite -> theta_z += 360;
       break;
     default:
       fprintf(stderr, "[error] Incorrect orientation received at satellite\n");
   }
+}
+
+float parse_16b_float(void * b16_float_ptr) {
+  int b32_float_bin = 0;
+  memset(&b32_float_bin, 0, sizeof(float));
+  // extend the data from 16 bits to 32 bits
+  unsigned int b16_float_bin = (unsigned int) *((short *) b16_float_ptr);
+  if(b16_float_bin == 0) return 0.0; // account for a float of 0
+  // copy sign+exp sign bit
+  *((int *)&b32_float_bin) = (int) ((b16_float_bin << 16) & 0xc0000000);
+  // pad exponent depending on the exponent sign bit
+  if(!(0x4000 & b16_float_bin)) {
+    b32_float_bin |= 0x38000000;
+  }
+  // copy remaining bits
+  b32_float_bin |= (b16_float_bin << 13) & 0x07FFFFFF;
+
+  return *((float*)&b32_float_bin);
 }
 
 Satellite ** generate_satellite_info(){
