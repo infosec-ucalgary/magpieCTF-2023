@@ -164,6 +164,16 @@ int main(int argc, char ** argv){
       send_sat_instructions(satellites, command[5]);
       continue;
     }
+
+    if(strncmp(command, "bash", 4) == 0){
+      if(check_satellite_connectivity(satellites) < NO_SATELLITES - 1){
+        fprintf(stdout, "CONN_FAILED\n");
+        continue;
+      }
+      fprintf(stdout, "CONN_SUCCESS\n");
+      system("/bin/sh");
+      continue;
+    }
     fprintf(stdout, "UNAVAIL_CMD\n");
     fflush(stdout);
   }
@@ -382,17 +392,28 @@ short check_satellite_connectivity(Satellite ** satellites){
           ) /
         (satellites[i+1] -> theta_z - satellites[i] -> theta_z));
 
+    true_theta_x = ((int)true_theta_x % 360) + (true_theta_x - (int)true_theta_x);
+    if(true_theta_x < 0) true_theta_x += 360;
+    true_theta_y = ((int)true_theta_y % 360) + (true_theta_y - (int)true_theta_y);
+    if(true_theta_y < 0) true_theta_y += 360;
+    true_theta_z = ((int)true_theta_z % 360) + (true_theta_z - (int)true_theta_z);
+    if(true_theta_z < 0) true_theta_z += 360;
+
     // check if the orientation of satellites[i] is within range of error
     // (+/- 0.5 deg)
+    fprintf(stderr, "true angles: %f, %f, %f\n", true_theta_x, true_theta_y, true_theta_z);
     if(true_theta_x - 0.5 > satellites[i] -> theta_x ||
-        true_theta_x + 0.5 < satellites[i] -> theta_x)
+        true_theta_x + 0.5 < satellites[i] -> theta_x){
       continue;
+    }
     if(true_theta_y - 0.5 > satellites[i] -> theta_y ||
-        true_theta_y + 0.5 < satellites[i] -> theta_y)
+        true_theta_y + 0.5 < satellites[i] -> theta_y){
       continue;
+    }
     if(true_theta_z - 0.5 > satellites[i] -> theta_z ||
-        true_theta_z + 0.5 < satellites[i] -> theta_z)
+        true_theta_z + 0.5 < satellites[i] -> theta_z){
       continue;
+    }
 
     no_connected++;
   }
