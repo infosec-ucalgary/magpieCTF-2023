@@ -24,7 +24,7 @@ def main():
                       pow(sat2[0][1] - sat1[0][1], 2))
             /
             (sat2[0][0] - sat1[0][0])
-         ) - sat1[1][0]
+         ) - sat1[1][0] + 360
 
     dy = math.atan(
             math.sqrt(pow(sat2[0][2] - sat1[0][2], 2)
@@ -32,7 +32,7 @@ def main():
                       pow(sat2[0][0] - sat1[0][0], 2))
             /
             (sat2[0][1] - sat1[0][1])
-         ) - sat1[1][1]
+         ) - sat1[1][1] + 360
 
     dz = math.atan(
             math.sqrt(pow(sat2[0][0] - sat1[0][0], 2)
@@ -40,7 +40,7 @@ def main():
                       pow(sat2[0][1] - sat1[0][1], 2))
             /
             (sat2[0][2] - sat1[0][2])
-         ) - sat1[1][2]
+         ) - sat1[1][2] + 360
 
     print("dx", dx, struct.pack(">f", dx))
     print("dy", dy, struct.pack(">f", dy))
