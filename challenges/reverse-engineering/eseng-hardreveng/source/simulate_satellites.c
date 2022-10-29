@@ -17,6 +17,7 @@
  * tl:dr, i'm doing this for added immersiveness, which is pain ig.
  */
 
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -56,6 +57,17 @@ void print_satellite_info(Satellite ** satellites, char symbol);
  * symbol (char) - the symbol of the satellite to connect to
  */
 void send_sat_instructions(Satellite ** satellites, char symbol);
+
+/**
+ * Checks if the orientation of each satellite is correct. For every satellite
+ * within the input array, satellites[i] should point to satellites[i+1]. this
+ * function will return the number of properly connected satellites.
+ *
+ * parameters
+ * ----------
+ * satellites (Satellite **) - the array of satellites to check
+ */
+short check_satellite_connectivity(Satellite ** satellites);
 
 /**
  * Reverses the endianness of the provided array in memory.
@@ -336,6 +348,56 @@ void send_sat_instructions(Satellite ** satellites, char symbol){
   );
 
   fprintf(stdout, "INSTRUCTIONS_COMPL\n");
+}
+
+short check_satellite_connectivity(Satellite ** satellites){
+  short no_connected = 0;
+
+  for(int i = 0; i < NO_SATELLITES - 1; i++){
+    /* calculate the angles for the vector S_i->S_i+1. this is equal to
+     *                    _________________________________
+     *                  ./(z_i+1 - z_i)^2 + (y_i+1 - y_i)^2
+     * theta_x = arctan(-----------------------------------)
+     *                              x_i+1 - x_i
+     *
+     * and similar for the other angular components
+     */
+    double
+      true_theta_x = atan(
+        sqrt(
+          pow(satellites[i+1] -> theta_y - satellites[i] -> theta_y, 2) +
+          pow(satellites[i+1] -> theta_z - satellites[i] -> theta_z, 2)
+          ) /
+        (satellites[i+1] -> theta_x - satellites[i] -> theta_x)),
+      true_theta_y = atan(
+        sqrt(
+          pow(satellites[i+1] -> theta_x - satellites[i] -> theta_x, 2) +
+          pow(satellites[i+1] -> theta_z - satellites[i] -> theta_z, 2)
+          ) /
+        (satellites[i+1] -> theta_y - satellites[i] -> theta_y)),
+      true_theta_z = atan(
+        sqrt(
+          pow(satellites[i+1] -> theta_y - satellites[i] -> theta_y, 2) +
+          pow(satellites[i+1] -> theta_x - satellites[i] -> theta_x, 2)
+          ) /
+        (satellites[i+1] -> theta_z - satellites[i] -> theta_z));
+
+    // check if the orientation of satellites[i] is within range of error
+    // (+/- 0.5 deg)
+    if(true_theta_x - 0.5 > satellites[i] -> theta_x ||
+        true_theta_x + 0.5 < satellites[i] -> theta_x)
+      continue;
+    if(true_theta_y - 0.5 > satellites[i] -> theta_y ||
+        true_theta_y + 0.5 < satellites[i] -> theta_y)
+      continue;
+    if(true_theta_z - 0.5 > satellites[i] -> theta_z ||
+        true_theta_z + 0.5 < satellites[i] -> theta_z)
+      continue;
+
+    no_connected++;
+  }
+
+  return no_connected;
 }
 
 void reverse_endianness(void * buff, int size){
