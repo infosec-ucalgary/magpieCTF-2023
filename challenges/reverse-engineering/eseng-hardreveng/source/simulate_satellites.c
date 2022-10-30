@@ -378,6 +378,7 @@ void send_sat_instructions(Satellite ** satellites, char symbol){
   );
 
   fprintf(stdout, "INSTRUCTIONS_COMPL\n");
+  fflush(stdout);
 }
 
 short check_satellite_connectivity(Satellite ** satellites){

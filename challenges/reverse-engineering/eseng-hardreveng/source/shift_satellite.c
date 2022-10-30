@@ -20,6 +20,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <unistd.h>
 #include "./connection_helper.h"
 
 #define NO_SATELLITES 4
@@ -48,6 +49,17 @@ void get_satellite_positions(Conn_Info * conn);
  * symbol (char) - The symbol of the desired satellite
  */
 void get_satellite_orientation(Conn_Info * conn, char symbol);
+
+/**
+ * Connects to and reorients a given satellite by a specified number of degrees.
+ * Only one satellite can be reoriented at a time.
+ *
+ * parameters
+ * ----------
+ * conn (Conn_Info *) - The connection info to the satellites
+ * symbol (char) - The symbol associated to the desired satellite
+ */
+void reorient_satellite(Conn_Info * conn, char symbol);
 
 /**
  * Fetches all information about a given satellite.
@@ -196,6 +208,7 @@ int main(int argc, char ** argv){
     }
 
     if(strncmp(command, "ORNT:", 5) == 0){
+      reorient_satellite(conn, command[5]);
       continue;
     }
     /*
@@ -235,6 +248,44 @@ void get_satellite_orientation(Conn_Info * conn, char symbol){
       satellites[0] -> theta_z
   );
   free_satellites(satellites);
+}
+
+void reorient_satellite(Conn_Info * conn, char symbol){
+  char orient_command[7];
+  sprintf(orient_command, "conn:%c", symbol);
+  sig_send_msg(conn, orient_command, 6);
+
+  int response_len;
+  char * response = sig_lstn_msg(conn, &response_len);
+
+  if(strncmp(response, "UNAVAIL_SAT", 11) == 0){
+    fprintf(stdout, "[eror] selected satellite is not available.\n");
+    return;
+  }
+  free(response); // old response is no longer needed
+
+  fprintf(stdout, "[info] connection to satellite %c confrimed.\n", symbol);
+  fprintf(stdout, "[info] awaiting instrucions.\n");
+
+  // read instruction input
+  char * instructions = malloc(136 * sizeof(char));
+  memset(instructions, 0, 136);
+
+  int offset = 0;
+  do{
+    offset += read(0, instructions+offset, 8);
+  }while(offset < 128 && instructions[offset-1] != '\n');
+
+  // send instructions to satellite
+  sig_send_msg(conn, instructions,  offset);
+
+  response_len = 0;
+  response = sig_lstn_msg(conn, &response_len);
+
+  fprintf(stdout, "[info] satellite response: %s\n", response);
+
+  free(response);
+  free(instructions);
 }
 
 Satellite ** fetch_satellite_info(Conn_Info * conn, char symbol){
@@ -290,6 +341,7 @@ Satellite ** fetch_satellite_info(Conn_Info * conn, char symbol){
     );
   }// */
 
+  free(response);
   return satellites;
 }
 
