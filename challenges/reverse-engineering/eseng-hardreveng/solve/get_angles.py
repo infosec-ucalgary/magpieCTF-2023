@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import math
+import numpy as np
 import struct
 
 def main():
@@ -42,9 +43,18 @@ def main():
             (sat2[0][2] - sat1[0][2])
          ) - sat1[1][2] + 360
 
-    print("dx", dx, struct.pack(">f", dx))
-    print("dy", dy, struct.pack(">f", dy))
-    print("dz", dz, struct.pack(">f", dz))
+    dx_hex = hex(int.from_bytes(np.array([dx], '>f2').tobytes(), "big"))
+    dy_hex = hex(int.from_bytes(np.array([dy], '>f2').tobytes(), "big"))
+    dz_hex = hex(int.from_bytes(np.array([dz], '>f2').tobytes(), "big"))
+
+    print(f"""
+lui     $zp $dx 0x{dx_hex[2:4]}
+ori     $dx $dx 0x{dx_hex[4:6]}
+lui     $zp $dy 0x{dy_hex[2:4]}
+ori     $dy $dy 0x{dy_hex[4:6]}
+lui     $zp $dz 0x{dz_hex[2:4]}
+ori     $dz $dz 0x{dz_hex[4:6]}
+    """)
     return
 
 if __name__ == "__main__":
