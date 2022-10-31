@@ -388,7 +388,7 @@ short check_satellite_connectivity(Satellite ** satellites){
     /* calculate the angles for the vector S_i->S_i+1. this is equal to
      *                    _________________________________
      *                  ./(z_i+1 - z_i)^2 + (y_i+1 - y_i)^2
-     * theta_x = arctan(-----------------------------------)
+     * theta_x = arctan(-----------------------------------) * 180 / M_PI
      *                              x_i+1 - x_i
      *
      * and similar for the other angular components
@@ -396,22 +396,22 @@ short check_satellite_connectivity(Satellite ** satellites){
     double
       true_theta_x = atan(
         sqrt(
-          pow(satellites[i+1] -> theta_y - satellites[i] -> theta_y, 2) +
-          pow(satellites[i+1] -> theta_z - satellites[i] -> theta_z, 2)
+          pow(satellites[i+1] -> pos_y - satellites[i] -> pos_y, 2) +
+          pow(satellites[i+1] -> pos_z - satellites[i] -> pos_z, 2)
           ) /
-        (satellites[i+1] -> theta_x - satellites[i] -> theta_x)),
+        (satellites[i+1] -> pos_x - satellites[i] -> pos_x)) * 180 / M_PI,
       true_theta_y = atan(
         sqrt(
-          pow(satellites[i+1] -> theta_x - satellites[i] -> theta_x, 2) +
-          pow(satellites[i+1] -> theta_z - satellites[i] -> theta_z, 2)
+          pow(satellites[i+1] -> pos_x - satellites[i] -> pos_x, 2) +
+          pow(satellites[i+1] -> pos_z - satellites[i] -> pos_z, 2)
           ) /
-        (satellites[i+1] -> theta_y - satellites[i] -> theta_y)),
+        (satellites[i+1] -> pos_y - satellites[i] -> pos_y)) * 180 / M_PI,
       true_theta_z = atan(
         sqrt(
-          pow(satellites[i+1] -> theta_y - satellites[i] -> theta_y, 2) +
-          pow(satellites[i+1] -> theta_x - satellites[i] -> theta_x, 2)
+          pow(satellites[i+1] -> pos_y - satellites[i] -> pos_y, 2) +
+          pow(satellites[i+1] -> pos_x - satellites[i] -> pos_x, 2)
           ) /
-        (satellites[i+1] -> theta_z - satellites[i] -> theta_z));
+        (satellites[i+1] -> pos_z - satellites[i] -> pos_z)) * 180 / M_PI;
 
     true_theta_x = ((int)true_theta_x % 360) + (true_theta_x - (int)true_theta_x);
     if(true_theta_x < 0) true_theta_x += 360;
