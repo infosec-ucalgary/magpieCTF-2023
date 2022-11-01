@@ -438,7 +438,8 @@ void print_grid(Satellite ** satellites, const char row_axis, const char column_
 }
 
 void print_satellite_positions(Satellite ** satellites){
-  char * border = malloc((5 + 4 * GRID_EDGE_SIZE) * sizeof(char)); // add 5 bc "+--" and "-+"
+  char * border = malloc((5 + 4 * GRID_EDGE_SIZE) * sizeof(char) + 1); // add 5 bc "+--" and "-+" and +1 for the nullbyte
+  memset(border, '\0', (5 + 4 * GRID_EDGE_SIZE) * sizeof(char) + 1);
   strcpy(border, "+--");
   for(int i = 0; i < GRID_EDGE_SIZE; i++){
     strcat(border, "----");
