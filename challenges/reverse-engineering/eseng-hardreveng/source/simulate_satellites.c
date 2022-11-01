@@ -525,7 +525,7 @@ short check_modulo_range(double lower, double upper, double value, int modulo){
 
   if(lower <= value && value <= upper)
     return 1;
-  if(upper <= lower && value <= lower)
+  if(value <= upper && upper <= lower)
     return check_modulo_range(lower-modulo, upper, value, modulo);
   if(upper <= lower && lower <= value)
     return check_modulo_range(lower, upper+modulo, value, modulo);
