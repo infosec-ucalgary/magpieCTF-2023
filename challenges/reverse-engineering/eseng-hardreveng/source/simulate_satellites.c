@@ -323,7 +323,7 @@ void send_sat_instructions(Satellite ** satellites, char symbol){
         *rd = *rs | immediate;
         break;
       case(2): // sll
-        *rd = *rd << immediate;
+        *rd = *rs << immediate;
         break;
       case(3): // lui
         *rd &= 0x00ff;
