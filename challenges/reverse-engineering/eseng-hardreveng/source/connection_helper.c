@@ -10,6 +10,7 @@
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h> // need the ability to fork a process
 #include "connection_helper.h"
 #define SIG_MSG_MAX 1024 // bytes, no message should be this long.
@@ -123,4 +124,25 @@ char * sig_lstn_msg(Conn_Info *conn, int * msg_len){
 
   *msg_len = offset;
   return msg;
+}
+
+extern void sig_spawn_shell(Conn_Info * conn){
+  sig_send_msg(conn, "bash\n\0", 6);
+
+  int response_len;
+  char * response = sig_lstn_msg(conn, &response_len);
+
+  if(strncmp(response, "CONN_FAILED", 11) == 0){
+    fprintf(stdout,
+        "[eror] shell process could not be started.\n" \
+        "     | satellites are currently misaligned. please complete network.\n"
+    );
+    return;
+  }
+
+  fprintf(stdout, "[info] satellite response %s\n", response);
+  free(response);
+
+  fprintf(stdout, "[info] establishing shell process\n");
+  execve("/bin/bash", NULL, NULL);
 }

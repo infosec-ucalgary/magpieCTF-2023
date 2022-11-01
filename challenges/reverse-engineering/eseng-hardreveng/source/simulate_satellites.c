@@ -184,13 +184,9 @@ int main(int argc, char ** argv){
         fflush(stdout);
         continue;
       }
-      fprintf(stdout, "CONN_SUCCESS\n");
+      fprintf(stdout, SIG_SHELL_SUCCESS);
       fflush(stdout);
-      system("/bin/sh");
-      continue;
     }
-    fprintf(stdout, "UNAVAIL_CMD\n");
-    fflush(stdout);
   }
 }
 

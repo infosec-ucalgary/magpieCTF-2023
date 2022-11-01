@@ -14,7 +14,7 @@
 #ifndef CONN_HELPER
 #define CONN_HELPER
 #define DEVICE_NAME "0MN1-F746S-43V3R" // fun device name to print :)
-#define SIG_MSG_FAIL 0
+#define SIG_SHELL_SUCCESS "CONN_SUCCESS\n"
 
 #include <sys/types.h>
 
@@ -93,5 +93,15 @@ extern int sig_send_msg(Conn_Info * conn, const char * msg, int msg_len);
  * buff (char *): the buffer to receive the message within
  */
 extern char * sig_lstn_msg(Conn_Info *conn, int * msg_len);
+
+/**
+ * Spawns a bash shell if and only if the data received in the child process's
+ * stdout is SIG_SHELL_SUCCESS.
+ *
+ * parameters
+ * ----------
+ * conn (Conn_Info *) - a struct containing th eprocess info of the connection
+ */
+extern void sig_spawn_shell(Conn_Info * conn);
 
 #endif

@@ -62,16 +62,6 @@ void get_satellite_orientation(Conn_Info * conn, char symbol);
 void reorient_satellite(Conn_Info * conn, char symbol);
 
 /**
- * Creates a shell process through the network of satellites. this will only be
- * successful if the network has been successfuly established.
- *
- * parameters
- * ----------
- * conn (Conn_Info *) - The connection info to the satellites
- */
-void connect_shell(Conn_Info * conn);
-
-/**
  * Fetches all information about a given satellite.
  *
  * Satellite information will be returned in the following format:
@@ -223,7 +213,7 @@ int main(int argc, char ** argv){
     }
 
     if(strncmp(command, "CONN", 4) == 0){
-      connect_shell(conn);
+      sig_spawn_shell(conn);
       continue;
     }
     /*
@@ -301,51 +291,6 @@ void reorient_satellite(Conn_Info * conn, char symbol){
 
   free(response);
   free(instructions);
-}
-
-void connect_shell(Conn_Info * conn){
-  char shell_command[6];
-  strncpy(shell_command, "bash\0", 5);
-
-  sig_send_msg(conn, shell_command, 6);
-
-  int response_len;
-  char * response = sig_lstn_msg(conn, &response_len);
-
-  if(strncmp(response, "CONN_FAILED", 11) == 0){
-    fprintf(stdout, 
-        "[eror] shell process could not be started.\n" \
-        "     | satellites are currently misaligned. please complete network.\n"
-    );
-    return;
-  }
-
-  fprintf(stdout, "[info] satellite response %s\n", response);
-
-  free(response);
-
-  // allow continuous shell interaction
-  int cmd_len;
-  do{
-    char cmd[129];
-    memset(cmd, '\0', 129);
-
-    fprintf(stdout, "> ");
-    fflush(stdout);
-
-    scanf("%128s", cmd);
-    strcat(cmd, "\n");
-
-    cmd_len = strlen(cmd);
-
-    sig_send_msg(conn, cmd, cmd_len+1);
-
-    response = sig_lstn_msg(conn, &response_len);
-    fprintf(stdout, "%s\n", response);
-    fflush(stdout);
-
-    free(response);
-  }while(cmd_len > 0);
 }
 
 Satellite ** fetch_satellite_info(Conn_Info * conn, char symbol){
