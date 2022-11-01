@@ -156,6 +156,9 @@ Satellite ** generate_satellite_info();
 
 
 int main(int argc, char ** argv){
+  setbuf(stdin, NULL);
+  setbuf(stdout, NULL);
+
   char command[7]; // max command length is 4 + an optional symbol
   fprintf(stderr, "[info] connection recieved\n");
 
