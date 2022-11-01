@@ -181,9 +181,11 @@ int main(int argc, char ** argv){
     if(strncmp(command, "bash", 4) == 0){
       if(check_satellite_connectivity(satellites) < NO_SATELLITES - 1){
         fprintf(stdout, "CONN_FAILED\n");
+        fflush(stdout);
         continue;
       }
       fprintf(stdout, "CONN_SUCCESS\n");
+      fflush(stdout);
       system("/bin/sh");
       continue;
     }
