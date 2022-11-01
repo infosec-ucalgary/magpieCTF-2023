@@ -8,7 +8,7 @@ main: clean $(shared) $(binaries)
 all: $(shared) $(binaries)
 
 $(binaries): %:%.c
-	$(CC) -o $(build_path)/$@ $< -L$(build_path) -l$(shared)
+	$(CC) -o $(build_path)/$@ $< -L$(build_path) -l$(shared) -lm
 
 $(shared): %:%.c
 	$(CC) -o $(build_path)/$@.o $< -fpic -c
