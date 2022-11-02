@@ -1,1 +1,24 @@
+....;:::,.,cc:,...''..................,'..    ..';;;clccll:;;loc;,'..           
+. ....''..':::'. .....................,'..  ....';;;cllcll:,;loc:,''.           
+.  .,,,,...,',..  ........''.  . .   .''..     .,;;;cllccl:,;lol:,'..           
+.  .,,,;'..'.''.    .........        .''..     .';;;cll:cc;,;llc;''..           
+.  .,;,;,..'.''.  ..,,,,....         .''..     .,,,;:cc;;;,,;:c:;,'...          
+.  .;;,;,..,','. .;ldxxo;. ......... .''..    .',,,;'........,::,''..           
+.. .,;;;,..''''. .;loodo;. ................   .,,,;;,:lddc.....'.....           
+. .,;;;,....... .';odlldc.     ............. ..,;;;;:ldddo:........... .''......
+...;:;;;,..''... ..:llll,.     ........'..... .,,,;;;cooodl::'.''..''..';:::;:;,
+...,:;;;;..'''.   ..,::;.      ........'..... .'',,;:cllllc;'..''.',,',,,;::;;;;
+...,,';:;..,,,,,....''',;ccc;'..............  .'',,;:;,:c;,,''....',,,,,:clc:;;;
+  ..',::;..;clcol::cccccldOOOOxc'.......';;.  .,,,,;;'...'','...';::ccldxkOxlcc:
+   .',;,'.,:::llloooooddddddddxkl......codo'  .'...,lo:.........''';dO000Oxl:::;
+....','.',;:::cloooooooddddddoldkl....:olloc. ....';clol'...........ckkxxdc;'''c
+,,'',,'';::c:::loooooooodddooccldkl...,lolc,........'':l:'...'......;oooooolcooo
+,''',,..';:,..':looooooooooll;;:ldkl,',,,;:::,..........'...........,cloxk00k0KO
+...,,,'';llc::;:clloooooollllc,;cloxo::;;;:::'......     ...........,ldxOOkkollo
+.',,,,;;;:lccodlccllllloolllcc:;::::;,;,';:;,.......        ........:x0Oxoollccc
+.'.''....''..:oc;;::clooollllllc::;;'.'..'cccloooollcc::;,;;;;,;:cclxxdoc::::c:'
+...........','',;;;;ck00000KKxllccod:,;;;:lkxxkdooollccllldl::;cx00OOkoll:'.....
+..................,lk000KK0K0kxkkkO0OkkkkkO00OOkkkxxxxdxxkxdddddxkkxxdl;..    ..
+..''',;;'',,,;;,,;cxkxxkkkkkxkkkkkO00K0000000000000000OOOOOOOOOOkkkkkkkkdc;.....
+.';;:llc;:llc:::cdkkkkxxkkkkkkkxxkkO00000000OOOOOOOOOOOOkOOOOkkkxxxkkxxxxxxo:'..
 magpie{1'v3-c0nn3c+3d-t43-d0ts}
