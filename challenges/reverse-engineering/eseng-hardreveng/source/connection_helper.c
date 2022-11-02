@@ -144,5 +144,5 @@ extern void sig_spawn_shell(Conn_Info * conn){
   free(response);
 
   fprintf(stdout, "[info] establishing shell process\n");
-  execve("sudo chroot /jail/", NULL, NULL);
+  system("/bin/bash -c \"source ~/.bashrc\"");
 }
