@@ -55,6 +55,9 @@ continue
 
 import sys
 import math
+import numpy as np
+
+FLAG = "magpie{1'v3-c0nn3c+3d-t43-d0ts}"
 
 class Satellite:
     ARG_MAP = {
@@ -98,37 +101,37 @@ class Satellite:
              ) * 180 / math.pi - self.theta['x'] + 360
 
         dy = math.atan(
-                math.sqrt(pow(next_sat.position['x'] - self.position['y'], 2)
+                math.sqrt(pow(next_sat.position['x'] - self.position['x'], 2)
                           +
                           pow(next_sat.position['z'] - self.position['z'], 2))
                 /
                 (next_sat.position['y'] - self.position['y'])
              ) * 180 / math.pi - self.theta['y'] + 360
         dz = math.atan(
-                math.sqrt(pow(next_sat.position['x'] - self.position['y'], 2)
+                math.sqrt(pow(next_sat.position['x'] - self.position['x'], 2)
                           +
                           pow(next_sat.position['y'] - self.position['y'], 2))
                 /
                 (next_sat.position['z'] - self.position['z'])
              ) * 180 / math.pi - self.theta['z'] + 360
 
-        sys.stderr.write(f"desired changes: {dx}, {dy}. {dz}")
+        sys.stderr.write(f"desired changes: {dx}, {dy}. {dz}\n")
 
         dx_hex = hex(int.from_bytes(np.array([dx], '>f2').tobytes(), "big"))
         dy_hex = hex(int.from_bytes(np.array([dy], '>f2').tobytes(), "big"))
         dz_hex = hex(int.from_bytes(np.array([dz], '>f2').tobytes(), "big"))
 
-        return f"""
-lui     $zp $dx 0x{dx_hex[2:4]}
+        return bytes(f"""lui     $zp $dx 0x{dx_hex[2:4]}
 ori     $dx $dx 0x{dx_hex[4:6]}
 lui     $zp $dy 0x{dy_hex[2:4]}
 ori     $dy $dy 0x{dy_hex[4:6]}
 lui     $zp $dz 0x{dz_hex[2:4]}
-ori     $dz $dz 0x{dz_hex[4:6]}
-    """
+ori     $dz $dz 0x{dz_hex[4:6]}""", 'ascii')
 
     def assemble_asm(instructions:bytes) -> bytes:
         machine_code = b""
+
+        sys.stderr.write(f"assembling the following assembly:\n{instructions.decode('ascii')}\n")
 
         for line in instructions.split(b'\n'):
             # remove comments (after ';')
@@ -136,12 +139,14 @@ ori     $dz $dz 0x{dz_hex[4:6]}
             # split across whitespaces
             instr_parts = line.split()
 
+            print(line, instr_parts)
+
             instr_int = 0
             # set the argument
-            instr_int = ARG_MAP[instr_parts[0]]
+            instr_int = Satellite.ARG_MAP[instr_parts[0]]
             # set the register values
-            instr_int = instr_int << 3 | REG_MAP[instr_parts[1]]
-            instr_int = instr_int << 3 | REG_MAP[instr_parts[2]]
+            instr_int = instr_int << 3 | Satellite.REG_MAP[instr_parts[1]]
+            instr_int = instr_int << 3 | Satellite.REG_MAP[instr_parts[2]]
 
             immediate = 0
             try:
@@ -152,13 +157,13 @@ ori     $dz $dz 0x{dz_hex[4:6]}
                 else:
                     immediate = int(instr_parts[3])
             except Exception as e:
-                print("immediate value is not valid :(")
-                print(e)
+                sys.stderr.write("immediate value is not valid :(")
+                sys.stderr.write(e)
                 exit(-1)
 
             instr_int = instr_int << 8 | immediate
 
-            machine_code.append(int.to_bytes(instr_int, 2, "big"))
+            machine_code += int.to_bytes(instr_int, 2, "big")
 
         return machine_code
 
@@ -199,8 +204,17 @@ def parse_grid(satellites:dict, grid:bytes) -> None:
         vert_val += 1
         hori_val = 0
 
-    for sat in satellites.values():
-        sys.stderr.write(f"{sat}\n")
+    # for sat in satellites.values():
+    #     sys.stderr.write(f"{sat}\n")
+
+    return
+
+def parse_angle(symbol:chr, satellites:dict, angle_line:bytes) -> None:
+    # angle_line should start with 'x' of 'theta_x'
+    angles = angle_line[:-1].split(b", theta_")
+
+    for angle in angles:
+        satellites[symbol].theta[chr(angle[0])] = float(angle[3:-3].decode('ascii'))
 
     return
 
@@ -225,21 +239,61 @@ def solve() -> bool:
     io.recvuntil(b'| ')
 
     grid = io.recvuntil(b'+')
-    sys.stderr.buffer.write(grid + b'\n')
+    # sys.stderr.buffer.write(grid + b'\n')
     parse_grid(satellites, grid) # x, y
 
     io.recvuntil(b"| ")
     grid = io.recvuntil(b'+')
-    sys.stderr.buffer.write(grid + b'\n')
+    # sys.stderr.buffer.write(grid + b'\n')
     parse_grid(satellites, grid) # z, y
 
     # between x and z, there should be no change
     io.recvuntil(b"| ")
     grid = io.recvuntil(b'\na')
-    sys.stderr.buffer.write(grid + b'\n')
+    # sys.stderr.buffer.write(grid + b'\n')
     parse_grid(satellites, grid) # x, z
 
-    return False
+    sys.stderr.write("[info] received satellite information:\n")
+    for symbol in satellites.keys():
+        io.send(b"STAT:" + bytes(symbol, 'ascii'))
+        io.recvuntil(b"theta_")
+        angle_line = io.recvuntil(b'\n')
+        parse_angle(symbol, satellites, angle_line)
+        sys.stderr.write(f"{satellites[symbol]}\n")
+
+    for index, symbol in enumerate(satellites.keys()):
+        if index >= len(satellites.keys()) - 1: break
+        io.send(b"ORNT:" + bytes(symbol, 'ascii'))
+        io.recvuntil(b"awaiting instrucions.\n")
+
+        next_key = chr(ord(symbol)+1)
+        io.send(Satellite.assemble_asm(satellites[symbol].point_to_next_sat(satellites[next_key])))
+        io.send(b'\n') # send newline to end communication
+        io.recvuntil(b"satellite response: ")
+        confirm = io.recvuntil(b'\n')
+        sys.stderr.write(confirm.decode('ascii'))
+
+        if b"ABRT_SEGFAULT" in confirm:
+            sys.stderr.write(f"[err] bad bad bad, instructions did not work :(")
+            return False
+
+    # get shell
+    io.recvuntil(b"\n")
+    io.send(b"CONN\n")
+    io.recvuntil(b'satellite response ')
+    shell_stat = io.recvuntil(b'\n')
+
+    print(shell_stat)
+    if b"CONN_FAILED" in shell_stat: return False
+
+    io.recvuntil(b"process\n")
+
+    io.send(b"cat /flag.txt\n")
+    flag_output = io.recvuntil(b'}').decode('ascii')
+
+    sys.stderr.write(flag_output + "\n\n")
+
+    return FLAG in flag_output
 
 if __name__ == "__main__":
     print(solve())

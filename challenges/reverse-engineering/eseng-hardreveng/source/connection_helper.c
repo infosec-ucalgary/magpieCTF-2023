@@ -132,6 +132,7 @@ extern void sig_spawn_shell(Conn_Info * conn){
   int response_len;
   char * response = sig_lstn_msg(conn, &response_len);
 
+  fprintf(stdout, "[info] satellite response %s\n", response);
   if(strncmp(response, "CONN_FAILED", 11) == 0){
     fprintf(stdout,
         "[eror] shell process could not be started.\n" \
@@ -139,8 +140,6 @@ extern void sig_spawn_shell(Conn_Info * conn){
     );
     return;
   }
-
-  fprintf(stdout, "[info] satellite response %s\n", response);
   free(response);
 
   fprintf(stdout, "[info] establishing shell process\n");
