@@ -33,4 +33,4 @@ ENV LD_LIBRARY_PATH=/build/
 ENV SYS_PORT=$PORT
 
 EXPOSE $PORT
-CMD ["/bin/sh", "-c", "socat -d -d TCP-L:$SYS_PORT,fork EXEC:/build/shift_satellite,pty,stderr,raw"]
+CMD ["/bin/sh", "-c", "socat -d -d TCP-L:$SYS_PORT,fork EXEC:/build/shift_satellite,pty,stderr,rawer"]
