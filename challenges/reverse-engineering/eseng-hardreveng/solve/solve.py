@@ -53,17 +53,6 @@ continue
 # NX:       NX enabled
 # PIE:      PIE enabled
 
-io = start()
-
-# shellcode = asm(shellcraft.sh())
-# payload = fit({
-#     32: 0xdeadbeef,
-#     'iaaa': [1, 2, 'Hello', 3]
-# }, length=128)
-# io.send(payload)
-# flag = io.recv(...)
-# log.success(flag)
-
 import sys
 import math
 
@@ -86,20 +75,20 @@ class Satellite:
         b"$dz": 0b111,
     }
 
-    def __init__(self, symbol:chr, x:int, y:int, z:int, tx:float , ty:float, tz:float):
+    def __init__(self, symbol:chr):
         self.theta = {
-            "x": tx,
-            "y": ty,
-            "z": tz,
+            "x": 0,
+            "y": 0,
+            "z": 0,
         }
         self.position = {
-            "x": x,
-            "y": y,
-            "z": z,
+            "x": 0,
+            "y": 0,
+            "z": 0,
         }
         self.symbol = symbol
 
-    def point_to_next_sat(self, next_sat: Satellite) -> bytes:
+    def point_to_next_sat(self, next_sat: object) -> bytes:
         dx = math.atan(
                 math.sqrt(pow(next_sat.position['z'] - self.position['z'], 2)
                           +
@@ -141,7 +130,7 @@ ori     $dz $dz 0x{dz_hex[4:6]}
     def assemble_asm(instructions:bytes) -> bytes:
         machine_code = b""
 
-        for line in instructions.split(b'\n')
+        for line in instructions.split(b'\n'):
             # remove comments (after ';')
             line = line.split(b';')[0]
             # split across whitespaces
@@ -173,7 +162,84 @@ ori     $dz $dz 0x{dz_hex[4:6]}
 
         return machine_code
 
-# get positions and orientations of each satellite
+    def __str__(self):
+        return f"""sat: {self.symbol}
+pos: {self.position['x']}, {self.position['y']}, {self.position['z']}
+angle: {self.theta['x']}, {self.theta['y']}, {self.theta['z']}"""
 
-io.interactive()
+def parse_grid(satellites:dict, grid:bytes) -> None:
+    # this grid should start with the label of the vertical axis
+    vertical_axis_label = chr(grid[0])
+    horizontal_axis_label = chr(grid[-5])
 
+    grid = b'\n'.join(grid.split(b'\n')[1:-2][::-1])
+
+    # replace unnecessary characters, placing symbolsto the right of their
+    # index.
+    grid = grid.replace(b'|', b'')
+    grid = grid.replace(b' ', b'')
+    grid = grid.replace(b']', b'')
+
+    vert_val = 0
+    hori_val = 0
+
+    # sys.stderr.buffer.write(grid + b'\n')
+    for line in grid.split(b'\n'):
+        for char in line:
+            spot = chr(char)
+            if spot == '[':
+                hori_val += 1
+                continue
+            # the spot is actually the symbol
+            if spot not in satellites.keys():
+                satellites[spot] = Satellite(spot)
+
+            satellites[spot].position[horizontal_axis_label] = hori_val - 1
+            satellites[spot].position[vertical_axis_label] = vert_val
+        vert_val += 1
+        hori_val = 0
+
+    for sat in satellites.values():
+        sys.stderr.write(f"{sat}\n")
+
+    return
+
+def solve() -> bool:
+    io = start()
+
+    # shellcode = asm(shellcraft.sh())
+    # payload = fit({
+    #     32: 0xdeadbeef,
+    #     'iaaa': [1, 2, 'Hello', 3]
+    # }, length=128)
+    # io.send(payload)
+    # flag = io.recv(...)
+    # log.success(flag)
+
+    satellites = {}
+
+    # get positions and orientations of each satellite
+    io.recvuntil(b"awaiting input...\n") # drop splash screen :(
+
+    io.send(b"POSN\n")
+    io.recvuntil(b'| ')
+
+    grid = io.recvuntil(b'+')
+    sys.stderr.buffer.write(grid + b'\n')
+    parse_grid(satellites, grid) # x, y
+
+    io.recvuntil(b"| ")
+    grid = io.recvuntil(b'+')
+    sys.stderr.buffer.write(grid + b'\n')
+    parse_grid(satellites, grid) # z, y
+
+    # between x and z, there should be no change
+    io.recvuntil(b"| ")
+    grid = io.recvuntil(b'\na')
+    sys.stderr.buffer.write(grid + b'\n')
+    parse_grid(satellites, grid) # x, z
+
+    return False
+
+if __name__ == "__main__":
+    print(solve())
