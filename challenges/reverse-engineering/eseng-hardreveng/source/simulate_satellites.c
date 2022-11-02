@@ -339,7 +339,7 @@ void send_sat_instructions(Satellite ** satellites, char symbol){
     registers.ip++; // move to next instruction
   }while(instructions_bin[registers.ip]); // halt when no instruction remains
 
-  // debug the current register values
+  /*/ debug the current register values
   fprintf(
       stderr,
       "[debug] registers:\n"\
@@ -423,18 +423,25 @@ short check_satellite_connectivity(Satellite ** satellites){
 
     // check if the orientation of satellites[i] is within range of error
     int uncertainty = 5; // degrees
-    fprintf(stderr, "true angles: %f, %f, %f\n", true_theta_x, true_theta_y, true_theta_z);
+    /*/debug
+    fprintf(stderr,
+      "[debug] true angles: %f, %f, %f\n",
+      true_theta_x,
+      true_theta_y,
+      true_theta_z);
+    // */
     if(!check_modulo_range(
           (int)(true_theta_x + 360 - uncertainty) % 360 + true_theta_x - (int)true_theta_x,
           (int)(true_theta_x + 360 + uncertainty) % 360 + true_theta_x - (int)true_theta_x,
           satellites[i] -> theta_x,
           MAX_ANGLE)){
+      /*/ debug
       fprintf(stderr, "[debug] %d: failed on theta_x of sat %c, range (%f, %f)\n",
           __LINE__,
           satellites[i] -> symbol,
           ((int)(true_theta_x + 360) - uncertainty) % 360 + true_theta_x - (int)true_theta_x,
           ((int)(true_theta_x + 360) + uncertainty) % 360 + true_theta_x - (int)true_theta_x
-      );
+      ); // */
       continue;
     }
 
@@ -443,12 +450,13 @@ short check_satellite_connectivity(Satellite ** satellites){
           (int)(true_theta_y + 360 + uncertainty) % 360 + true_theta_y - (int)true_theta_y,
           satellites[i] -> theta_y,
           MAX_ANGLE)){
+      /*/ debug
       fprintf(stderr, "[debug] %d: failed on theta_y of sat %c, range (%f, %f)\n",
           __LINE__,
           satellites[i] -> symbol,
           (int)(true_theta_y + 360 - uncertainty) % 360 + true_theta_y - (int)true_theta_y,
           (int)(true_theta_y + 360 + uncertainty) % 360 + true_theta_y - (int)true_theta_y
-      );
+      ); // */
       continue;
     }
 
@@ -457,50 +465,15 @@ short check_satellite_connectivity(Satellite ** satellites){
           ((int)(true_theta_z + 360) + uncertainty) % 360 + true_theta_z - (int)true_theta_z,
           satellites[i] -> theta_z,
           MAX_ANGLE)){
+      /*/ debug
       fprintf(stderr, "[debug] %d: failed on theta_z of sat %c, range (%f, %f)\n",
           __LINE__,
           satellites[i] -> symbol,
           ((int)(true_theta_z + 360) - uncertainty) % 360 + true_theta_z - (int)true_theta_z,
           ((int)(true_theta_z + 360) + uncertainty) % 360 + true_theta_z - (int)true_theta_z
-      );
+      ); // */
       continue;
     }
-    /*/
-    if((int)(true_theta_x + 360 - uncertainty) % 360 + true_theta_x - (int)true_theta_x >
-        (int)(satellites[i] -> theta_x + 360 + uncertainty) % 360 +
-        satellites[i] -> theta_x - (int) satellites[i] -> theta_x){
-      fprintf(stderr, "[debug] %d: failed on theta_x of sat %c, range (%f, %f)\n",
-          __LINE__,
-          satellites[i] -> symbol,
-          ((int)(true_theta_x + 360) - uncertainty) % 360 + true_theta_x - (int)true_theta_x,
-          ((int)(true_theta_x + 360) + uncertainty) % 360 + true_theta_x - (int)true_theta_x
-      );
-      continue;
-    }
-    if(((int)(true_theta_y + 360) - uncertainty) % 360 + true_theta_y - (int)true_theta_y >
-        satellites[i] -> theta_y ||
-        ((int)(true_theta_y + 360) + uncertainty) % 360 + true_theta_y - (int)true_theta_y <
-        satellites[i] -> theta_y){
-      fprintf(stderr, "[debug] %d: failed on theta_y of sat %c, range (%f, %f)\n",
-          __LINE__,
-          satellites[i] -> symbol,
-          (int)(true_theta_y + 360 - uncertainty) % 360 + true_theta_y - (int)true_theta_y,
-          (int)(true_theta_y + 360 + uncertainty) % 360 + true_theta_y - (int)true_theta_y
-      );
-      continue;
-    }
-    if((int)(true_theta_z + 360 - uncertainty) % 360 + true_theta_z - (int)true_theta_z >
-        satellites[i] -> theta_z ||
-        (int)(true_theta_z + 360 + uncertainty) % 360 + true_theta_z - (int)true_theta_z <
-        satellites[i] -> theta_z){
-      fprintf(stderr, "[debug] %d: failed on theta_z of sat %c, range (%f, %f)\n",
-          __LINE__,
-          satellites[i] -> symbol,
-          ((int)(true_theta_z + 360) - uncertainty) % 360 + true_theta_z - (int)true_theta_z,
-          ((int)(true_theta_z + 360) + uncertainty) % 360 + true_theta_z - (int)true_theta_z
-      );
-      continue;
-    } // */
 
     no_connected++;
   }
@@ -518,11 +491,13 @@ short check_modulo_range(double lower, double upper, double value, int modulo){
    *  -> in this case: add upper by modulo and check again
    */
 
+  /*/ debug
   fprintf(stderr, "[debug] %i found lower = %lf, upper = %lf, value = %lf : mod = %i\n", __LINE__,
       lower,
       upper,
       value,
       modulo);
+  // */
 
   if(lower <= value && value <= upper)
     return 1;
@@ -646,7 +621,7 @@ Satellite ** generate_satellite_info(){
     strcpy(satellites[i] -> name, base_name);
     satellites[i] -> name[REPLACE_INDEX] = satellites[i] -> symbol;
 
-    // debugging
+    /*/ debugging
     fprintf(stderr, "Satellite %c: pos:(%d, %d, %d), angle:(%lf, %lf, %lf)\n",
         satellites[i] -> symbol,
         satellites[i] -> pos_x,
