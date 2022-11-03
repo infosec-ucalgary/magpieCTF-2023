@@ -28,7 +28,7 @@ RUN mkdir -p /jail/bin /jail/lib /home/$UNAME /jail/home /jail/etc; \
     echo "$UNAME ALL=NOPASSWD: /usr/sbin/chroot" >> /etc/sudoers
 
 RUN echo "sudo chroot /jail/ /bin/bash -c 'source .bashrc'" > /home/$UNAME/.bashrc; \
-    echo "adduser -D user; rm /bin/adduser`; su user;" > /jail/.bashrc;
+    echo "adduser -D user; rm /bin/adduser; su user;" > /jail/.bashrc;
 
 COPY . /src/
 COPY flag.txt /jail/
