@@ -12,7 +12,8 @@ RUN apk add --update \
     socat \
     bash
 
-RUN mkdir -p /jail/bin /jail/lib /home/$UNAME /jail/home; \
+RUN mkdir -p /jail/bin /jail/lib /home/$UNAME /jail/home /jail/etc; \
+    touch /jail/etc/passwd; \
     cp /lib/ld-musl-x86_64.so.1 /jail/lib/; \
     cp /usr/lib/libreadline.so.8 /jail/lib; \
     cp /usr/lib/libncursesw.so.6 /jail/lib; \
@@ -20,15 +21,20 @@ RUN mkdir -p /jail/bin /jail/lib /home/$UNAME /jail/home; \
     cp `which bash` /jail/bin/; \
     cp `which ls` /jail/bin; \
     cp `which cat` /jail/bin; \
+    cp `which adduser` /jail/bin; \
+    cp `which rm` /jail/bin; \
+    cp `which su` /jail/bin; \
     adduser $UNAME -s /bin/bash -h /home/$UNAME; \
     echo "$UNAME ALL=NOPASSWD: /usr/sbin/chroot" >> /etc/sudoers
 
-RUN echo "sudo chroot /jail/; cd /home;" > /home/$UNAME/.bashrc
+RUN echo "sudo chroot /jail/ /bin/bash -c 'source .bashrc'" > /home/$UNAME/.bashrc; \
+    echo "adduser -D user; rm /bin/adduser`; su user;" > /jail/.bashrc;
 
 COPY . /src/
 COPY flag.txt /jail/
 
-RUN cd /src/; \
+RUN chown -R root:root /jail/flag.txt; \
+    cd /src/; \
     mkdir -p /src/build/; \
     make; \
     chown -R $UNAME:$UNAME /src; \
