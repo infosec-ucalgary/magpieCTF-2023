@@ -59,6 +59,7 @@ import numpy as np
 
 FLAG = "magpie{1'v3-c0nn3c+3d-t43-d0ts}"
 OUTPUT = "output" in sys.argv
+INTERACT = "-it" in sys.argv
 
 class Satellite:
     ARG_MAP = {
@@ -293,6 +294,8 @@ def solve() -> bool:
     flag_output = io.recvuntil(b'}').decode('ascii')
 
     if(OUTPUT): sys.stderr.write(flag_output + "\n\n")
+
+    if INTERACT: io.interactive()
 
     return FLAG in flag_output
 
