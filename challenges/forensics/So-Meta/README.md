@@ -12,7 +12,7 @@
 
 ##Solution
 1. Using exiftool, you would find the the tool, stegsolve that you need for this challenge
-2. Download stegsolve from the github page https://github.com/zardus/ctf-tools/blob/master/stegsolve/install and open the program accordingly
+2. Download stegsolve from the github page https://github.com/zardus/ctf-tools/blob/master/stegsolve/install and open the program with 'java -jar stegsolve.jar'
 3. xor challenge.png with combine.png with stegsolve to get the flag (file->open->challenge.png, analysis->image combiner->combine.png)
 
 ##flag
