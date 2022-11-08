@@ -8,6 +8,7 @@ One of the prisoners sent us this picture. See what you can find.
 
 ## Hints
 1. ext4 filesystem
+2. Lowercase is best case
 2. Try a different order of steps
 
 ## Solution
