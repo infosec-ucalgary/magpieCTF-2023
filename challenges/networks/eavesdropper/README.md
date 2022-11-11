@@ -5,11 +5,11 @@
 ## Description
 Knowing Marianna, her flag is going to have something to do with her favourite food. Unfortunately, you just can't remember what it was...
 
-She's got a sweet tooth, so you know it has to be some kind of dessert, like **cookies** or **cakes**. What was her favourite kind? **ice cream**? **pistachio**? **chocolate chip**? or **almond**?
+She's got a sweet tooth, so you know it has to be some kind of dessert, like **cookies** or **cakes**. What was her favourite flavour? **vanilla**? **oreo**? **chocolate chip**? Or maybe **pistachio**? 
 
 ## Hints
 1. The flag is in l33t5p34k, containing numbers and underscores, and will be obvious when you see it!
-2. !
+2. There's probably some REGULAR way to filter for her flag...
 
 ## Solution
 This would be the solution to the challenge!
