@@ -1,4 +1,4 @@
-# Space Image
+# Space Exploration
 
 ### Category: Forensic Easy
 
@@ -15,10 +15,9 @@ You know, space exploration is VERY VERY cool. You are see all kinds of cool thi
 
 ## Solution
 
-1. Turn on the brightness of the image and you will see the flag in the upper left corner
+1. Turn on the brightness of the image and you will see the flag in the upper left corner. This is an EASY challenge so DO NOT OVER THINK IT!
+
 
 Flag: magpie{wh0_7u2n3d_0ff_7h3_119h7}
 
 ---
-
-### Version and Format Info 
