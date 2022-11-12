@@ -16,8 +16,7 @@ Key Table
 
 
 ## Hint
-1. https://www.geeksforgeeks.org/playfair-cipher-with-examples/
-2. I have modified the key table to be 13 by 5 instead, but the method of encryption remains the same
+1. I have modified the key table to be 13 by 5
 
 ## Solution
 Playfair cipher follows the following rules:
