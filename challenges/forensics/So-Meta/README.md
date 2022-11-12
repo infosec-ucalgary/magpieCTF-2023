@@ -2,9 +2,9 @@
 ### Category: Forensics
 ### Author: Christina He
 ## Description
-A contact of ours involved in salvaging the many failed Omni-Flags projects has brought us these.
-They found it in a half destroyed computer from one of Omni-Flags deep space probes. They must have
-been experimenting with flag degredation in deep space flight, but it looks like we should be able
+A contact of ours involved in salvaging the many failed Omni-Flags projects, has brought us these files.
+She found it in a half destroyed computer from one of Omni-Flags deep space probes. They must have
+been experimenting with flag degredation during deep space flight, but it looks like we should still be able
 to recover the data.
 
 ## Hint
