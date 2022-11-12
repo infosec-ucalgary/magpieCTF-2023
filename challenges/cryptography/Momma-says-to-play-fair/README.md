@@ -4,7 +4,7 @@
 
 ## Description
 We received an encrypted message from deep space. We think that someone is trying to smuggle a flag
-away from OmniCorp. Decrypt the message to get one step closer to success!
+away from Omni-Flags. Decrypt the message to get one step closer to success!
 
 Here is the message: nEctTfwcH8P08nv4w{K0jT3Zn2K2A88k{Y
 
