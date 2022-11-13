@@ -1,5 +1,5 @@
 # What is the password?
-### Category: Network
+### Category: Network (Easy I or II)
 ### Author: Ned Liu
 
 ## Description
