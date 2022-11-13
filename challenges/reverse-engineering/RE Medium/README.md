@@ -1,5 +1,5 @@
-# This outta be large enough right?
-### Category: Reverse Engineering
+# Take a wild guess
+### Category: Reverse Engineering (Medium)
 ### Author: Ned Liu
 
 ## Description
