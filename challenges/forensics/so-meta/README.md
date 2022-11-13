@@ -2,13 +2,14 @@
 ### Category: Forensics
 ### Author: Christina He
 ## Description
-1 1 0
-1 0 1
-0 1 1
-0 0 0
+A contact of ours involved in salvaging the many failed Omni-Flags projects, has brought us these files.
+She found it in a half destroyed computer from one of Omni-Flags deep space probes. They must have
+been experimenting with flag degredation during deep space flight, but it looks like we should still be able
+to recover the data.
+
 ## Hint
 1. You need the correct tool to get the flag.
-2. Maybe take a look into the metadata
+2. Sometimes data that is about other data can be enlightening!
 
 ## Solution
 1. Using exiftool, you would find the the tool, stegsolve that you need for this challenge
