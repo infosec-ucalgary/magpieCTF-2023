@@ -3,7 +3,7 @@
 ### Author: Marianna Ferreira (MariannaFerr)
 
 ## Description
-Knowing Marianna, her flag is going to have something to do with her favourite food. Unfortunately, you just can't remember what it was...
+According to your sources, one of the exec's flags is going to have something to do with her favourite food. Unfortunately, you just can't remember what it was...
 
 She's got a sweet tooth, so you know it has to be some kind of dessert, like **cookies** or **cakes**. What was her favourite flavour? **vanilla**? **oreo**? **chocolate chip**? Or maybe **pistachio**? 
 
