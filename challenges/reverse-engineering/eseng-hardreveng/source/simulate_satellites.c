@@ -422,7 +422,7 @@ short check_satellite_connectivity(Satellite ** satellites){
     if(true_theta_z < 0) true_theta_z += 360;
 
     // check if the orientation of satellites[i] is within range of error
-    int uncertainty = 5; // degrees
+    int uncertainty = 1; // degrees
     /*/debug
     fprintf(stderr,
       "[debug] true angles: %f, %f, %f\n",
