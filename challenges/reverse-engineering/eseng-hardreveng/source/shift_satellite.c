@@ -190,6 +190,8 @@ int main(int argc, char ** argv){
   // print_satellite_orientations(satellites);
   Conn_Info *conn = init_connection();
 
+  alarm(300);
+
   char command[7];
   while(1){
     fprintf(stdout, "awaiting input...\n");
