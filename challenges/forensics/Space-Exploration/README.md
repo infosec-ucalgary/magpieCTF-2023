@@ -6,11 +6,11 @@
 
 ## Description
 
-You know, space exploration is VERY VERY cool. You are see all kinds of cool things. Here is one of the photos we got. I can see something strange in the image is it a flag or am I too just too excited?
+You know, space exploration is VERY VERY cool. Here is one of the photos we got. There is something strange about the image but I cannot tell exactly what it is.
 
 ## Hints
 
-1. The space is a little dark, can someone turn on the lights? (don't over think it)
+1. The space is a little dark, can someone turn on the lights? (Don't over think it)
 
 
 ## Solution
