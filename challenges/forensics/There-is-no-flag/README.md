@@ -3,13 +3,13 @@
 ### Author: Ned Liu
 ## Description
 
-There is no flag. Even if there was a flag here, it is GONE now. Have a wonder day!
+There is no flag. Even if there was a flag here, it is GONE now. Have a wonderful day!
 
 Your starting point: https://github.com/lybned/NoFlag
 
 ## Hint
 1. Hmmm, I wonder what happened to here before I arrived.
-2. The program might be more useful than you thought
+2. The program might be more useful than you thought. Are there anything else in the program?
 3. What type of file is it?
 
 ## Solution
