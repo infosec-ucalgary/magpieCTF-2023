@@ -10,7 +10,7 @@ You know, space exploration is VERY VERY cool. You are see all kinds of cool thi
 
 ## Hints
 
-1. The space is a little dark, can someone turn on the light? (I mean it literally, please do not over think it.)
+1. The space is a little dark, can someone turn on the lights? (don't over think it)
 
 
 ## Solution
