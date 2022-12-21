@@ -3,11 +3,11 @@
 ### Author: Ned Liu
 
 ## Description
-We got a copy of the code to a top secret vault. Unfortunately we do not have the password. Could we try to unlock it and possibly get a flag on the way?
+We got a copy of the code to a top secret vault. Unfortunately we do not have the password. Could you try to unlock it and possibly get a flag on the way?
 
 ## Hints
 1. There are some really long strings in the code. I wonder what they mean.
-2. It looks like it is comparing something with a string in the program. I wonder what could that be?
+2. It looks like it is comparing something with a string in the program. I wonder what that could be?
 
 ## Solution
 1. Looking at the reverse binary, we can see there is a long string being (split into 4 parts). If we look closer, it is all the possible characters for base 64 encoding.
