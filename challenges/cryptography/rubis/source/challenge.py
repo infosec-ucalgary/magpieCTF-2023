@@ -4,9 +4,16 @@ from Crypto.Util.number import bytes_to_long, long_to_bytes, inverse, GCD, getRa
 from sympy import nextprime, prevprime
 
 WELCOME_SCREEN = """
-*******************
-*     WELCOME     *
-*******************
+************************************************************
+*                                                          *
+*                                                          * 
+*                     WELCOME TO RUBIS                     *
+*                                                          * 
+*                                                          *
+************************************************************
+
+ATTENTION ALL EMPLOYEES OF OMNI, Rubis is no longer in use,
+and thus it should not be used to store important information. 
 """
 FLAG = b'magpie{17_w45n\'7_72u1y_24nd0m_4f732_411}'
 KEY = b'f32m47\'5_f4c702124710n_m37h0d_f02_7h3_w1n!!'
@@ -57,7 +64,6 @@ class Cluster():
         for i in range(5):
             self.prevShips.append(random.randrange(1000000))
         self.currentShip = random.randrange(1000000)
-        print(self.currentShip)
 
     def populateSpecialShip(self, password, flag):
         self.ships[self.currentShip].password = password
@@ -101,7 +107,7 @@ if __name__ == "__main__":
                 password = input(f"Enter password for ship {ship}: \n")
                 cluster.unlockShip(ship, password.encode())
             else:
-                print("Quiting...")
+                print("Quitting...")
                 exit(1)
         except Exception as e:
             print(f"An error occurred while processing data: {e}")

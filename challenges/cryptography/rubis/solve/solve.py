@@ -35,8 +35,6 @@ def findCurrentShip(prevShips):
         randNums = []
         for i in range(5):
             randNums.append(random.randrange(1000000))
-        # print(prevShips)
-        # print(randNums)
         if set(randNums) == set(prevShips):
             ship = random.randrange(1000000)
             break
@@ -47,8 +45,8 @@ def solve():
         conn = remote(HOST,PORT)
 
         ## welcome message and options
-        for i in range(12):
-            conn.recvline()    
+        for i in range(18):
+            conn.recvline() 
 
         # get previous ships 
         conn.sendline(b'1')
@@ -93,8 +91,8 @@ def solve():
         flag = conn.recvline()
         conn.close()
         return FLAG == flag
-    except:
-        print(Exception)
+    except Exception as e:
+        print(e)
         exit(1)
 if __name__ == "__main__":
     print(solve())
