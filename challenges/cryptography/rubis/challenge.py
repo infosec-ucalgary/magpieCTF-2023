@@ -106,6 +106,7 @@ if __name__ == "__main__":
                 ship = int(input("Which ship would you like to unlock? \n"))
                 password = input(f"Enter password for ship {ship}: \n")
                 cluster.unlockShip(ship, password.encode())
+                exit()
             else:
                 print("Quitting...")
                 exit(1)
