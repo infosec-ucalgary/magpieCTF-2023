@@ -17,5 +17,5 @@ You know, space exploration is VERY VERY cool. Here is one of the photos we got.
 
 1. Turn on the brightness of the image and you will see the flag in the upper left corner. This is an EASY challenge so DO NOT OVER THINK IT!
 
-##Flag
+## Flag
 magpie{wh0_7u2n3d_0ff_7h3_119h7}
