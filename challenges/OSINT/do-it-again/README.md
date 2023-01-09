@@ -1,0 +1,29 @@
+# Do it again
+### Category: OSINT
+### Author: Ned Liu
+
+## Description
+It looks like someone on our team has managed to sabotage the headquarter and recover a flag under a Twitter account that is made up of a name and a number. 
+The person made a full report on the process of discovering the flag and sent it to us. 
+However, the communication is disrupted and we do not know how much of the report got delivered and we also do not know where the message ended up at. 
+Fortunately, it looks like one of their employees received part of the message and posted it on Twitter. Let's see if we can do something about it.
+
+## Hints
+
+1. Oh no, it seems like the last part is gone, I wonder where can I find it.
+2. The screenshot looks familiar, it looks like it is from a certain website. 
+3. Pay attention to the description and see what is needed for the flag.
+
+
+## Solution
+1. Going to the Twitter post, we can see (4/4) is gone. It could be deleted by the original poster. So we use a way back machine to see what it is.
+2. Lucky, there is a record in the way back machine, it seems like the deleted post contains a number and a screenshot of another website.
+3. There are key phrases like "Missions insignia", "Mercury-Redstone 3" and "Apollo 14" in the screenshot that we can search by. By putting these words in the google search engine with double quotes.
+4. This leads us to a wiki page for Alan Shepard and you will find the exact same image as the screenshot.
+5. The description mentioned that the flag is made up of a name and a number so we look for a Twitter account with Alan Shepard and the number we had earlier. ("AlanShepard1248") This will lead us to the flag.
+
+## Start link
+https://twitter.com/JohnDoe20418691/status/1612238311300689920
+
+## Flag
+magpie{7h3_m023_y0u_kn0w}
