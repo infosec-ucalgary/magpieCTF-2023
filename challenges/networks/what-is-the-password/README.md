@@ -6,7 +6,7 @@
 We managed to capture some web traffic from the OMNI flag company. This time I think we are onto something. It looks like they are transferring something but I cannot read it.
 
 ## Hints
-1. If only there is a way to look at what is transfered.
+1. Is that a PNG? If it is then how can I download it?
 
 ## Solution
 1. Open the packet in wireshark and you will see one ip is transferring a file to another ip using HTTP.
