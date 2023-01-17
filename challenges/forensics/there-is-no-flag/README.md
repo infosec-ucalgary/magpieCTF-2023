@@ -18,7 +18,7 @@ Your starting point: https://github.com/Admin-is-here-GG/React
 2. If we string the program we can see "Flag.PNG" is present in the result. This potentially means that there is something else in the executable.
 3. We binwalk the program and we will see there is another zip file in the executable.
 4. Inside the zip, there is a file named "Flag.PNG" in it. But we cannot open it.
-5. We can also see that the computer cannot determine the file type of the file. This indicates that the file magic might be damaged. We can figure what is going on with a hex viewer.
+5. We can also see that the computer cannot determine the file type of the file. This indicates that the file magic might be damaged. We can figure what is going on with an online hex viewer.
 6. When looking at the file in binary, we will see that the first byte of the file magic is wrong. We fix the file magic and then we get the flag.
 
 ## Flag
