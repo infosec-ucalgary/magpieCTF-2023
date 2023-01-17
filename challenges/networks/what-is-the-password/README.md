@@ -2,6 +2,8 @@
 ### Category: Network (Easy I or II)
 ### Author: Ned Liu
 
+Users should have access to the Packet.pcapng file. Nothing else.
+
 ## Description
 We managed to capture some web traffic from the OMNI flag company. This time I think we are onto something. It looks like they are transferring something but I cannot read it.
 
