@@ -1,0 +1,31 @@
+name: chocolate-chips-with-zeroG to DO Registery
+
+on:
+  push:
+    branches: [workflow]
+    paths:
+      - "challenges/web-exploitation/chocolate-chips-with-zeroG/source/**"
+
+jobs:
+  build_and_push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repo 
+        uses: actions/checkout@v2
+
+      - name: Build image 
+        run: docker build -t chocolate-chips-with-zeroG .
+
+      - name: Install doctl 
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+      - name: Log in to DO Container Registry 
+        run: doctl registry login --expiry-seconds 600
+
+      - name: Tag image 
+        run: docker tag chocolate-chips-with-zeroG ${secrets.REGISTRY_NAME}/chocolate-chips-with-zeroG:latest
+
+      - name: Push image to DO Container Registry 
+        run: docker push ${secrets.REGISTRY_NAME}/chocolate-chips-with-zeroG:latest
