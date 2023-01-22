@@ -5,6 +5,7 @@ on:
     branches: [workflow]
     paths:
       - "challenges/web-exploitation/education-comes-first/source/**"
+      - ".github/workflows/education-comes-first.yml"
 
 jobs:
   build_and_push:
@@ -14,7 +15,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Build image 
-        run: docker build -t education-comes-first .
+        run: docker build -t education-comes-first challenges/web-exploitation/education-comes-first/source/
 
       - name: Install doctl 
         uses: digitalocean/action-doctl@v2
@@ -25,7 +26,7 @@ jobs:
         run: doctl registry login --expiry-seconds 600
 
       - name: Tag image 
-        run: docker tag education-comes-first ${secrets.REGISTRY_NAME}/education-comes-first:latest
+        run: docker tag education-comes-first ${{ secrets.REGISTRY_NAME }}/education-comes-first:latest
 
       - name: Push image to DO Container Registry 
-        run: docker push ${secrets.REGISTRY_NAME}/education-comes-first:latest
+        run: docker push ${{ secrets.REGISTRY_NAME }}/education-comes-first:latest

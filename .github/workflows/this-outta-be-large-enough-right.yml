@@ -5,6 +5,7 @@ on:
     branches: [workflow]
     paths:
       - "challenges/binary-exploitation/this-outta-be-large-enough-right/source/**"
+      - ".github/workflows/this-outta-be-large-enough-right.yml"
 jobs:
   build_and_push:
     runs-on: ubuntu-latest
@@ -13,7 +14,7 @@ jobs:
         uses: actions/checkout@v2
         
       - name: Build image 
-        run: docker build -t this-outta-be-large-enough-right .
+        run: docker build -t this-outta-be-large-enough-right challenges/binary-exploitation/this-outta-be-large-enough-right/source
 
       - name: Install doctl 
         uses: digitalocean/action-doctl@v2
@@ -24,7 +25,7 @@ jobs:
         run: doctl registry login --expiry-seconds 600
 
       - name: Tag image 
-        run: docker tag this-outta-be-large-enough-right ${secrets.REGISTRY_NAME}/this-outta-be-large-enough-right:latest
+        run: docker tag this-outta-be-large-enough-right ${{ secrets.REGISTRY_NAME }}/this-outta-be-large-enough-right:latest
 
       - name: Push image to DO Container Registry 
-        run: docker push ${secrets.REGISTRY_NAME}/this-outta-be-large-enough-right:latest
+        run: docker push ${{ secrets.REGISTRY_NAME }}/this-outta-be-large-enough-right:latest
