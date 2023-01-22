@@ -1,0 +1,32 @@
+name: satshell to DO Registery
+
+on:
+  push:
+    branches: [workflow]
+    paths:
+        -"challenges/reverse-engineering/satshell/source/**"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Image version'
+        required: true
+
+jobs:
+  build_and_push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repo 
+        uses: actions/checkout@v2
+      - name: Build image 
+        run: docker build -t satshell .
+      - name: Install doctl 
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+      - name: Log in to DO Container Registry 
+        run: doctl registry login --expiry-seconds 600
+      - name: Tag image 
+        run:
+          docker tag satshell \registry.digitalocean.com/infosec-registry/satshell:${{github.event.inputs.version }}
+      - name: Push image to DO Container Registry 
+        run: docker push registry.digitalocean.com/infosec-registry/satshell:${{ github.event.inputs.version }}
