@@ -26,7 +26,7 @@ jobs:
         run: doctl registry login --expiry-seconds 600
 
       - name: Tag image 
-        run: docker tag rubis ${secrets.REGISTRY_NAME}/rubis:latest
+        run: docker tag rubis ${{ secrets.REGISTRY_NAME }}/rubis:latest
 
       - name: Push image to DO Container Registry 
-        run: docker push ${secrets.REGISTRY_NAME}/rubis:latest
+        run: docker push ${{ secrets.REGISTRY_NAME }}/rubis:latest
