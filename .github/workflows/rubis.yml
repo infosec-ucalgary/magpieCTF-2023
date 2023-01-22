@@ -5,7 +5,7 @@ on:
     branches: [workflow]
     paths:
       - "challenges/cryptography/rubis/source/**"
-      - ".github/workflows/rubis.yaml"
+      - ".github/workflows/rubis.yml"
 
 jobs:
   build_and_push:
