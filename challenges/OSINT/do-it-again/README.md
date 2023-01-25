@@ -10,9 +10,10 @@ Fortunately, it looks like one of their employees received part of the message a
 
 ## Hints
 
+
 1. Oh no, it seems like the last part is gone. Only if I can go WAY BACK into the past with a time MACHINE.
 2. The screenshot looks familiar, I am sure you can find the EXACT same text in the website.
-3. Pay attention to the description and see what is needed for the flag.
+
 
 
 ## Solution
@@ -24,6 +25,7 @@ Fortunately, it looks like one of their employees received part of the message a
 
 ## Start link
 https://twitter.com/JohnDoe20418691/status/1617755100549902339
+
 
 ## Flag
 magpie{7h3_m023_y0u_kn0w}
