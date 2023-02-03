@@ -1,0 +1,37 @@
+html,body{
+    height: 100%;
+    background-color: black;
+}
+
+.secret{
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: red;
+    font-size: 170px;
+}
+
+.scrollbox{ 
+    height:100%; 
+    width:400px; 
+    overflow:auto; 
+    background-color: black;
+}
+
+
+.section-two{
+    color:white;
+    background-image: "space.jpg";
+    height: 90%;
+    font-size: 40px;
+}
+
+.footer{
+    position: relative;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: rgb(4, 9, 22);
+}
