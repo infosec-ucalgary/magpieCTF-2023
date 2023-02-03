@@ -1,0 +1,15 @@
+Sub flag()
+'
+' flag Macro
+'
+'
+    Dim str1, count
+    str1 = Array("m", "a", "g", "p", "i", "e", "{", "w", "h", "y", "_", "d", "1", "d", "_", "1", "_", "0", "p", "3", "n", "_", "t", "h", "1", "s", "_", "m", "4", "c", "r", "0", "_", "T", "W", "T", "}")
+    count = 0
+    For Each c In str1
+        Selection.TypeText Text:=Asc(str1(count)) * 10
+        count = count + 1
+    Next
+    
+    
+End Sub
