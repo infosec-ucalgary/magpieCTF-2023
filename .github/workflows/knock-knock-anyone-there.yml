@@ -1,0 +1,50 @@
+name: knock-knock-anyone-there to DO Registery
+
+on:
+  push:
+    branches: [workflow]
+    paths:
+      - "challenges/networks/knock-knock-anyone-there/source/**"
+      - ".github/workflows/knock-knock-anyone-there.yml"
+
+jobs:
+  build_and_push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repo 
+        uses: actions/checkout@v2
+
+      - name: Build app image 
+        run: docker build -t knock-knock-anyone-there-app challenges/networks/knock-knock-anyone-there/source/app
+      
+      - name: Build waf image 
+        run: docker build -t knock-knock-anyone-there-waf challenges/networks/knock-knock-anyone-there/source/waf
+      
+      - name: Build pinger image 
+        run: docker build -t knock-knock-anyone-there-pinger challenges/networks/knock-knock-anyone-there/source/pinger
+
+      - name: Install doctl 
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+      - name: Log in to DO Container Registry 
+        run: doctl registry login --expiry-seconds 600
+
+      - name: Tag app image 
+        run: docker tag knock-knock-anyone-there-app ${{ secrets.REGISTRY_NAME }}/knock-knock-anyone-there-app:latest
+      
+      - name: Tag waf image 
+        run: docker tag knock-knock-anyone-there-waf ${{ secrets.REGISTRY_NAME }}/knock-knock-anyone-there-waf:latest
+
+      - name: Tag pinger image 
+        run: docker tag knock-knock-anyone-there-pinger ${{ secrets.REGISTRY_NAME }}/knock-knock-anyone-there-pinger:latest
+
+      - name: Push app image to DO Container Registry 
+        run: docker push ${{ secrets.REGISTRY_NAME }}/knock-knock-anyone-there-app:latest
+      
+      - name: Push waf image to DO Container Registry 
+        run: docker push ${{ secrets.REGISTRY_NAME }}/knock-knock-anyone-there-waf:latest
+      
+      - name: Push pinger image to DO Container Registry 
+        run: docker push ${{ secrets.REGISTRY_NAME }}/knock-knock-anyone-there-pinger:latest
