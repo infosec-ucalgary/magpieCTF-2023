@@ -1,0 +1,23 @@
+Version 0.6.0
+------------------------
+- Exclude some rules from CRS
+
+Version 0.5.0
+------------------------
+- Add CRS to WAF and set paranoia level
+
+Version 0.4.0
+------------------------
+- Add proxy server at 172.16.238.30
+
+Version 0.3.0
+------------------------
+- Added command input field to test out the firewall
+
+Version 0.2.0
+------------------------
+- Added ModSecurity WAF to webpage
+
+Version 0.1.0
+------------------------
+- Added basic webpage
