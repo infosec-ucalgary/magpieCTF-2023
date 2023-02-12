@@ -1,0 +1,68 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    box-sizing: inherit;
+    box-sizing: border-box;
+}
+
+body{
+    width: 100%;
+    height: 100vh;
+    background-image: url(../img/space.png);
+    background-size:cover;
+    background-position: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.classes{
+    overflow: hidden;
+    grid-column: 2/-1;
+    color: white;
+    display: inline-block;
+    margin-left: 17%;
+    margin-top: 7%;
+}
+
+.classes ul{
+    text-align: center;
+    margin: 0 auto;
+}
+
+.classes :hover{
+    color: red;
+}
+
+p{
+    margin-top: 5px;
+}
+.math-title{
+    background-color: rgba(25, 43, 67, 0.4);
+    border: 2px solid black;
+    border-radius: 25px;
+    margin-top: 7%;
+    margin-right: 50%;
+    padding:5px;
+}
+
+.compsci-title{
+    background-color: rgba(25, 43, 67, 0.4);
+    border: 2px solid black;
+    border-radius: 25px;
+    margin-top: 7%;
+    margin-left: 50%;
+    padding:5px;
+}
+
+.science-title{
+    background-color: rgba(25, 43, 67, 0.4);
+    border:2px solid black;
+    border-radius: 25px;
+    padding:5px;
+    margin-top: 7%;
+    margin-right:50%;
+}
+.classes a:hover{
+    background-color: rgba(0, 0, 0, 0.4);
+}
