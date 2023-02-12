@@ -13,9 +13,6 @@ jobs:
       - name: Checkout the repo 
         uses: actions/checkout@v2
         
-      - name: Build image 
-        run: docker build -t this-outta-be-large-enough-right challenges/binary-exploitation/this-outta-be-large-enough-right/source
-
       - name: Install doctl 
         uses: digitalocean/action-doctl@v2
         with:
@@ -23,6 +20,9 @@ jobs:
 
       - name: Log in to DO Container Registry 
         run: doctl registry login --expiry-seconds 600
+
+      - name: Build image 
+        run: docker build -t this-outta-be-large-enough-right challenges/binary-exploitation/this-outta-be-large-enough-right/source
 
       - name: Tag image 
         run: docker tag this-outta-be-large-enough-right ${{ secrets.REGISTRY_NAME }}/this-outta-be-large-enough-right:latest
