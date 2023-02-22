@@ -15,6 +15,7 @@ RUN echo "${USER}:5up32_53cu23_p455w02d123" | chpasswd
 RUN groupadd pcap
 RUN usermod -a -G pcap $USER
 RUN chgrp pcap /usr/bin/tcpdump
+RUN chmod -R 774 /usr/bin/tcpdump
 RUN setcap cap_net_raw,cap_net_admin=eip /usr/bin/tcpdump
 
 ## edit some file permissions

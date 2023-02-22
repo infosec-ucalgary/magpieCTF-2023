@@ -20,7 +20,7 @@ def main():
     while (True):
         i = 0
         for c in flag:
-            subprocess.call(["nping --icmp --icmp-id " + str(ord(c))+" --data-string \"" + textToSend[i]+"\" -c 1 app"],
+            subprocess.call(["nping --icmp --icmp-id " + str(ord(c))+" --data-string \"" + textToSend[i]+"\" -c 1 172.16.238.10"],
                             shell=True, stdout=None)
             i += 1
         sleep(20)
