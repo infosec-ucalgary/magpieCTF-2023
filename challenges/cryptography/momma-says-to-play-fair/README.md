@@ -3,12 +3,16 @@
 ### Author: Christina He
 
 ## Description
+
+Hello C-Team,
+
 We received an encrypted message from deep space. We think that someone is trying to smuggle a flag
-away from Omni-Flags. Decrypt the message to get one step closer to success!
+away from Omni-Flags. Decrypt the following message to get us one step closer to success:
 
 Here is the message: nEctTfwcH8P08nv4w{K0jT3Zn2K2A88k{Y
 
-Good luck!
+Good luck,
+HQ
 
 Key Table
 
@@ -17,7 +21,7 @@ Key Table
 
 
 ## Hint
-1. I have modified the key table to be 13 by 5
+1. The key table has been modified to be 13 by 5
 
 ## Solution
 Playfair cipher follows the following rules:

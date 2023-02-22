@@ -3,7 +3,12 @@
 ### Author: Ned Liu
 
 ## Description
-We got a copy of the code to a top secret vault. Unfortunately we do not have the password. Could you try to unlock it and possibly get a flag on the way?
+
+R-Team,
+
+Recon has acquired for us a copy of the code to a top secret vault. Unfortunately we do not have the password. Try to unlock it, and possibly reveal a flag on the way.
+
+HQ
 
 ## Hints
 1. There are some really long strings in the code. I wonder what they mean.

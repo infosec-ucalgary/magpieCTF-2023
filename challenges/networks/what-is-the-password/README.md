@@ -5,7 +5,12 @@
 Users should have access to the Packet.pcapng file. Nothing else.
 
 ## Description
-We managed to capture some web traffic from the OMNI flag company. This time I think we are onto something. It looks like they are transferring something but I cannot read it.
+
+N-Team,
+
+Recon managed to capture some web traffic from OmniFlags and think they are onto something. It looks like they are transferring something but we cannot read it.
+
+HQ
 
 ## Hints
 1. Is that a PNG? If it is then how can I download it?

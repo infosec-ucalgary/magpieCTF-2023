@@ -3,9 +3,13 @@
 ### Author: Ned Liu
 ## Description
 
-There is no flag. Even if there was a flag here, it is GONE now. Have a wonderful day!
+Come in, F-Team,
+
+One of our other branches has been working on finding a key flag from here, but weren't able to report anything back. They claim there is no flag to be found. We need you to confirm their findings, or ideally, prove them wrong.
 
 Your starting point: https://github.com/Admin-is-here-GG/React
+
+HQ
 
 ## Hint
 1. Hmmm, I wonder what happened here before I arrived.

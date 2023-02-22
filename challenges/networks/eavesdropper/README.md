@@ -3,9 +3,15 @@
 ### Author: Marianna Ferreira (MariannaFerr)
 
 ## Description
-According to your sources, one of the exec's flags is going to have something to do with her favourite food. Unfortunately, you just can't remember what it was...
 
-She's got a sweet tooth, so you know it has to be some kind of dessert, like **cookies** or **cakes**. What was her favourite flavour? **vanilla**? **oreo**? **chocolate chip**? Or maybe **pistachio**? 
+Hello N-Team,
+
+According to recon, one of the captives has been sending flags discretely to our endpoints, and the key flag is going to have something to do with her favourite food. Unfortunately, you just can't remember what it was...
+
+She's got a sweet tooth, so research has determined that it has to do with some kind of dessert, like **cookies** or **cakes**. What was her favourite flavour? **vanilla**? **oreo**? **chocolate chip**? Or maybe **pistachio**?
+
+Good luck, \
+HQ
 
 ## Hints
 1. The flag is in l33t5p34k, containing numbers and underscores, and will be obvious when you see it!

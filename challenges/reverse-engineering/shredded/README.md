@@ -4,7 +4,11 @@
 
 ## Description
 
+Hello R-Team,
+
 We found a batch of what seems to be a shredded document in the dumpster behind Omniflags headquarters. Can you put the pieces back together and find what the document says?
+
+HQ
 
 ## Hints
 

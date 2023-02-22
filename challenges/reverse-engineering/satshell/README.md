@@ -3,6 +3,9 @@
 ### Author: Petiole (e-seng)
 
 ## Description
+
+Incoming Communication (Identity: Recon Team M)...
+
 During one of the planned scavenges within the desolate Martian Omniflags
 headquarters, the team that was sent out located one of Omniflags' communication
 server rooms. Although greatly damaged from the *The War of the Martians* in
@@ -21,6 +24,9 @@ We trust that you will be able to determine methods to use what we have given
 you to determine a way to read the secrets that Omniflags has been holding onto
 all this time. Please connect to `<HOST>:<PORT>`, the address where the program
 is hosted when you are ready.
+
+Thanks, and good luck, \
+Recon
 
 ## Hints
 1. Machine code should be sent in *big endian*.
