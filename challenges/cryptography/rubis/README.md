@@ -3,8 +3,13 @@
 ### Author: Delara (lara)
 
 ## Description
- 
+
+Hello C-Team,
+
 During our investigation of Omniflags, we came across a cluster of ships called Rubis that was used to store top-secret information randomly in one of the ships and would rotate this secret every few days to stop attackers from finding the secret. It has been long since Rubric was deprecated however, we found out Rubis still contains a key component that will assist in the rescue of the prisoners from the space prison. We managed to get the source code that was used to run Rubis and for better or for worse, Rubis is still running at `<ip>:<port>`. We need you to unlock the ship that contains the flag so we can save the prisoners. 
+
+Godspeed,
+HQ
 
 ## Hints
 1. Can you break RSA?

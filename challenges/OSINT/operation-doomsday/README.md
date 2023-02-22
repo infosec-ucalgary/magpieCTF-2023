@@ -4,9 +4,14 @@
 
 ## Description (Part 1)
 
-OnmiFlags has a new CEO Trenton Blackwell. He is twice as nefarious as all their other CEO's combined and he has a terrible plan.
-Somewhere deep in space he has set up a DOOMSDAY device on a mysterious planet. The execs were getting close to finding its location but were kidnapped. 
-What they were able to figure out is that Trenton has hidden the planets X and Y coords out there, you job: FIND THEM. 
+Incoming transmission (Identity: unknown)...
+
+OmniFlags has a new CEO: Trenton Blackwell. He is twice as nefarious as all their other CEO's combined and he has a terrible plan.
+Somewhere deep in space he has set up a DOOMSDAY device on a mysterious planet. The ones that disappeared were getting close to finding its location but they went missing before they could make it.
+What they were able to figure out is that Trenton has hidden the planets X and Y coords out there, your job: FIND THEM. 
+
+You've got this, \
+V
 
 ### Hints Part 1
 
@@ -15,10 +20,14 @@ What they were able to figure out is that Trenton has hidden the planets X and Y
 
 ## Description (Part 2)
 
-Great job finding the X coordinate, only one coordinate left to find. You have access to Trentons blog, however he has covered his tracks and left hundered of possibilities for the last flag and the y coordinate. 
-Unfortunately we only have a limited number of tries to lock onto the DOOMSDAY device. 5 failed attempts will trigger the self destrcut. 
+Incoming transmission (Identity: unknown)...
+
+Great job finding the X coordinate, only one coordinate left to find. You have access to Trentons blog, however he has covered his tracks and left hundereds of possibilities for the last flag and the y coordinate. 
+Unfortunately we only have a limited number of tries to lock onto the DOOMSDAY device. 5 failed attempts will trigger the self destruct. 
 I wonder if the post we want is a date that is important to him?
 
+Keep at it, \
+V
 
 ## Hints
 

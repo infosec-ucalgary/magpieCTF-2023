@@ -4,7 +4,14 @@
 ### Author: Greg Vance (Expergefied)
 
 ## Description
+
+F-Team,
+
 One of the prisoners sent us this picture. See what you can find.
+
+Report back, \
+HQ
+
 
 ## Hints
 1. ext4 filesystem
