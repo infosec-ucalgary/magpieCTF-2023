@@ -6,7 +6,12 @@
 
 ## Description
 
-You know, space exploration is VERY VERY cool. Here is one of the photos we got. There is something strange about the image but I cannot tell exactly what it is.
+Hello F-Team,
+
+We've intercepted a suspicious image file from an OmniFlags channel known to discretely transport flags. See if you can find anything of value here.
+
+Looking forward to your report, \
+HQ
 
 ## Hints
 
