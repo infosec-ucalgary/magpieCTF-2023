@@ -3,7 +3,12 @@
 ### Author: Delara (lara)
 
 ## Description
-We've heard one of the prisoners of omni was working on a website before omni got to them. We suspect the website is quite buggy as it was still under development. Do you think you can break it?
+
+N-Team,
+
+We've heard one of the prisoners of OmniFlags was working on a website before omni got to them. We suspect the website is quite buggy as it was still under development. Do you think you can break it?
+
+HQ
 
 ## Hints
 1. Have you looked at robots.txt?
