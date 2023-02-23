@@ -1,4 +1,4 @@
-# Prisoners
+# Space Plan
 ### Category: OSINT
 ### Author: Yasmin
 
@@ -12,8 +12,6 @@ As you know, OmniFlags is back on their high horse and think they can claim the 
 
 Good luck, \
 HQ
-
-Can you find out what this might be?
 
 ## Hint
 Maybe they hid their plans in a site!
