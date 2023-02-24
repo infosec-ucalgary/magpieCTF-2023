@@ -3,11 +3,18 @@
 ### Author: Ned Liu
 
 ## Description
-It looks like someone on our team has managed to sabotage the headquarter and recover a flag under a Twitter account that is made up of a name and a number. 
+
+Hello O-Team,
+
+One of our recon squads has managed to sabotage the headquarters and recover a flag under a Twitter account that is made up of a name and a number. 
 The person made a full report on the process of discovering the flag and sent it to us. 
 However, the communication is disrupted and we do not know how much of the report got delivered and we also do not know where the message ended up at. 
 Fortunately, it looks like one of their employees received part of the message and posted it on Twitter. Let's see if we can do something about it. 
 Here is the link for the post "https://twitter.com/JohnDoe20418691/status/1617755100549902339", I hope we are not too late.
+
+Report back with your findings.
+
+HQ
 
 ## Hints
 

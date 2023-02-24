@@ -1,0 +1,41 @@
+version: '3'
+services:
+    waf:
+        container_name: networks-hard-waf
+        build: waf
+        ports:
+            - "8080:80"
+        environment:
+            - BACKEND=http://app/
+            - PARANOIA=3
+        networks:
+            app_net:
+                ipv4_address: 172.16.238.20
+    app:
+        container_name: networks-hard-app
+        build: app
+        ports:
+            - "80"
+        cap_add:
+          - "NET_ADMIN"
+          - "NET_RAW"
+        networks:
+            app_net:
+                ipv4_address: 172.16.238.10
+    pinger:
+        container_name: sneaky-messager
+        build: pinger
+        networks:
+            app_net:
+                ipv4_address: 172.16.238.30
+
+networks:
+  app_net:
+    name: super-secure-network
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.238.0/24
+          gateway: 172.16.238.1
+
