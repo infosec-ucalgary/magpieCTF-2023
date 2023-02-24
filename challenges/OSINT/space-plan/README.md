@@ -1,11 +1,17 @@
-# Prisoners
+# Space Plan
 ### Category: OSINT
 ### Author: Yasmin
 
 ## Description
-OmniFlag Corp is back at it again. It seems like they are planning something big and we have to stop them! I found a file of theirs leaked by someone named Rhonda Hooper while snooping around and maybe this could help stop them! 
 
-Can you find out what this might be?
+Inbound Communication (Identity: HQ)...
+
+Hello O-Team,
+
+As you know, OmniFlags is back on their high horse and think they can claim the rest of humanity and the solar system for themselves. We, of course, will not let that happen. Our recon squads have found a file of theirs leaked by someone named Rhonda Hooper and believe this can help stop them.
+
+Good luck, \
+HQ
 
 ## Hint
 Maybe they hid their plans in a site!

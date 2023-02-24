@@ -2,7 +2,13 @@
 ### Category: Reverse Engineering
 ### Author: Christina
 ## Description
-We found a word document left off on one of the Omniflag's computer. Does it contains any information useful to us? Not really sure, but it looks like it was in the middle of execution of something. What could it be?
+
+R-Team,
+
+We found an ancient Word document left off on one of the OmniFlags' computers. Does it contains any information useful to us?
+
+HQ
+
 
 ## Hints
 1. Macros give you surprises in word.
