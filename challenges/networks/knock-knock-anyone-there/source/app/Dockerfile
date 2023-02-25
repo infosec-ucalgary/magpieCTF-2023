@@ -20,7 +20,8 @@ RUN setcap cap_net_raw,cap_net_admin=eip /usr/bin/tcpdump
 
 ## edit some file permissions
 RUN chmod -R 750 /tmp/
-RUN chown -R root:www-data /var/www/html
+RUN chown -R root:root /var/www/html
+RUN chmod -R 755 /var/www/html
 
 ## first part of flag
 RUN chown -R root:${USER} /home/${USER}
