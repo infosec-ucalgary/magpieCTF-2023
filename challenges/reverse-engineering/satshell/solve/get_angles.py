@@ -19,29 +19,29 @@ def main():
         [float(x) for x in sat2_angle_str.split(',')])
     print(sat2)
 
-    dx = math.atan(
+    dx = (math.atan(
             math.sqrt(pow(sat2[0][2] - sat1[0][2], 2)
                       +
                       pow(sat2[0][1] - sat1[0][1], 2))
             /
             (sat2[0][0] - sat1[0][0])
-         ) * 180 / math.pi - sat1[1][0] + 360
+         ) * 180 / math.pi - sat1[1][0] + 360) % 180
 
-    dy = math.atan(
+    dy = (math.atan(
             math.sqrt(pow(sat2[0][2] - sat1[0][2], 2)
                       +
                       pow(sat2[0][0] - sat1[0][0], 2))
             /
             (sat2[0][1] - sat1[0][1])
-         ) * 180 / math.pi - sat1[1][1] + 360
+         ) * 180 / math.pi - sat1[1][1] + 360) % 180
 
-    dz = math.atan(
+    dz = (math.atan(
             math.sqrt(pow(sat2[0][0] - sat1[0][0], 2)
                       +
                       pow(sat2[0][1] - sat1[0][1], 2))
             /
             (sat2[0][2] - sat1[0][2])
-         ) * 180 / math.pi - sat1[1][2] + 360
+         ) * 180 / math.pi - sat1[1][2] + 360) % 180
 
     print(f"desired changes: {dx}, {dy}. {dz}")
 

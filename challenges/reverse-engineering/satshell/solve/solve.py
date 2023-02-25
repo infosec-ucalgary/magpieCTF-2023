@@ -66,28 +66,28 @@ class Satellite:
         self.symbol = symbol
 
     def point_to_next_sat(self, next_sat: object) -> bytes:
-        dx = math.atan(
+        dx = (math.atan(
                 math.sqrt(pow(next_sat.position['z'] - self.position['z'], 2)
                           +
                           pow(next_sat.position['y'] - self.position['y'], 2))
                 /
                 (next_sat.position['x'] - self.position['x'])
-             ) * 180 / math.pi - self.theta['x'] + 360
+             ) * 180 / math.pi - self.theta['x'] + 360) % 180
 
-        dy = math.atan(
+        dy = (math.atan(
                 math.sqrt(pow(next_sat.position['x'] - self.position['x'], 2)
                           +
                           pow(next_sat.position['z'] - self.position['z'], 2))
                 /
                 (next_sat.position['y'] - self.position['y'])
-             ) * 180 / math.pi - self.theta['y'] + 360
-        dz = math.atan(
+             ) * 180 / math.pi - self.theta['y'] + 360) % 180
+        dz = (math.atan(
                 math.sqrt(pow(next_sat.position['x'] - self.position['x'], 2)
                           +
                           pow(next_sat.position['y'] - self.position['y'], 2))
                 /
                 (next_sat.position['z'] - self.position['z'])
-             ) * 180 / math.pi - self.theta['z'] + 360
+             ) * 180 / math.pi - self.theta['z'] + 360) % 180
 
         if(OUTPUT): sys.stderr.write(f"desired changes: {dx}, {dy}. {dz}\n")
 

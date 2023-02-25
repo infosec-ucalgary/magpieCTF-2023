@@ -27,7 +27,7 @@
 
 #define NO_SATELLITES 4
 #define GRID_EDGE_SIZE 12
-#define MAX_ANGLE 360.0
+#define MAX_ANGLE 180.0
 
 struct Sat_Registers {
   short zp;
@@ -417,12 +417,12 @@ short check_satellite_connectivity(Satellite ** satellites){
           ) /
         (satellites[i+1] -> pos_z - satellites[i] -> pos_z)) * 180 / M_PI;
 
-    true_theta_x = ((int)true_theta_x % 360) + (true_theta_x - (int)true_theta_x);
-    if(true_theta_x < 0) true_theta_x += 360;
-    true_theta_y = ((int)true_theta_y % 360) + (true_theta_y - (int)true_theta_y);
-    if(true_theta_y < 0) true_theta_y += 360;
-    true_theta_z = ((int)true_theta_z % 360) + (true_theta_z - (int)true_theta_z);
-    if(true_theta_z < 0) true_theta_z += 360;
+    true_theta_x = ((int)true_theta_x % (int) MAX_ANGLE) + (true_theta_x - (int)true_theta_x);
+    if(true_theta_x < 0) true_theta_x += (int) MAX_ANGLE;
+    true_theta_y = ((int)true_theta_y % (int) MAX_ANGLE) + (true_theta_y - (int)true_theta_y);
+    if(true_theta_y < 0) true_theta_y += (int) MAX_ANGLE;
+    true_theta_z = ((int)true_theta_z % (int) MAX_ANGLE) + (true_theta_z - (int)true_theta_z);
+    if(true_theta_z < 0) true_theta_z += (int) MAX_ANGLE;
 
     // check if the orientation of satellites[i] is within range of error
     int uncertainty = 1; // degrees
@@ -434,46 +434,46 @@ short check_satellite_connectivity(Satellite ** satellites){
       true_theta_z);
     // */
     if(!check_modulo_range(
-          (int)(true_theta_x + 360 - uncertainty) % 360 + true_theta_x - (int)true_theta_x,
-          (int)(true_theta_x + 360 + uncertainty) % 360 + true_theta_x - (int)true_theta_x,
+          (int)(true_theta_x + (int) MAX_ANGLE - uncertainty) % (int) MAX_ANGLE + true_theta_x - (int)true_theta_x,
+          (int)(true_theta_x + (int) MAX_ANGLE + uncertainty) % (int) MAX_ANGLE + true_theta_x - (int)true_theta_x,
           satellites[i] -> theta_x,
           MAX_ANGLE)){
       /*/ debug
       fprintf(stderr, "[debug] %d: failed on theta_x of sat %c, range (%f, %f)\n",
           __LINE__,
           satellites[i] -> symbol,
-          ((int)(true_theta_x + 360) - uncertainty) % 360 + true_theta_x - (int)true_theta_x,
-          ((int)(true_theta_x + 360) + uncertainty) % 360 + true_theta_x - (int)true_theta_x
+          ((int)(true_theta_x + (int) MAX_ANGLE) - uncertainty) % (int) MAX_ANGLE + true_theta_x - (int)true_theta_x,
+          ((int)(true_theta_x + (int) MAX_ANGLE) + uncertainty) % (int) MAX_ANGLE + true_theta_x - (int)true_theta_x
       ); // */
       continue;
     }
 
     if(!check_modulo_range(
-          (int)(true_theta_y + 360 - uncertainty) % 360 + true_theta_y - (int)true_theta_y,
-          (int)(true_theta_y + 360 + uncertainty) % 360 + true_theta_y - (int)true_theta_y,
+          (int)(true_theta_y + (int) MAX_ANGLE - uncertainty) % (int) MAX_ANGLE + true_theta_y - (int)true_theta_y,
+          (int)(true_theta_y + (int) MAX_ANGLE + uncertainty) % (int) MAX_ANGLE + true_theta_y - (int)true_theta_y,
           satellites[i] -> theta_y,
           MAX_ANGLE)){
       /*/ debug
       fprintf(stderr, "[debug] %d: failed on theta_y of sat %c, range (%f, %f)\n",
           __LINE__,
           satellites[i] -> symbol,
-          (int)(true_theta_y + 360 - uncertainty) % 360 + true_theta_y - (int)true_theta_y,
-          (int)(true_theta_y + 360 + uncertainty) % 360 + true_theta_y - (int)true_theta_y
+          (int)(true_theta_y + (int) MAX_ANGLE - uncertainty) % (int) MAX_ANGLE + true_theta_y - (int)true_theta_y,
+          (int)(true_theta_y + (int) MAX_ANGLE + uncertainty) % (int) MAX_ANGLE + true_theta_y - (int)true_theta_y
       ); // */
       continue;
     }
 
     if(!check_modulo_range(
-          ((int)(true_theta_z + 360) - uncertainty) % 360 + true_theta_z - (int)true_theta_z,
-          ((int)(true_theta_z + 360) + uncertainty) % 360 + true_theta_z - (int)true_theta_z,
+          ((int)(true_theta_z + (int) MAX_ANGLE) - uncertainty) % (int) MAX_ANGLE + true_theta_z - (int)true_theta_z,
+          ((int)(true_theta_z + (int) MAX_ANGLE) + uncertainty) % (int) MAX_ANGLE + true_theta_z - (int)true_theta_z,
           satellites[i] -> theta_z,
           MAX_ANGLE)){
       /*/ debug
       fprintf(stderr, "[debug] %d: failed on theta_z of sat %c, range (%f, %f)\n",
           __LINE__,
           satellites[i] -> symbol,
-          ((int)(true_theta_z + 360) - uncertainty) % 360 + true_theta_z - (int)true_theta_z,
-          ((int)(true_theta_z + 360) + uncertainty) % 360 + true_theta_z - (int)true_theta_z
+          ((int)(true_theta_z + (int) MAX_ANGLE) - uncertainty) % (int) MAX_ANGLE + true_theta_z - (int)true_theta_z,
+          ((int)(true_theta_z + (int) MAX_ANGLE) + uncertainty) % (int) MAX_ANGLE + true_theta_z - (int)true_theta_z
       ); // */
       continue;
     }
@@ -535,18 +535,18 @@ void add_to_orientation(Satellite * satellite, float delta_angle, char component
   switch(component){
     case('x'):
       satellite -> theta_x += delta_angle;
-      satellite -> theta_x = ((int)satellite -> theta_x % 360) + (satellite -> theta_x - (int)satellite -> theta_x);
-      if(satellite -> theta_x < 0) satellite -> theta_x += 360;
+      satellite -> theta_x = ((int)satellite -> theta_x % (int) MAX_ANGLE) + (satellite -> theta_x - (int)satellite -> theta_x);
+      if(satellite -> theta_x < 0) satellite -> theta_x += (int) MAX_ANGLE;
       break;
     case('y'):
       satellite -> theta_y += delta_angle;
-      satellite -> theta_y = ((int)satellite -> theta_y % 360) + (satellite -> theta_y - (int)satellite -> theta_y);
-      if(satellite -> theta_y < 0) satellite -> theta_y += 360;
+      satellite -> theta_y = ((int)satellite -> theta_y % (int) MAX_ANGLE) + (satellite -> theta_y - (int)satellite -> theta_y);
+      if(satellite -> theta_y < 0) satellite -> theta_y += (int) MAX_ANGLE;
       break;
     case('z'):
       satellite -> theta_z += delta_angle;
-      satellite -> theta_z = ((int)satellite -> theta_z % 360) + (satellite -> theta_z - (int)satellite -> theta_z);
-      if(satellite -> theta_z < 0) satellite -> theta_z += 360;
+      satellite -> theta_z = ((int)satellite -> theta_z % (int) MAX_ANGLE) + (satellite -> theta_z - (int)satellite -> theta_z);
+      if(satellite -> theta_z < 0) satellite -> theta_z += (int) MAX_ANGLE;
       break;
     default:
       fprintf(stderr, "[error] Incorrect orientation received at satellite\n");
