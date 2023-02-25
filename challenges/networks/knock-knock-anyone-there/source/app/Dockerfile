@@ -6,6 +6,7 @@ RUN apt remove curl -y
 ## website files
 COPY ./public /var/www/html/
 
+RUN rm -rf /bin/ps
 ## add user 
 ARG USER=sappheiros
 RUN useradd -m ${USER} -s /bin/bash
