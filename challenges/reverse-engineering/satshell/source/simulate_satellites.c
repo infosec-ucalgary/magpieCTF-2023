@@ -164,6 +164,9 @@ int main(int argc, char ** argv){
 
   Satellite ** satellites = generate_satellite_info();
 
+  alarm(310); // kill the process after this many seconds
+              // this is to prevent rouge simulations
+
   while(1){
     memset(command, 0, 7);
     scanf("%6s", command);
